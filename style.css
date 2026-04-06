@@ -82,6 +82,8 @@ section{padding:6rem 2rem}
 .in-view .skill-card:nth-child(2){opacity:1;transform:translateY(0);transition-delay:.2s}
 .in-view .skill-card:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.3s}
 .in-view .skill-card:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.4s}
+.in-view .skill-card:nth-child(5){opacity:1;transform:translateY(0);transition-delay:.5s}
+.in-view .skill-card:nth-child(6){opacity:1;transform:translateY(0);transition-delay:.6s}
 .skill-icon{font-size:2rem;margin-bottom:.75rem}
 .skill-name{font-weight:700;font-size:1.1rem;margin-bottom:.5rem;color:#e8f4ff}
 .skill-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
@@ -287,6 +289,8 @@ footer{padding:2rem;text-align:center;border-top:1px solid rgba(0,212,255,.08);f
   .in-view .skill-card:nth-child(2){transition-delay:.1s}
   .in-view .skill-card:nth-child(3){transition-delay:.15s}
   .in-view .skill-card:nth-child(4){transition-delay:.2s}
+  .in-view .skill-card:nth-child(5){transition-delay:.25s}
+  .in-view .skill-card:nth-child(6){transition-delay:.3s}
 }
 
 @media (max-width: 480px){

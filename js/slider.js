@@ -13,8 +13,16 @@ const slides2 = [
   {src:"https://img2.pic.in.th/payroll_04_my_payslips.jpeg", title:"Reports & Analytics", sub:"// รายงานยอดจ่ายรวม · กราฟ · Export PDF"}
 ];
 
+const slides3 = [
+  {src:"https://img1.pic.in.th/images/1923e575724645e66.jpg", title:"หน้า Dashboard", sub:"// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ"},
+  {src:"https://img1.pic.in.th/images/2e2f67c3673667913.jpg", title:"หน้าจัดการสุขภาพ", sub:"// บันทึกสุขภาพ · ความดัน · น้ำตาล · ชีพจร"},
+  {src:"https://img2.pic.in.th/3bb679e01c6febcf5.jpg", title:"หน้ารายงาน", sub:"// กราฟแนวโน้ม · ประวัติสุขภาพ · Export"},
+  {src:"https://img2.pic.in.th/4787e6f4acda5a45b.jpg", title:"หน้าแผนที่", sub:"// ตำแหน่ง GPS · LINE Bot · แจ้งเตือน"}
+];
+
 let currentSlide = 0;
 let currentSlide2 = 0;
+let currentSlide3 = 0;
 
 function switchSlide(idx) {
   currentSlide = idx;
@@ -91,9 +99,48 @@ function lightboxNav2(dir) {
   switchSlide2(currentSlide2);
 }
 
+// Third project functions
+function switchSlide3(idx) {
+  currentSlide3 = idx;
+  const main = document.getElementById('mainImg3');
+  main.style.opacity = '0';
+  main.style.transform = 'scale(1.02)';
+  setTimeout(() => {
+    main.src = slides3[idx].src;
+    document.getElementById('captionTitle3').textContent = slides3[idx].title;
+    document.getElementById('captionSub3').textContent = slides3[idx].sub;
+    main.style.opacity = '1';
+    main.style.transform = 'scale(1)';
+  }, 200);
+  document.querySelectorAll('.thumb').forEach((t, i) => t.classList.toggle('active', i === idx));
+  main.style.transition = 'opacity .2s ease, transform .4s ease';
+}
+
+function openLightbox3(idx) {
+  document.getElementById('lightboxImg3').src = slides3[idx].src;
+  document.getElementById('lightbox3').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox3() {
+  document.getElementById('lightbox3').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightboxOutside3(e) {
+  if (e.target === document.getElementById('lightbox3')) closeLightbox3();
+}
+
+function lightboxNav3(dir) {
+  currentSlide3 = (currentSlide3 + dir + slides3.length) % slides3.length;
+  document.getElementById('lightboxImg3').src = slides3[currentSlide3].src;
+  switchSlide3(currentSlide3);
+}
+
 export function initSlider() {
   window.currentSlide = currentSlide;
   window.currentSlide2 = currentSlide2;
+  window.currentSlide3 = currentSlide3;
   window.switchSlide = switchSlide;
   window.openLightbox = openLightbox;
   window.closeLightbox = closeLightbox;
@@ -104,5 +151,10 @@ export function initSlider() {
   window.closeLightbox2 = closeLightbox2;
   window.closeLightboxOutside2 = closeLightboxOutside2;
   window.lightboxNav2 = lightboxNav2;
+  window.switchSlide3 = switchSlide3;
+  window.openLightbox3 = openLightbox3;
+  window.closeLightbox3 = closeLightbox3;
+  window.closeLightboxOutside3 = closeLightboxOutside3;
+  window.lightboxNav3 = lightboxNav3;
   console.log('Slider initialized');
 }

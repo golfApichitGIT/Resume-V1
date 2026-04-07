@@ -302,6 +302,60 @@
         </div>
       </div>
     </div>
+
+    <!-- Visual Divider -->
+    <hr style="margin:4rem 0;border:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3">
+
+    <!-- Third Project: Elderly Care Management System -->
+    <div class="project-header">
+      <div class="project-info">
+        <div class="project-title">ระบบดูแลผู้สูงอายุ</div>
+        <p class="project-desc">Elderly Care Management System — โรงเรียนผู้สูงอายุด่านเกวียน</p>
+        <div class="project-features">
+          <div class="feature">ระบบจัดการดูแลผู้สูงอายุแบบครบวงจร รองรับ 2 พอร์ทัลหลัก คือ Admin และ Senior</div>
+          <div class="feature">บันทึกสุขภาพรายวัน — ความดัน, น้ำตาล, อุณหภูมิ, ออกซิเจน, น้ำหนัก, ชีพจร</div>
+          <div class="feature">กราฟแนวโน้มสุขภาพ Realtime ด้วย Chart.js</div>
+          <div class="feature">ประเมิน ADL และ MMSE</div>
+          <div class="feature">แผนที่ตำแหน่ง GPS ของผู้สูงอายุ</div>
+          <div class="feature">LINE Bot แจ้งเตือนอัตโนมัติเมื่อค่าสุขภาพผิดปกติ</div>
+          <div class="feature">Export CSV / PDF Report / พิมพ์บัตรประจำตัว</div>
+          <div class="feature">จัดการข่าวและบริการสำหรับผู้สูงอายุ</div>
+        </div>
+        <div class="project-tech">
+          <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap 5</span>
+          <span class="tag">Chart.js</span><span class="tag">LINE API</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery-wrap">
+      <div class="gallery-main" id="galleryMain3" onclick="openLightbox3(currentSlide3)">
+        <div class="gallery-scan-line"></div>
+        <div class="gallery-corner tl"></div>
+        <div class="gallery-corner tr"></div>
+        <div class="gallery-corner bl"></div>
+        <div class="gallery-corner br"></div>
+        <img class="gallery-main-img" id="mainImg3" src="https://img1.pic.in.th/images/1923e575724645e66.jpg" alt="Elderly Care Dashboard">
+        <div class="gallery-caption">
+          <div class="gallery-caption-title" id="captionTitle3">หน้า Dashboard</div>
+          <div class="gallery-caption-sub" id="captionSub3">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ</div>
+        </div>
+      </div>
+      <div class="gallery-thumbs">
+        <div class="thumb active" onclick="switchSlide3(0)">
+          <img class="thumb-img" src="https://img1.pic.in.th/images/1923e575724645e66.jpg" alt="Elderly Care 1">
+        </div>
+        <div class="thumb" onclick="switchSlide3(1)">
+          <img class="thumb-img" src="https://img1.pic.in.th/images/2e2f67c3673667913.jpg" alt="Elderly Care 2">
+        </div>
+        <div class="thumb" onclick="switchSlide3(2)">
+          <img class="thumb-img" src="https://img2.pic.in.th/3bb679e01c6febcf5.jpg" alt="Elderly Care 3">
+        </div>
+        <div class="thumb" onclick="switchSlide3(3)">
+          <img class="thumb-img" src="https://img2.pic.in.th/4787e6f4acda5a45b.jpg" alt="Elderly Care 4">
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -322,6 +376,16 @@
     <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)">&#8249;</button>
     <img id="lightboxImg2" src="" alt="">
     <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)">&#8250;</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX 3 -->
+<div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" onclick="closeLightbox3()">[ ESC ]</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)">&#8249;</button>
+    <img id="lightboxImg3" src="" alt="">
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)">&#8250;</button>
   </div>
 </div>
 

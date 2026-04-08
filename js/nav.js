@@ -35,6 +35,11 @@ export function initNav() {
           behavior: 'smooth',
           block: 'start'
         });
+        // Reset animation so it re-triggers on nav click
+        target.classList.remove('in-view');
+        setTimeout(() => {
+          target.classList.add('in-view');
+        }, 50);
       }
     });
   });

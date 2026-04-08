@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV — อภิชิต เปลี่ยนกลาง</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cyan: #00d4ff;
+    --green: #00ff88;
+    --dark: #050a0f;
+    --text: #111;
+    --muted: #666;
+    --light: #f7f9fa;
+    --border: #e0e0e0;
+  }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: #e8edf2;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 60px;
+  }
+
+  /* Print toolbar */
+  .toolbar {
+    width: 210mm;
+    max-width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .btn-print {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--cyan), var(--green));
+    color: #000;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,212,255,0.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-print:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,212,255,0.5); }
+
+  /* A4 Page */
+  .page {
+    background: #fff;
+    width: 210mm;
+    min-height: 297mm;
+    max-width: 100%;
+    padding: 18mm 20mm 18mm;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+    position: relative;
+  }
+
+  /* Left accent bar */
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--cyan), var(--green));
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  /* Photo placeholder */
+  .photo-wrap {
+    flex-shrink: 0;
+    width: 80px;
+    height: 100px;
+    border-radius: 6px;
+    border: 2px dashed var(--cyan);
+    background: rgba(0,212,255,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    display: none;
+  }
+
+  .photo-placeholder-text {
+    font-size: 8.5px;
+    color: var(--cyan);
+    text-align: center;
+    line-height: 1.5;
+    padding: 4px;
+    pointer-events: none;
+  }
+
+  .photo-icon {
+    font-size: 20px;
+    pointer-events: none;
+  }
+
+  .photo-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .header-info { flex: 1; }
+
+  .name {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+    color: #000;
+  }
+
+  .name-en {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .job-title {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    padding: 2px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,212,255,0.2);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 24px;
+    margin-top: 10px;
+  }
+
+  .contact-item {
+    font-size: 10.5px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .contact-item span.icon {
+    color: var(--cyan);
+    font-size: 11px;
+    width: 14px;
+  }
+
+  .contact-item a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .contact-item a:hover { color: var(--cyan); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    margin: 12px 0;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 14px; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .section-title-th {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cyan);
+  }
+
+  .section-title-en {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 2px;
+  }
+
+  /* ── SUMMARY ── */
+  .summary-text {
+    font-size: 11px;
+    color: #444;
+    line-height: 1.7;
+    padding-left: 4px;
+    border-left: 2px solid rgba(0,212,255,0.3);
+    padding-left: 10px;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+  }
+
+  .skill-row {
+    font-size: 11px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .skill-row::before {
+    content: '▸';
+    color: var(--cyan);
+    font-size: 9px;
+    flex-shrink: 0;
+  }
+
+  /* ── PROJECTS ── */
+  .project { margin-bottom: 10px; }
+
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .project-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    min-width: 16px;
+  }
+
+  .project-name-th {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .project-name-en {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .project-meta {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-left: 22px;
+    margin-bottom: 2px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .project-meta a {
+    color: var(--cyan);
+    text-decoration: none;
+  }
+
+  .project-desc {
+    font-size: 10.5px;
+    color: #444;
+    margin: 2px 0 3px 22px;
+    line-height: 1.5;
+  }
+
+  .tech-stack {
+    font-size: 10px;
+    color: var(--cyan);
+    margin-left: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .tech-tag {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 3px;
+    padding: 0px 5px;
+  }
+
+  /* ── INTERNSHIP / ACTIVITIES ── */
+  .exp-item { margin-bottom: 10px; }
+
+  .exp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .exp-title-th {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .exp-title-en {
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .exp-period {
+    font-size: 10px;
+    color: var(--cyan);
+    white-space: nowrap;
+    margin-left: 8px;
+  }
+
+  .exp-desc {
+    font-size: 10.5px;
+    color: #444;
+    margin-top: 3px;
+    line-height: 1.6;
+    padding-left: 10px;
+    border-left: 2px solid rgba(0,212,255,0.2);
+  }
+
+  .exp-placeholder {
+    font-size: 10.5px;
+    color: #bbb;
+    font-style: italic;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    padding: 6px 10px;
+  }
+
+  /* ── LANG & CERT ── */
+  .lang-cert-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+  }
+
+  .lang-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+
+  .lang-name { color: var(--text); font-weight: 600; }
+  .lang-level {
+    font-size: 10px;
+    color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 3px;
+    padding: 1px 6px;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-item { margin-bottom: 10px; }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .edu-degree-th {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .edu-degree-en {
+    font-size: 10.5px;
+    color: var(--muted);
+  }
+
+  .edu-gpa {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    white-space: nowrap;
+  }
+
+  .edu-detail {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── FOOTER ── */
+  .cv-footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-date {
+    font-size: 9px;
+    color: #bbb;
+  }
+
+  .footer-brand {
+    font-size: 9px;
+    color: #bbb;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; padding: 0; }
+    .toolbar { display: none; }
+    .page {
+      box-shadow: none;
+      width: 100%;
+      min-height: unset;
+      padding: 15mm 18mm;
+    }
+    .page::before { display: none; }
+    a { color: var(--muted) !important; }
+    .photo-wrap { border-style: solid; }
+    .photo-placeholder-text, .photo-icon { display: none; }
+  }
+
+  @page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+
+<div class="toolbar no-print">
+  <button class="btn-print" onclick="window.print()">
+    🖨️ พิมพ์ / บันทึก PDF
+  </button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+
+    <!-- Photo -->
+    <div class="photo-wrap" title="คลิกเพื่ออัปโหลดรูปภาพ">
+      <img id="photo-preview" src="" alt="profile photo">
+      <div class="photo-icon">📷</div>
+      <div class="photo-placeholder-text">คลิกเพื่อ<br>ใส่รูป</div>
+      <input type="file" class="photo-input" accept="image/*" id="photo-input">
+    </div>
+
+    <div class="header-info">
+      <div class="name">อภิชิต เปลี่ยนกลาง</div>
+      <div class="name-en">Apichit Plueangklang</div>
+      <div class="job-title">Frontend Developer</div>
+      <div class="contact-grid">
+        <div class="contact-item">
+          <span class="icon">✉</span>
+          <a href="mailto:golfgod9996@gmail.com">golfgod9996@gmail.com</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon">☎</span>
+          096-395-1661
+        </div>
+        <div class="contact-item">
+          <span class="icon">⌥</span>
+          <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon">in</span>
+          <a href="https://www.linkedin.com/in/apichit-pulangklang-5ba726401/" target="_blank">linkedin.com/in/apichit-plueangklang</a>
+        </div>
+        <div class="contact-item">
+          <span class="icon">🌐</span>
+          <a href="https://apichit.dev" target="_blank">apichit.dev</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SUMMARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">เกี่ยวกับฉัน</span>
+      <span class="section-title-en">Summary</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="summary-text">
+      บัณฑิตใหม่ด้านวิทยาการคอมพิวเตอร์ เกรดเกียรตินิยม GPA 3.83 มีความสนใจและความถนัดด้าน Frontend Development
+      โดยเฉพาะ React และ JavaScript มีประสบการณ์สร้างโปรเจกต์จริงตั้งแต่ระบบจัดการสต็อก ระบบเงินเดือน
+      ไปจนถึงระบบติดตามสุขภาพที่เชื่อมต่อ API จริง มุ่งมั่นพัฒนาตัวเองอย่างต่อเนื่อง และพร้อมเรียนรู้เทคโนโลยีใหม่ในสภาพแวดล้อมการทำงานจริง
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">ทักษะ</span>
+      <span class="section-title-en">Skills</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-row">JavaScript (ES6+), React, Node.js</div>
+      <div class="skill-row">Git, GitHub, VS Code, npm</div>
+      <div class="skill-row">React Vite, HTML5, CSS3, TailwindCSS</div>
+      <div class="skill-row">Chart.js, REST API integration</div>
+      <div class="skill-row">PHP, MySQL, PostgreSQL, Supabase</div>
+      <div class="skill-row">Vercel, Netlify, Docker basics</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">โปรเจกต์</span>
+      <span class="section-title-en">Projects</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-num">01.</span>
+        <span class="project-name-th">ระบบจัดการสต็อกอะไหล่</span>
+        <span class="project-name-en">— Stock Management System</span>
+      </div>
+      <div class="project-meta">
+        <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
+      </div>
+      <div class="project-desc">ระบบจัดการสต็อกอะไหล่รถยนต์ รองรับการสแกน QR Code และเชื่อมต่อ Lazada API สำหรับตรวจสอบราคาและสินค้าแบบ Realtime</div>
+      <div class="tech-stack">
+        <span class="tech-tag">React Vite</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">Supabase</span>
+        <span class="tech-tag">LINE API</span>
+        <span class="tech-tag">QR Code</span>
+        <span class="tech-tag">Lazada API</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-num">02.</span>
+        <span class="project-name-th">ระบบจัดการเงินเดือน</span>
+        <span class="project-name-en">— Payroll Management System</span>
+      </div>
+      <div class="project-meta">
+        <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
+      </div>
+      <div class="project-desc">ระบบจัดการเงินเดือนพนักงาน รองรับการอัปโหลดไฟล์ Excel คำนวณเงินเดือนอัตโนมัติ พร้อมสร้างสลิปเงินเดือนและ Export PDF</div>
+      <div class="tech-stack">
+        <span class="tech-tag">React Vite</span>
+        <span class="tech-tag">TailwindCSS</span>
+        <span class="tech-tag">React Router</span>
+        <span class="tech-tag">XLSX</span>
+        <span class="tech-tag">Supabase</span>
+        <span class="tech-tag">PostgreSQL</span>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-header">
+        <span class="project-num">03.</span>
+        <span class="project-name-th">ระบบดูแลผู้สูงอายุ</span>
+        <span class="project-name-en">— Elderly Health Monitoring System</span>
+      </div>
+      <div class="project-meta">
+        <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
+      </div>
+      <div class="project-desc">ระบบติดตามสุขภาพผู้สูงอายุ บันทึกความดัน น้ำตาล ชีพจร เชื่อมต่อ LINE Bot แจ้งเตือนญาติ และติดตามตำแหน่ง GPS แบบ Realtime</div>
+      <div class="tech-stack">
+        <span class="tech-tag">PHP</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">Bootstrap 5</span>
+        <span class="tech-tag">Chart.js</span>
+        <span class="tech-tag">LINE API</span>
+        <span class="tech-tag">GPS Tracking</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- INTERNSHIP / ACTIVITIES -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">ประสบการณ์ / กิจกรรม</span>
+      <span class="section-title-en">Experience &amp; Activities</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-header">
+        <div>
+          <div class="exp-title-th">นักศึกษาฝึกงาน — บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด</div>
+          <div class="exp-title-en">Internship — Acacia IT Services (Thailand) Co., Ltd. &nbsp;·&nbsp; บริษัทเอกชน</div>
+        </div>
+        <div class="exp-period">2568 — ปัจจุบัน</div>
+      </div>
+      <div class="exp-desc">
+        ออกแบบและพัฒนาระบบเงินเดือน (Payroll System) ด้วย React และ Node.js · พัฒนา UI/UX ด้วย Responsive Design · ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ API และจัดการข้อมูล
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- LANGUAGE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">ภาษา</span>
+      <span class="section-title-en">Languages</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="lang-cert-grid">
+      <div class="lang-item">
+        <span class="lang-name">🇹🇭 ภาษาไทย</span>
+        <span class="lang-level">เจ้าของภาษา</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">🇬🇧 ภาษาอังกฤษ</span>
+        <span class="lang-level">A1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title-th">การศึกษา</span>
+      <span class="section-title-en">Education</span>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-header">
+        <div>
+          <div class="edu-degree-th">ปริญญาตรี วิทยาศาสตรบัณฑิต</div>
+          <div class="edu-degree-en">มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน</div>
+          <div class="edu-detail">สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล &nbsp;·&nbsp; ปีการศึกษา 2562–2565</div>
+        </div>
+        <div class="edu-gpa">GPA 3.02</div>
+      </div>
+    </div>
+
+    <div class="edu-item">
+      <div class="edu-header">
+        <div>
+          <div class="edu-degree-th">ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</div>
+          <div class="edu-degree-en">วิทยาลัยเทคนิคนครราชสีมา</div>
+          <div class="edu-detail">สาขาคอมพิวเตอร์ธุรกิจ &nbsp;·&nbsp; ปีการศึกษา 2560–2562</div>
+        </div>
+        <div class="edu-gpa">GPA 3.83</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="cv-footer">
+    <div class="footer-date" id="gen-date"></div>
+    <div class="footer-brand">Portfolio: apichit.dev</div>
+  </div>
+
+</div>
+
+<script>
+  // Generate date
+  const d = new Date();
+  document.getElementById('gen-date').textContent =
+    'สร้างเมื่อ ' + d.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Photo upload preview
+  const input = document.getElementById('photo-input');
+  const preview = document.getElementById('photo-preview');
+  const wrap = preview.closest('.photo-wrap');
+
+  input.addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      wrap.querySelector('.photo-icon').style.display = 'none';
+      wrap.querySelector('.photo-placeholder-text').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+</body>
+</html>

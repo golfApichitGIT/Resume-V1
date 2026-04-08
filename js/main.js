@@ -2,6 +2,7 @@ import { initCanvas } from './canvas.js';
 import { initTypewriter, initScrollReveal } from './animations.js';
 import { initSlider } from './slider.js';
 import { initNav } from './nav.js';
+import { generateCV } from './cv.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initCanvas();

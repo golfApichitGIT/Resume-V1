@@ -2,6 +2,8 @@ export function initCanvas() {
   const canvas = document.getElementById('canvas-bg');
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
+  let animationId = null;
+  let isRunning = true;
   
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -45,7 +47,8 @@ export function initCanvas() {
     }
   }
   
-  for (let i = 0; i < 120; i++) {
+  // Reduced particle count from 120 to 80 for better performance
+  for (let i = 0; i < 80; i++) {
     particles.push(new Particle());
   }
   
@@ -90,6 +93,8 @@ export function initCanvas() {
   }
   
   function loop() {
+    if (!isRunning) return;
+    
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = 'rgba(5,10,15,.04)';
     ctx.fillRect(0, 0, W, H);
@@ -104,8 +109,21 @@ export function initCanvas() {
     grd.addColorStop(1, 'transparent');
     ctx.fillStyle = grd;
     ctx.fillRect(0, 0, W, H);
-    requestAnimationFrame(loop);
+    animationId = requestAnimationFrame(loop);
   }
+  
+  // Page Visibility API - pause animation when tab is hidden
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      isRunning = false;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    } else {
+      isRunning = true;
+      loop();
+    }
+  });
   
   loop();
 }

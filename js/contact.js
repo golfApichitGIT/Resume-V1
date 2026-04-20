@@ -1,6 +1,6 @@
-(function(){
+export function initContact() {
   emailjs.init('kR443ZbmZjLMmZgTD');
-})();
+}
 
 function handleContactSubmit(e) {
   e.preventDefault();
@@ -39,4 +39,6 @@ function handleContactSubmit(e) {
     });
 }
 
+// Make function globally accessible for onsubmit handler in HTML
+// This is intentional - the function needs to be called from HTML onsubmit attribute
 window.handleContactSubmit = handleContactSubmit;

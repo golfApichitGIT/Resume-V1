@@ -3,6 +3,7 @@ import { initTypewriter, initScrollReveal } from './animations.js';
 import { initSlider } from './slider.js';
 import { initNav } from './nav.js';
 import { generateCV } from './cv.js';
+import { initContact } from './contact.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initCanvas();
@@ -10,4 +11,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollReveal();
   initSlider();
   initNav();
+  initContact();
 });

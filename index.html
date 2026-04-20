@@ -16,9 +16,9 @@
 <canvas id="canvas-bg"></canvas>
 
 <div class="content">
-<nav>
+<nav aria-label="Main navigation">
   <div class="nav-logo">Portfolio</div>
-  <button class="nav-toggle" id="navToggle">☰</button>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle mobile menu">☰</button>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
     <a href="#skills">Skills</a>
@@ -50,7 +50,7 @@
         <div class="profile-glow"></div>
         <div class="profile-ring"></div>
         <div class="profile-ring2"></div>
-        <img class="profile-img" src="https://img1.pic.in.th/images/118c1b58081f3c3c9c.jpeg" alt="Apichit Plueangklang">
+        <img class="profile-img" src="images/profile/1.jfif" alt="Apichit Plueangklang - Frontend Developer">
       </div>
     </div>
   </div>
@@ -124,9 +124,8 @@
         <div class="skill-icon">⚡</div>
         <div class="skill-name">JavaScript</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ JavaScript ได้ที่นี่ (ค่าปัจจุบัน: 85%) -->
-          <div class="skill-bar-label"><span>JavaScript</span><span>50%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:50%;background:linear-gradient(90deg,#f7df1e,#e8a000)"></div></div>
+          <div class="skill-bar-label"><span>JavaScript</span><span>85%</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="--w:85%;background:linear-gradient(90deg,#f7df1e,#e8a000)"></div></div>
         </div>
         <div class="skill-tags"><span class="tag">JavaScript</span><span class="tag">HTML5</span><span class="tag">CSS3</span></div>
       </div>
@@ -136,9 +135,8 @@
         <div class="skill-icon">⚛️</div>
         <div class="skill-name">React</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ React ได้ที่นี่ (ค่าปัจจุบัน: 80%) -->
-          <div class="skill-bar-label"><span>React</span><span>55%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:55%;background:linear-gradient(90deg,#00ff88,#00d4ff)"></div></div>
+          <div class="skill-bar-label"><span>React</span><span>80%</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="--w:80%;background:linear-gradient(90deg,#00ff88,#00d4ff)"></div></div>
         </div>
         <div class="skill-tags"><span class="tag">React Vite</span><span class="tag">React Native</span><span class="tag">React Router</span></div>
       </div>
@@ -148,7 +146,6 @@
         <div class="skill-icon">🗄️</div>
         <div class="skill-name">Database</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ Database ได้ที่นี่ (ค่าปัจจุบัน: 70%) -->
           <div class="skill-bar-label"><span>MySQL</span><span>70%</span></div>
           <div class="skill-bar"><div class="skill-bar-fill" style="--w:70%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
         </div>
@@ -160,9 +157,8 @@
         <div class="skill-icon">🔧</div>
         <div class="skill-name">Git & Version Control</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ Git ได้ที่นี่ (ค่าปัจจุบัน: 75%) -->
-          <div class="skill-bar-label"><span>Git</span><span>70%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:70%;background:linear-gradient(90deg,#f05033,#e84d31)"></div></div>
+          <div class="skill-bar-label"><span>Git</span><span>75%</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="--w:75%;background:linear-gradient(90deg,#f05033,#e84d31)"></div></div>
         </div>
         <div class="skill-tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">VS Code</span></div>
       </div>
@@ -172,7 +168,6 @@
         <div class="skill-icon">🚀</div>
         <div class="skill-name">Hosting & Deploy</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ Deployment ได้ที่นี่ (ค่าปัจจุบัน: 70%) -->
           <div class="skill-bar-label"><span>Deployment</span><span>70%</span></div>
           <div class="skill-bar"><div class="skill-bar-fill" style="--w:70%;background:linear-gradient(90deg,#00d4ff,#7b2ff7)"></div></div>
         </div>
@@ -184,9 +179,8 @@
         <div class="skill-icon">🎨</div>
         <div class="skill-name">UI & Styling</div>
         <div class="skill-bar-wrap">
-          <!-- TODO: แก้ % ความสามารถ UI/Styling ได้ที่นี่ (ค่าปัจจุบัน: 75%) -->
-          <div class="skill-bar-label"><span>Tailwind CSS</span><span>55%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:55%;background:linear-gradient(90deg,#38bdf8,#818cf8)"></div></div>
+          <div class="skill-bar-label"><span>Tailwind CSS</span><span>75%</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="--w:75%;background:linear-gradient(90deg,#38bdf8,#818cf8)"></div></div>
         </div>
         <div class="skill-tags"><span class="tag">Tailwind CSS</span><span class="tag">CSS3</span></div>
       </div>
@@ -225,7 +219,7 @@
         <div class="gallery-corner tr"></div>
         <div class="gallery-corner bl"></div>
         <div class="gallery-corner br"></div>
-        <img class="gallery-main-img" id="mainImg" src="https://img2.pic.in.th/1c0763506bcdc5553.jpeg" alt="Dashboard">
+        <img class="gallery-main-img" id="mainImg" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy">
         <div class="gallery-caption">
           <div class="gallery-caption-title" id="captionTitle">หน้า Dashboard</div>
           <div class="gallery-caption-sub" id="captionSub">// ภาพรวมระบบ · สถิติ · กราฟ realtime</div>
@@ -233,16 +227,16 @@
       </div>
       <div class="gallery-thumbs">
         <div class="thumb active" onclick="switchSlide(0)">
-          <img class="thumb-img" src="https://img2.pic.in.th/1c0763506bcdc5553.jpeg" alt="Profile Picture">
+          <img class="thumb-img" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide(1)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/26fa3a2a87722a77d.jpeg" alt="Profile Picture">
+          <img class="thumb-img" src="images/stock/2.jpg" alt="Stock Management" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide(2)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/3b6a8c22506cedfd7.jpeg" alt="Profile Picture">
+          <img class="thumb-img" src="images/stock/3.jpg" alt="Stock Reports" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide(3)">
-          <img class="thumb-img" src="https://img2.pic.in.th/4fb7c12d9f33527ec.jpeg" alt="Profile Picture">
+          <img class="thumb-img" src="images/stock/4.jpg" alt="Stock Orders" loading="lazy">
         </div>
       </div>
     </div>
@@ -279,8 +273,7 @@
         <div class="gallery-corner tr"></div>
         <div class="gallery-corner bl"></div>
         <div class="gallery-corner br"></div>
-        <!-- TODO: ใส่ลิงค์รูปที่ 1 ของโปรเจกต์ Payroll -->
-        <img class="gallery-main-img" id="mainImg2" src="https://img2.pic.in.th/payroll_01_dashboard.jpeg" alt="Payroll Screenshot">
+        <img class="gallery-main-img" id="mainImg2" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy">
         <div class="gallery-caption">
           <div class="gallery-caption-title" id="captionTitle2">Payroll Dashboard</div>
           <div class="gallery-caption-sub" id="captionSub2">// ระบบจัดการเงินเดือน · สลิปเงินเดือน · รายงาน</div>
@@ -288,20 +281,16 @@
       </div>
       <div class="gallery-thumbs">
         <div class="thumb active" onclick="switchSlide2(0)">
-          <img class="thumb-img" src="https://img2.pic.in.th/payroll_01_dashboard.jpeg" alt="Payroll 1">
-          <!-- TODO: ใส่ลิงค์รูปที่ 1 -->
+          <img class="thumb-img" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide2(1)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/payroll_02_salary_management.jpeg" alt="Payroll 2">
-          <!-- TODO: ใส่ลิงค์รูปที่ 2 -->
+          <img class="thumb-img" src="images/payroll/2.png" alt="Payroll Employee Management" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide2(2)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/payroll_03_manage_users.jpeg" alt="Payroll 3">
-          <!-- TODO: ใส่ลิงค์รูปที่ 3 -->
+          <img class="thumb-img" src="images/payroll/3.png" alt="Payroll Generation" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide2(3)">
-          <img class="thumb-img" src="https://img2.pic.in.th/payroll_04_my_payslips.jpeg" alt="Payroll 4">
-          <!-- TODO: ใส่ลิงค์รูปที่ 4 -->
+          <img class="thumb-img" src="images/payroll/4.png" alt="Payroll Reports" loading="lazy">
         </div>
       </div>
     </div>
@@ -338,7 +327,7 @@
         <div class="gallery-corner tr"></div>
         <div class="gallery-corner bl"></div>
         <div class="gallery-corner br"></div>
-        <img class="gallery-main-img" id="mainImg3" src="https://img1.pic.in.th/images/1923e575724645e66.jpg" alt="Elderly Care Dashboard">
+        <img class="gallery-main-img" id="mainImg3" src="images/elderly/1.jpg" alt="Elderly Care Dashboard" loading="lazy">
         <div class="gallery-caption">
           <div class="gallery-caption-title" id="captionTitle3">หน้า Dashboard</div>
           <div class="gallery-caption-sub" id="captionSub3">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ</div>
@@ -346,16 +335,16 @@
       </div>
       <div class="gallery-thumbs">
         <div class="thumb active" onclick="switchSlide3(0)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/1923e575724645e66.jpg" alt="Elderly Care 1">
+          <img class="thumb-img" src="images/elderly/1.jpg" alt="Elderly Care Dashboard" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide3(1)">
-          <img class="thumb-img" src="https://img1.pic.in.th/images/2e2f67c3673667913.jpg" alt="Elderly Care 2">
+          <img class="thumb-img" src="images/elderly/2.jpg" alt="Elderly Care Health Management" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide3(2)">
-          <img class="thumb-img" src="https://img2.pic.in.th/3bb679e01c6febcf5.jpg" alt="Elderly Care 3">
+          <img class="thumb-img" src="images/elderly/3.jpg" alt="Elderly Care Reports" loading="lazy">
         </div>
         <div class="thumb" onclick="switchSlide3(3)">
-          <img class="thumb-img" src="https://img2.pic.in.th/4787e6f4acda5a45b.jpg" alt="Elderly Care 4">
+          <img class="thumb-img" src="images/elderly/4.jpg" alt="Elderly Care GPS Map" loading="lazy">
         </div>
       </div>
     </div>
@@ -363,32 +352,32 @@
 </section>
 
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
+<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()">[ ESC ]</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">&#8249;</button>
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">&#8250;</button>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
 
 <!-- LIGHTBOX 2 -->
-<div class="lightbox" id="lightbox2" onclick="closeLightboxOutside2(event)">
+<div class="lightbox" id="lightbox2" onclick="closeLightboxOutside2(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox2()">[ ESC ]</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)">&#8249;</button>
+    <button class="lightbox-close" onclick="closeLightbox2()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg2" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)">&#8250;</button>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
 
 <!-- LIGHTBOX 3 -->
-<div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)">
+<div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox3()">[ ESC ]</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)">&#8249;</button>
+    <button class="lightbox-close" onclick="closeLightbox3()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg3" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)">&#8250;</button>
+    <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
 
@@ -482,7 +471,6 @@
 </footer>
 </div>
 
-<script src="js/contact.js"></script>
 <script type="module" src="js/main.js"></script>
 </body>
 </html>

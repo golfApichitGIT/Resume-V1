@@ -1,23 +1,23 @@
 // Slider and Lightbox functionality
 const slides = [
-  {src:"https://img2.pic.in.th/1c0763506bcdc5553.jpeg", title:"หน้า Dashboard", sub:"// ภาพรวมระบบ · สถิติ · กราฟ realtime"},
-  {src:"https://img1.pic.in.th/images/26fa3a2a87722a77d.jpeg", title:"หน้าจัดการสต็อก", sub:"// รายการอะไหล่ · ค้นหา · แก้ไข"},
-  {src:"https://img1.pic.in.th/images/3b6a8c22506cedfd7.jpeg", title:"หน้ารายงาน", sub:"// สรุปยอด · กราฟ · Export"},
-  {src:"https://img2.pic.in.th/4fb7c12d9f33527ec.jpeg", title:"หน้าออเดอร์", sub:"// รายการสั่งซื้อ · สถานะ · ประวัติ"}
+  {src:"images/stock/1.jpg", title:"หน้า Dashboard", sub:"// ภาพรวมระบบ · สถิติ · กราฟ realtime"},
+  {src:"images/stock/2.jpg", title:"หน้าจัดการสต็อก", sub:"// รายการอะไหล่ · ค้นหา · แก้ไข"},
+  {src:"images/stock/3.jpg", title:"หน้ารายงาน", sub:"// สรุปยอด · กราฟ · Export"},
+  {src:"images/stock/4.jpg", title:"หน้าออเดอร์", sub:"// รายการสั่งซื้อ · สถานะ · ประวัติ"}
 ];
 
 const slides2 = [
-  {src:"https://img2.pic.in.th/payroll_01_dashboard.jpeg", title:"Payroll Dashboard", sub:"// ระบบจัดการเงินเดือน · สลิปเงินเดือน · รายงาน"},
-  {src:"https://img1.pic.in.th/images/payroll_02_salary_management.jpeg", title:"Employee Management", sub:"// จัดการข้อมูลพนักงาน · แก้ไขข้อมูลส่วนตัว"},
-  {src:"https://img1.pic.in.th/images/payroll_03_manage_users.jpeg", title:"Payroll Generation", sub:"// สร้างสลิปเงินเดือน · อัปโหลด Excel · คำนวณอัตโนมัติ"},
-  {src:"https://img2.pic.in.th/payroll_04_my_payslips.jpeg", title:"Reports & Analytics", sub:"// รายงานยอดจ่ายรวม · กราฟ · Export PDF"}
+  {src:"images/payroll/1.png", title:"Payroll Dashboard", sub:"// ระบบจัดการเงินเดือน · สลิปเงินเดือน · รายงาน"},
+  {src:"images/payroll/2.png", title:"Employee Management", sub:"// จัดการข้อมูลพนักงาน · แก้ไขข้อมูลส่วนตัว"},
+  {src:"images/payroll/3.png", title:"Payroll Generation", sub:"// สร้างสลิปเงินเดือน · อัปโหลด Excel · คำนวณอัตโนมัติ"},
+  {src:"images/payroll/4.png", title:"Reports & Analytics", sub:"// รายงานยอดจ่ายรวม · กราฟ · Export PDF"}
 ];
 
 const slides3 = [
-  {src:"https://img1.pic.in.th/images/1923e575724645e66.jpg", title:"หน้า Dashboard", sub:"// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ"},
-  {src:"https://img1.pic.in.th/images/2e2f67c3673667913.jpg", title:"หน้าจัดการสุขภาพ", sub:"// บันทึกสุขภาพ · ความดัน · น้ำตาล · ชีพจร"},
-  {src:"https://img2.pic.in.th/3bb679e01c6febcf5.jpg", title:"หน้ารายงาน", sub:"// กราฟแนวโน้ม · ประวัติสุขภาพ · Export"},
-  {src:"https://img2.pic.in.th/4787e6f4acda5a45b.jpg", title:"หน้าแผนที่", sub:"// ตำแหน่ง GPS · LINE Bot · แจ้งเตือน"}
+  {src:"images/elderly/1.jpg", title:"หน้า Dashboard", sub:"// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ"},
+  {src:"images/elderly/2.jpg", title:"หน้าจัดการสุขภาพ", sub:"// บันทึกสุขภาพ · ความดัน · น้ำตาล · ชีพจร"},
+  {src:"images/elderly/3.jpg", title:"หน้ารายงาน", sub:"// กราฟแนวโน้ม · ประวัติสุขภาพ · Export"},
+  {src:"images/elderly/4.jpg", title:"หน้าแผนที่", sub:"// ตำแหน่ง GPS · LINE Bot · แจ้งเตือน"}
 ];
 
 let currentSlide = 0;
@@ -138,6 +138,8 @@ function lightboxNav3(dir) {
 }
 
 export function initSlider() {
+  // Make functions globally accessible for onclick handlers in HTML
+  // This is intentional - the functions need to be called from HTML onclick attributes
   window.currentSlide = currentSlide;
   window.currentSlide2 = currentSlide2;
   window.currentSlide3 = currentSlide3;
@@ -156,5 +158,28 @@ export function initSlider() {
   window.closeLightbox3 = closeLightbox3;
   window.closeLightboxOutside3 = closeLightboxOutside3;
   window.lightboxNav3 = lightboxNav3;
+
+  // Keyboard navigation for lightbox
+  document.addEventListener('keydown', (e) => {
+    // Lightbox 1
+    if (document.getElementById('lightbox').classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lightboxNav(-1);
+      if (e.key === 'ArrowRight') lightboxNav(1);
+    }
+    // Lightbox 2
+    if (document.getElementById('lightbox2').classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox2();
+      if (e.key === 'ArrowLeft') lightboxNav2(-1);
+      if (e.key === 'ArrowRight') lightboxNav2(1);
+    }
+    // Lightbox 3
+    if (document.getElementById('lightbox3').classList.contains('open')) {
+      if (e.key === 'Escape') closeLightbox3();
+      if (e.key === 'ArrowLeft') lightboxNav3(-1);
+      if (e.key === 'ArrowRight') lightboxNav3(1);
+    }
+  });
+
   console.log('Slider initialized');
 }

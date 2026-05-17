@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CV — อภิชิต เปลี่ยนกลาง</title>
+<title>CV — อภิชิต เปลื้องกลาง / Apichit Plueangklang</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,14 +29,44 @@
     padding: 32px 16px 60px;
   }
 
-  /* Print toolbar */
+  /* ── Toolbar ── */
   .toolbar {
     width: 210mm;
     max-width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     gap: 10px;
     margin-bottom: 16px;
+  }
+
+  .toolbar-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* Language Toggle */
+  .btn-lang {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    color: var(--cyan);
+    border: 1.5px solid var(--cyan);
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .2s;
+    box-shadow: 0 2px 8px rgba(0,212,255,0.15);
+  }
+  .btn-lang:hover {
+    background: rgba(0,212,255,0.08);
+    box-shadow: 0 4px 16px rgba(0,212,255,0.3);
+    transform: translateY(-1px);
   }
 
   .btn-print {
@@ -57,6 +87,22 @@
   }
   .btn-print:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,212,255,0.5); }
 
+  /* Language badge on page */
+  .lang-badge {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.25);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
   /* A4 Page */
   .page {
     background: #fff;
@@ -66,9 +112,11 @@
     padding: 18mm 20mm 18mm;
     box-shadow: 0 8px 40px rgba(0,0,0,0.15);
     position: relative;
+    /* fade transition on lang switch */
+    transition: opacity 0.15s ease;
   }
+  .page.switching { opacity: 0; }
 
-  /* Left accent bar */
   .page::before {
     content: '';
     position: absolute;
@@ -79,384 +127,105 @@
   }
 
   /* ── HEADER ── */
-  .header {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    margin-bottom: 14px;
-  }
+  .header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
 
-  /* Photo placeholder */
   .photo-wrap {
     flex-shrink: 0;
-    width: 80px;
-    height: 100px;
+    width: 80px; height: 100px;
     border-radius: 6px;
     border: 2px dashed var(--cyan);
     background: rgba(0,212,255,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; position: relative; overflow: hidden; cursor: pointer;
   }
-
-  .photo-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px;
-    display: none;
-  }
-
-  .photo-placeholder-text {
-    font-size: 8.5px;
-    color: var(--cyan);
-    text-align: center;
-    line-height: 1.5;
-    padding: 4px;
-    pointer-events: none;
-  }
-
-  .photo-icon {
-    font-size: 20px;
-    pointer-events: none;
-  }
-
-  .photo-input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    cursor: pointer;
-  }
+  .photo-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 4px; display: none; }
+  .photo-placeholder-text { font-size: 8.5px; color: var(--cyan); text-align: center; line-height: 1.5; padding: 4px; pointer-events: none; }
+  .photo-icon { font-size: 20px; pointer-events: none; }
+  .photo-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
 
   .header-info { flex: 1; }
 
-  .name {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-    line-height: 1.2;
-    color: #000;
-  }
-
-  .name-en {
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--muted);
-    margin-top: 2px;
-  }
-
+  .name { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; line-height: 1.2; color: #000; }
+  .name-sub { font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 2px; }
   .job-title {
-    display: inline-block;
-    margin-top: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--cyan);
-    background: rgba(0,212,255,0.08);
-    padding: 2px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(0,212,255,0.2);
+    display: inline-block; margin-top: 6px;
+    font-size: 13px; font-weight: 600; color: var(--cyan);
+    background: rgba(0,212,255,0.08); padding: 2px 10px;
+    border-radius: 4px; border: 1px solid rgba(0,212,255,0.2);
   }
 
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px 24px;
-    margin-top: 10px;
-  }
-
-  .contact-item {
-    font-size: 10.5px;
-    color: var(--muted);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .contact-item span.icon {
-    color: var(--cyan);
-    font-size: 11px;
-    width: 14px;
-  }
-
-  .contact-item a {
-    color: var(--muted);
-    text-decoration: none;
-  }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 24px; margin-top: 10px; }
+  .contact-item { font-size: 10.5px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .contact-item span.icon { color: var(--cyan); font-size: 11px; width: 14px; }
+  .contact-item a { color: var(--muted); text-decoration: none; }
   .contact-item a:hover { color: var(--cyan); }
 
   /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, var(--cyan), transparent);
-    margin: 12px 0;
-  }
+  .divider { height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); margin: 12px 0; }
 
   /* ── SECTION ── */
   .section { margin-bottom: 14px; }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .section-title-th {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--cyan);
-  }
-
-  .section-title-en {
-    font-size: 10px;
-    font-weight: 400;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .section-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    margin-bottom: 2px;
-  }
+  .section-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .section-title-main { font-size: 14px; font-weight: 700; color: var(--cyan); }
+  .section-title-sub { font-size: 10px; font-weight: 400; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .section-line { flex: 1; height: 1px; background: var(--border); margin-bottom: 2px; }
 
   /* ── SUMMARY ── */
   .summary-text {
-    font-size: 11px;
-    color: #444;
-    line-height: 1.7;
-    padding-left: 4px;
-    border-left: 2px solid rgba(0,212,255,0.3);
-    padding-left: 10px;
+    font-size: 11px; color: #444; line-height: 1.7;
+    border-left: 2px solid rgba(0,212,255,0.3); padding-left: 10px;
   }
 
   /* ── SKILLS ── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 16px;
-  }
-
-  .skill-row {
-    font-size: 11px;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .skill-row::before {
-    content: '▸';
-    color: var(--cyan);
-    font-size: 9px;
-    flex-shrink: 0;
-  }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 16px; }
+  .skill-row { font-size: 11px; color: var(--text); display: flex; align-items: center; gap: 5px; }
+  .skill-row::before { content: '▸'; color: var(--cyan); font-size: 9px; flex-shrink: 0; }
 
   /* ── PROJECTS ── */
   .project { margin-bottom: 10px; }
+  .project-header-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+  .project-num { font-size: 11px; font-weight: 700; color: var(--cyan); min-width: 16px; }
+  .project-name-main { font-size: 12.5px; font-weight: 700; color: var(--text); }
+  .project-name-sub { font-size: 10.5px; color: var(--muted); font-weight: 400; }
+  .project-meta { font-size: 9.5px; color: var(--muted); margin-left: 22px; margin-bottom: 2px; display: flex; gap: 10px; }
+  .project-meta a { color: var(--cyan); text-decoration: none; }
+  .project-desc { font-size: 10.5px; color: #444; margin: 2px 0 3px 22px; line-height: 1.5; }
+  .tech-stack { font-size: 10px; color: var(--cyan); margin-left: 22px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .tech-tag { background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); border-radius: 3px; padding: 0px 5px; }
 
-  .project-header {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    margin-bottom: 2px;
-  }
-
-  .project-num {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--cyan);
-    min-width: 16px;
-  }
-
-  .project-name-th {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .project-name-en {
-    font-size: 10.5px;
-    color: var(--muted);
-    font-weight: 400;
-  }
-
-  .project-meta {
-    font-size: 9.5px;
-    color: var(--muted);
-    margin-left: 22px;
-    margin-bottom: 2px;
-    display: flex;
-    gap: 10px;
-  }
-
-  .project-meta a {
-    color: var(--cyan);
-    text-decoration: none;
-  }
-
-  .project-desc {
-    font-size: 10.5px;
-    color: #444;
-    margin: 2px 0 3px 22px;
-    line-height: 1.5;
-  }
-
-  .tech-stack {
-    font-size: 10px;
-    color: var(--cyan);
-    margin-left: 22px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  .tech-tag {
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 3px;
-    padding: 0px 5px;
-  }
-
-  /* ── INTERNSHIP / ACTIVITIES ── */
+  /* ── EXPERIENCE ── */
   .exp-item { margin-bottom: 10px; }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .exp-title-main { font-size: 12px; font-weight: 700; color: var(--text); }
+  .exp-title-sub { font-size: 10.5px; color: var(--muted); }
+  .exp-period { font-size: 10px; color: var(--cyan); white-space: nowrap; margin-left: 8px; }
+  .exp-desc { font-size: 10.5px; color: #444; margin-top: 3px; line-height: 1.6; padding-left: 10px; border-left: 2px solid rgba(0,212,255,0.2); }
 
-  .exp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .exp-title-th {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .exp-title-en {
-    font-size: 10.5px;
-    color: var(--muted);
-  }
-
-  .exp-period {
-    font-size: 10px;
-    color: var(--cyan);
-    white-space: nowrap;
-    margin-left: 8px;
-  }
-
-  .exp-desc {
-    font-size: 10.5px;
-    color: #444;
-    margin-top: 3px;
-    line-height: 1.6;
-    padding-left: 10px;
-    border-left: 2px solid rgba(0,212,255,0.2);
-  }
-
-  .exp-placeholder {
-    font-size: 10.5px;
-    color: #bbb;
-    font-style: italic;
-    border: 1px dashed #ddd;
-    border-radius: 4px;
-    padding: 6px 10px;
-  }
-
-  /* ── LANG & CERT ── */
-  .lang-cert-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 20px;
-  }
-
-  .lang-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 11px;
-  }
-
+  /* ── LANGUAGE PROFICIENCY ── */
+  .lang-cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  .lang-item { display: flex; align-items: center; justify-content: space-between; font-size: 11px; }
   .lang-name { color: var(--text); font-weight: 600; }
-  .lang-level {
-    font-size: 10px;
-    color: var(--cyan);
-    background: rgba(0,212,255,0.08);
-    border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 3px;
-    padding: 1px 6px;
-  }
+  .lang-level { font-size: 10px; color: var(--cyan); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2); border-radius: 3px; padding: 1px 6px; }
 
   /* ── EDUCATION ── */
   .edu-item { margin-bottom: 10px; }
-
-  .edu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .edu-degree-th {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text);
-  }
-
-  .edu-degree-en {
-    font-size: 10.5px;
-    color: var(--muted);
-  }
-
-  .edu-gpa {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--cyan);
-    white-space: nowrap;
-  }
-
-  .edu-detail {
-    font-size: 10.5px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+  .edu-header { display: flex; justify-content: space-between; align-items: flex-start; }
+  .edu-degree-main { font-size: 12px; font-weight: 700; color: var(--text); }
+  .edu-degree-sub { font-size: 10.5px; color: var(--muted); }
+  .edu-gpa { font-size: 11px; font-weight: 700; color: var(--cyan); white-space: nowrap; }
+  .edu-detail { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
 
   /* ── FOOTER ── */
-  .cv-footer {
-    margin-top: 16px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-date {
-    font-size: 9px;
-    color: #bbb;
-  }
-
-  .footer-brand {
-    font-size: 9px;
-    color: #bbb;
-  }
+  .cv-footer { margin-top: 16px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .footer-date { font-size: 9px; color: #bbb; }
+  .footer-brand { font-size: 9px; color: #bbb; }
 
   /* ── PRINT ── */
   @media print {
     body { background: white; padding: 0; }
     .toolbar { display: none; }
-    .page {
-      box-shadow: none;
-      width: 100%;
-      min-height: unset;
-      padding: 15mm 18mm;
-    }
+    .lang-badge { border: 1px solid var(--cyan); }
+    .page { box-shadow: none; width: 100%; min-height: unset; padding: 15mm 18mm; }
     .page::before { display: none; }
     a { color: var(--muted) !important; }
     .photo-wrap { border-style: solid; }
@@ -468,64 +237,60 @@
 </head>
 <body>
 
+<!-- ── TOOLBAR ── -->
 <div class="toolbar no-print">
-  <button class="btn-print" onclick="window.print()">
-    🖨️ พิมพ์ / บันทึก PDF
-  </button>
+  <div style="font-size:12px;color:#888;font-family:'Sarabun',sans-serif;">
+    <span id="toolbar-hint">เลือกภาษาสำหรับ CV :</span>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn-lang" id="btnLang" onclick="toggleCVLang()">
+      <span id="langFlagBtn">🇬🇧</span>
+      <span id="langLabelBtn">Switch to English</span>
+    </button>
+    <button class="btn-print" onclick="window.print()">
+      🖨️ <span id="printLabel">พิมพ์ / บันทึก PDF</span>
+    </button>
+  </div>
 </div>
 
-<div class="page">
+<!-- ── A4 PAGE ── -->
+<div class="page" id="cvPage">
 
-  <!-- HEADER -->
+  <!-- Language badge (แสดงบน CV เวลาพิมพ์) -->
+  <div class="lang-badge" id="langBadge">TH</div>
+
+  <!-- ── HEADER ── -->
   <div class="header">
-
-    <!-- Photo -->
     <div class="photo-wrap" title="คลิกเพื่ออัปโหลดรูปภาพ">
       <img id="photo-preview" src="" alt="profile photo">
       <div class="photo-icon">📷</div>
-      <div class="photo-placeholder-text">คลิกเพื่อ<br>ใส่รูป</div>
+      <div class="photo-placeholder-text" id="photoHint">คลิกเพื่อ<br>ใส่รูป</div>
       <input type="file" class="photo-input" accept="image/*" id="photo-input">
     </div>
-
     <div class="header-info">
-      <div class="name">อภิชิต เปลี่ยนกลาง</div>
-      <div class="name-en">Apichit Plueangklang</div>
+      <div class="name" id="cvName">อภิชิต เปลื้องกลาง</div>
+      <div class="name-sub" id="cvNameSub">Apichit Plueangklang</div>
       <div class="job-title">Frontend Developer</div>
       <div class="contact-grid">
-        <div class="contact-item">
-          <span class="icon">✉</span>
-          <a href="mailto:apichit.puang@gmail.com">apichit.puang@gmail.com</a>
-        </div>
-        <div class="contact-item">
-          <span class="icon">☎</span>
-          096-395-1661
-        </div>
-        <div class="contact-item">
-          <span class="icon">⌥</span>
-          <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a>
-        </div>
-        <div class="contact-item">
-          <span class="icon">in</span>
-          <a href="https://www.linkedin.com/in/apichit-pulangklang-5ba726401/" target="_blank">linkedin.com/in/apichit-plueangklang</a>
-        </div>
-        <div class="contact-item">
-          <span class="icon">🌐</span>
-          <a href="https://apichit.dev" target="_blank">apichit.dev</a>
-        </div>
+        <div class="contact-item"><span class="icon">✉</span><a href="mailto:apichit.puang@gmail.com">apichit.puang@gmail.com</a></div>
+        <div class="contact-item"><span class="icon">☎</span>096-395-1661</div>
+        <div class="contact-item"><span class="icon">⌥</span><a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></div>
+        <div class="contact-item"><span class="icon">in</span><a href="https://www.linkedin.com/in/apichit-pulangklang-5ba726401/" target="_blank">linkedin.com/in/apichit-plueangklang</a></div>
+        <div class="contact-item"><span class="icon">🌐</span><a href="https://apichit.dev" target="_blank">apichit.dev</a></div>
       </div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- SUMMARY -->
+  <!-- ── SUMMARY ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">เกี่ยวกับฉัน</span>
-      <span class="section-title-en">Summary</span>
+      <span class="section-title-main" id="sec-summary-main">เกี่ยวกับฉัน</span>
+      <span class="section-title-sub" id="sec-summary-sub">Summary</span>
       <div class="section-line"></div>
     </div>
-    <div class="summary-text">
+    <div class="summary-text" id="summary-body">
       บัณฑิตใหม่ด้านวิทยาการคอมพิวเตอร์ เกรดเกียรตินิยม GPA 3.83 มีความสนใจและความถนัดด้าน Frontend Development
       โดยเฉพาะ React และ JavaScript มีประสบการณ์สร้างโปรเจกต์จริงตั้งแต่ระบบจัดการสต็อก ระบบเงินเดือน
       ไปจนถึงระบบติดตามสุขภาพที่เชื่อมต่อ API จริง มุ่งมั่นพัฒนาตัวเองอย่างต่อเนื่อง และพร้อมเรียนรู้เทคโนโลยีใหม่ในสภาพแวดล้อมการทำงานจริง
@@ -534,11 +299,11 @@
 
   <div class="divider"></div>
 
-  <!-- SKILLS -->
+  <!-- ── SKILLS ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">ทักษะ</span>
-      <span class="section-title-en">Skills</span>
+      <span class="section-title-main" id="sec-skills-main">ทักษะ</span>
+      <span class="section-title-sub" id="sec-skills-sub">Skills</span>
       <div class="section-line"></div>
     </div>
     <div class="skills-grid">
@@ -552,94 +317,90 @@
 
   <div class="divider"></div>
 
-  <!-- PROJECTS -->
+  <!-- ── PROJECTS ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">โปรเจกต์</span>
-      <span class="section-title-en">Projects</span>
+      <span class="section-title-main" id="sec-projects-main">โปรเจกต์</span>
+      <span class="section-title-sub" id="sec-projects-sub">Projects</span>
       <div class="section-line"></div>
     </div>
 
+    <!-- Project 1 -->
     <div class="project">
-      <div class="project-header">
+      <div class="project-header-row">
         <span class="project-num">01.</span>
-        <span class="project-name-th">ระบบจัดการสต็อกอะไหล่</span>
-        <span class="project-name-en">— Stock Management System</span>
+        <span class="project-name-main" id="p1-name-main">ระบบจัดการสต็อกอะไหล่</span>
+        <span class="project-name-sub" id="p1-name-sub">— Stock Management System</span>
       </div>
       <div class="project-meta">
         <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
       </div>
-      <div class="project-desc">ระบบจัดการสต็อกอะไหล่รถยนต์ รองรับการสแกน QR Code และเชื่อมต่อ Lazada API สำหรับตรวจสอบราคาและสินค้าแบบ Realtime</div>
+      <div class="project-desc" id="p1-desc">
+        ระบบจัดการสต็อกอะไหล่รถยนต์ รองรับการสแกน QR Code และเชื่อมต่อ Lazada API สำหรับตรวจสอบราคาและสินค้าแบบ Realtime
+      </div>
       <div class="tech-stack">
-        <span class="tech-tag">React Vite</span>
-        <span class="tech-tag">MySQL</span>
-        <span class="tech-tag">Supabase</span>
-        <span class="tech-tag">LINE API</span>
-        <span class="tech-tag">QR Code</span>
-        <span class="tech-tag">Lazada API</span>
+        <span class="tech-tag">React Vite</span><span class="tech-tag">MySQL</span><span class="tech-tag">Supabase</span>
+        <span class="tech-tag">LINE API</span><span class="tech-tag">QR Code</span><span class="tech-tag">Lazada API</span>
       </div>
     </div>
 
+    <!-- Project 2 -->
     <div class="project">
-      <div class="project-header">
+      <div class="project-header-row">
         <span class="project-num">02.</span>
-        <span class="project-name-th">ระบบจัดการเงินเดือน</span>
-        <span class="project-name-en">— Payroll Management System</span>
+        <span class="project-name-main" id="p2-name-main">ระบบจัดการเงินเดือน</span>
+        <span class="project-name-sub" id="p2-name-sub">— Payroll Management System</span>
       </div>
       <div class="project-meta">
         <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
       </div>
-      <div class="project-desc">ระบบจัดการเงินเดือนพนักงาน รองรับการอัปโหลดไฟล์ Excel คำนวณเงินเดือนอัตโนมัติ พร้อมสร้างสลิปเงินเดือนและ Export PDF</div>
+      <div class="project-desc" id="p2-desc">
+        ระบบจัดการเงินเดือนพนักงาน รองรับการอัปโหลดไฟล์ Excel คำนวณเงินเดือนอัตโนมัติ พร้อมสร้างสลิปเงินเดือนและ Export PDF
+      </div>
       <div class="tech-stack">
-        <span class="tech-tag">React Vite</span>
-        <span class="tech-tag">TailwindCSS</span>
-        <span class="tech-tag">React</span>
-        <span class="tech-tag">XLSX</span>
-        <span class="tech-tag">Supabase</span>
-        <span class="tech-tag">PostgreSQL</span>
+        <span class="tech-tag">React Vite</span><span class="tech-tag">TailwindCSS</span><span class="tech-tag">React</span>
+        <span class="tech-tag">XLSX</span><span class="tech-tag">Supabase</span><span class="tech-tag">PostgreSQL</span>
       </div>
     </div>
 
+    <!-- Project 3 -->
     <div class="project">
-      <div class="project-header">
+      <div class="project-header-row">
         <span class="project-num">03.</span>
-        <span class="project-name-th">ระบบดูแลผู้สูงอายุ</span>
-        <span class="project-name-en">— Elderly Health Monitoring System</span>
+        <span class="project-name-main" id="p3-name-main">ระบบดูแลผู้สูงอายุ</span>
+        <span class="project-name-sub" id="p3-name-sub">— Elderly Health Monitoring System</span>
       </div>
       <div class="project-meta">
         <span>🔗 <a href="https://github.com/golfApichitGIT" target="_blank">github.com/golfApichitGIT</a></span>
       </div>
-      <div class="project-desc">ระบบติดตามสุขภาพผู้สูงอายุ บันทึกความดัน น้ำตาล ชีพจร เชื่อมต่อ LINE Bot แจ้งเตือนญาติ และติดตามตำแหน่ง GPS แบบ Realtime</div>
+      <div class="project-desc" id="p3-desc">
+        ระบบติดตามสุขภาพผู้สูงอายุ บันทึกความดัน น้ำตาล ชีพจร เชื่อมต่อ LINE Bot แจ้งเตือนญาติ และติดตามตำแหน่ง GPS แบบ Realtime
+      </div>
       <div class="tech-stack">
-        <span class="tech-tag">PHP</span>
-        <span class="tech-tag">MySQL</span>
-        <span class="tech-tag">Bootstrap 5</span>
-        <span class="tech-tag">Chart.js</span>
-        <span class="tech-tag">LINE API</span>
-        <span class="tech-tag">GPS Tracking</span>
+        <span class="tech-tag">PHP</span><span class="tech-tag">MySQL</span><span class="tech-tag">Bootstrap 5</span>
+        <span class="tech-tag">Chart.js</span><span class="tech-tag">LINE API</span><span class="tech-tag">GPS Tracking</span>
       </div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- INTERNSHIP / ACTIVITIES -->
+  <!-- ── EXPERIENCE ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">ประสบการณ์ / กิจกรรม</span>
-      <span class="section-title-en">Experience &amp; Activities</span>
+      <span class="section-title-main" id="sec-exp-main">ประสบการณ์</span>
+      <span class="section-title-sub" id="sec-exp-sub">Experience &amp; Activities</span>
       <div class="section-line"></div>
     </div>
-
     <div class="exp-item">
       <div class="exp-header">
         <div>
-          <div class="exp-title-th">นักศึกษาฝึกงาน — บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด</div>
-          <div class="exp-title-en">Internship — Acacia IT Services (Thailand) Co., Ltd. &nbsp;·&nbsp; บริษัทเอกชน</div>
+          <div class="exp-title-main" id="exp1-title-main">นักศึกษาฝึกงาน — บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด</div>
+          <div class="exp-title-sub" id="exp1-title-sub">Internship — Acacia IT Services (Thailand) Co., Ltd. &nbsp;·&nbsp; Private Company</div>
         </div>
-        <div class="exp-period">2568 — ปัจจุบัน</div>
+        <div class="exp-period" id="exp1-period">2568 — ปัจจุบัน</div>
       </div>
-      <div class="exp-desc">
+      <div class="exp-desc" id="exp1-desc">
         ออกแบบและพัฒนาระบบเงินเดือน (Payroll System) ด้วย React และ Node.js · พัฒนา UI/UX ด้วย Responsive Design · ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ API และจัดการข้อมูล
       </div>
     </div>
@@ -647,20 +408,20 @@
 
   <div class="divider"></div>
 
-  <!-- LANGUAGE -->
+  <!-- ── LANGUAGE PROFICIENCY ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">ภาษา</span>
-      <span class="section-title-en">Languages</span>
+      <span class="section-title-main" id="sec-lang-main">ภาษา</span>
+      <span class="section-title-sub" id="sec-lang-sub">Languages</span>
       <div class="section-line"></div>
     </div>
     <div class="lang-cert-grid">
       <div class="lang-item">
-        <span class="lang-name">🇹🇭 ภาษาไทย</span>
-        <span class="lang-level">เจ้าของภาษา</span>
+        <span class="lang-name" id="lang1-name">🇹🇭 ภาษาไทย</span>
+        <span class="lang-level" id="lang1-level">เจ้าของภาษา</span>
       </div>
       <div class="lang-item">
-        <span class="lang-name">🇬🇧 ภาษาอังกฤษ</span>
+        <span class="lang-name" id="lang2-name">🇬🇧 ภาษาอังกฤษ</span>
         <span class="lang-level">A1</span>
       </div>
     </div>
@@ -668,20 +429,20 @@
 
   <div class="divider"></div>
 
-  <!-- EDUCATION -->
+  <!-- ── EDUCATION ── -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title-th">การศึกษา</span>
-      <span class="section-title-en">Education</span>
+      <span class="section-title-main" id="sec-edu-main">การศึกษา</span>
+      <span class="section-title-sub" id="sec-edu-sub">Education</span>
       <div class="section-line"></div>
     </div>
 
     <div class="edu-item">
       <div class="edu-header">
         <div>
-          <div class="edu-degree-th">ปริญญาตรี วิทยาศาสตรบัณฑิต</div>
-          <div class="edu-degree-en">มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน</div>
-          <div class="edu-detail">สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล &nbsp;·&nbsp; ปีการศึกษา 2562–2565</div>
+          <div class="edu-degree-main" id="edu1-degree">ปริญญาตรี วิทยาศาสตรบัณฑิต</div>
+          <div class="edu-degree-sub" id="edu1-school">มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน</div>
+          <div class="edu-detail" id="edu1-detail">สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล &nbsp;·&nbsp; ปีการศึกษา 2562–2565</div>
         </div>
         <div class="edu-gpa">GPA 3.02</div>
       </div>
@@ -690,46 +451,258 @@
     <div class="edu-item">
       <div class="edu-header">
         <div>
-          <div class="edu-degree-th">ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</div>
-          <div class="edu-degree-en">วิทยาลัยเทคนิคนครราชสีมา</div>
-          <div class="edu-detail">สาขาคอมพิวเตอร์ธุรกิจ &nbsp;·&nbsp; ปีการศึกษา 2560–2562</div>
+          <div class="edu-degree-main" id="edu2-degree">ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)</div>
+          <div class="edu-degree-sub" id="edu2-school">วิทยาลัยเทคนิคนครราชสีมา</div>
+          <div class="edu-detail" id="edu2-detail">สาขาคอมพิวเตอร์ธุรกิจ &nbsp;·&nbsp; ปีการศึกษา 2560–2562</div>
         </div>
         <div class="edu-gpa">GPA 3.83</div>
       </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- ── FOOTER ── -->
   <div class="cv-footer">
     <div class="footer-date" id="gen-date"></div>
     <div class="footer-brand">Portfolio: apichit.dev</div>
   </div>
 
-</div>
+</div><!-- .page -->
 
+<!-- ══════════════════════════════════════════
+     CV i18n Engine
+     ══════════════════════════════════════════ -->
 <script>
-  // Generate date
-  const d = new Date();
-  document.getElementById('gen-date').textContent =
-    'สร้างเมื่อ ' + d.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' });
+/* ─────────────────────────────────────────
+   Translation data — TH / EN
+   ───────────────────────────────────────── */
+const cvTranslations = {
+  th: {
+    /* Page title */
+    pageTitle: 'CV — อภิชิต เปลื้องกลาง',
+    /* Toolbar */
+    toolbarHint: 'เลือกภาษาสำหรับ CV :',
+    langBtnFlag: '🇬🇧',
+    langBtnLabel: 'Switch to English',
+    printLabel: 'พิมพ์ / บันทึก PDF',
+    /* Lang badge */
+    langBadge: 'TH',
+    /* Photo hint */
+    photoHint: 'คลิกเพื่อ<br>ใส่รูป',
+    /* Header */
+    cvName: 'อภิชิต เปลื้องกลาง',
+    cvNameSub: 'Apichit Plueangklang',
+    /* Summary */
+    'sec-summary-main': 'เกี่ยวกับฉัน',
+    'sec-summary-sub': 'Summary',
+    'summary-body': 'บัณฑิตใหม่ด้านวิทยาการคอมพิวเตอร์ เกรดเกียรตินิยม GPA 3.83 มีความสนใจและความถนัดด้าน Frontend Development โดยเฉพาะ React และ JavaScript มีประสบการณ์สร้างโปรเจกต์จริงตั้งแต่ระบบจัดการสต็อก ระบบเงินเดือน ไปจนถึงระบบติดตามสุขภาพที่เชื่อมต่อ API จริง มุ่งมั่นพัฒนาตัวเองอย่างต่อเนื่อง และพร้อมเรียนรู้เทคโนโลยีใหม่ในสภาพแวดล้อมการทำงานจริง',
+    /* Skills */
+    'sec-skills-main': 'ทักษะ',
+    'sec-skills-sub': 'Skills',
+    /* Projects */
+    'sec-projects-main': 'โปรเจกต์',
+    'sec-projects-sub': 'Projects',
+    'p1-name-main': 'ระบบจัดการสต็อกอะไหล่',
+    'p1-name-sub': '— Stock Management System',
+    'p1-desc': 'ระบบจัดการสต็อกอะไหล่รถยนต์ รองรับการสแกน QR Code และเชื่อมต่อ Lazada API สำหรับตรวจสอบราคาและสินค้าแบบ Realtime',
+    'p2-name-main': 'ระบบจัดการเงินเดือน',
+    'p2-name-sub': '— Payroll Management System',
+    'p2-desc': 'ระบบจัดการเงินเดือนพนักงาน รองรับการอัปโหลดไฟล์ Excel คำนวณเงินเดือนอัตโนมัติ พร้อมสร้างสลิปเงินเดือนและ Export PDF',
+    'p3-name-main': 'ระบบดูแลผู้สูงอายุ',
+    'p3-name-sub': '— Elderly Health Monitoring System',
+    'p3-desc': 'ระบบติดตามสุขภาพผู้สูงอายุ บันทึกความดัน น้ำตาล ชีพจร เชื่อมต่อ LINE Bot แจ้งเตือนญาติ และติดตามตำแหน่ง GPS แบบ Realtime',
+    /* Experience */
+    'sec-exp-main': 'ประสบการณ์',
+    'sec-exp-sub': 'Experience & Activities',
+    'exp1-title-main': 'นักศึกษาฝึกงาน — บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด',
+    'exp1-title-sub': 'Internship — Acacia IT Services (Thailand) Co., Ltd. \u00a0·\u00a0 บริษัทเอกชน',
+    'exp1-period': '2568 — ปัจจุบัน',
+    'exp1-desc': 'ออกแบบและพัฒนาระบบเงินเดือน (Payroll System) ด้วย React และ Node.js · พัฒนา UI/UX ด้วย Responsive Design · ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ API และจัดการข้อมูล',
+    /* Languages */
+    'sec-lang-main': 'ภาษา',
+    'sec-lang-sub': 'Languages',
+    'lang1-name': '🇹🇭 ภาษาไทย',
+    'lang1-level': 'เจ้าของภาษา',
+    'lang2-name': '🇬🇧 ภาษาอังกฤษ',
+    /* Education */
+    'sec-edu-main': 'การศึกษา',
+    'sec-edu-sub': 'Education',
+    'edu1-degree': 'ปริญญาตรี วิทยาศาสตรบัณฑิต',
+    'edu1-school': 'มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน',
+    'edu1-detail': 'สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล \u00a0·\u00a0 ปีการศึกษา 2562–2565',
+    'edu2-degree': 'ประกาศนียบัตรวิชาชีพชั้นสูง (ปวส.)',
+    'edu2-school': 'วิทยาลัยเทคนิคนครราชสีมา',
+    'edu2-detail': 'สาขาคอมพิวเตอร์ธุรกิจ \u00a0·\u00a0 ปีการศึกษา 2560–2562',
+    /* Footer date */
+    datePrefix: 'สร้างเมื่อ',
+    dateLocale: 'th-TH',
+  },
 
-  // Photo upload preview
-  const input = document.getElementById('photo-input');
-  const preview = document.getElementById('photo-preview');
-  const wrap = preview.closest('.photo-wrap');
+  en: {
+    /* Page title */
+    pageTitle: 'CV — Apichit Plueangklang',
+    /* Toolbar */
+    toolbarHint: 'Select CV language:',
+    langBtnFlag: '🇹🇭',
+    langBtnLabel: 'Switch to Thai',
+    printLabel: 'Print / Save PDF',
+    /* Lang badge */
+    langBadge: 'EN',
+    /* Photo hint */
+    photoHint: 'Click to<br>upload photo',
+    /* Header */
+    cvName: 'Apichit Plueangklang',
+    cvNameSub: 'อภิชิต เปลื้องกลาง',
+    /* Summary */
+    'sec-summary-main': 'Summary',
+    'sec-summary-sub': 'About Me',
+    'summary-body': 'A results-driven Frontend Developer with a Bachelor of Science in Information Systems and Digital Business Innovation (GPA 3.02; Vocational GPA 3.83). Specialises in React and JavaScript with demonstrated experience delivering production-ready applications, including a stock management system, a payroll platform, and an elderly health monitoring system with live API integrations. Committed to continuous professional development and eager to contribute in a collaborative team environment.',
+    /* Skills */
+    'sec-skills-main': 'Skills',
+    'sec-skills-sub': 'Technical Skills',
+    /* Projects */
+    'sec-projects-main': 'Projects',
+    'sec-projects-sub': 'Selected Work',
+    'p1-name-main': 'Electronic Parts Stock Management System',
+    'p1-name-sub': '— Inventory & E-Commerce Integration',
+    'p1-desc': 'An automotive parts inventory management system supporting QR Code scanning and Lazada API integration for real-time pricing and stock verification.',
+    'p2-name-main': 'Payroll Management System',
+    'p2-name-sub': '— Web Application',
+    'p2-desc': 'A web-based payroll management system enabling Excel file uploads, automated salary calculation, payslip generation, and PDF export for both administrators and employees.',
+    'p3-name-main': 'Elderly Health Monitoring System',
+    'p3-name-sub': '— Care Management Platform',
+    'p3-desc': 'A comprehensive senior care platform recording vital health metrics (blood pressure, blood sugar, pulse). Integrated with LINE Bot for automated family notifications and real-time GPS location tracking.',
+    /* Experience */
+    'sec-exp-main': 'Experience',
+    'sec-exp-sub': 'Work & Activities',
+    'exp1-title-main': 'Junior Frontend Developer (Internship) — Acacia I.T. Services (Thailand) Co., Ltd.',
+    'exp1-title-sub': 'Internship · Private Company',
+    'exp1-period': '2025 — Present',
+    'exp1-desc': 'Designed and developed a Payroll Management System using React and Node.js. · Implemented responsive UI/UX with a focus on usability and accessibility. · Collaborated with the Backend development team to integrate RESTful APIs and manage application data.',
+    /* Languages */
+    'sec-lang-main': 'Languages',
+    'sec-lang-sub': 'Proficiency',
+    'lang1-name': '🇹🇭 Thai',
+    'lang1-level': 'Native Speaker',
+    'lang2-name': '🇬🇧 English',
+    /* Education */
+    'sec-edu-main': 'Education',
+    'sec-edu-sub': 'Academic Background',
+    'edu1-degree': 'Bachelor of Science',
+    'edu1-school': 'Rajamangala University of Technology Isan',
+    'edu1-detail': 'Information Systems & Digital Business Innovation · 2019–2022',
+    'edu2-degree': 'Vocational Certificate',
+    'edu2-school': 'Nakhon Ratchasima Technical College',
+    'edu2-detail': 'Business Computer · 2017–2019',
+    /* Footer date */
+    datePrefix: 'Generated on',
+    dateLocale: 'en-GB',
+  }
+};
 
-  input.addEventListener('change', function() {
-    const file = this.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      preview.style.display = 'block';
-      wrap.querySelector('.photo-icon').style.display = 'none';
-      wrap.querySelector('.photo-placeholder-text').style.display = 'none';
-    };
-    reader.readAsDataURL(file);
-  });
+/* ─────────────────────────────────────────
+   State
+   ───────────────────────────────────────── */
+let cvLang = localStorage.getItem('cvLang') || 'th';
+
+/* ─────────────────────────────────────────
+   Apply translations
+   ───────────────────────────────────────── */
+function applyCV(lang) {
+  const t = cvTranslations[lang];
+  const page = document.getElementById('cvPage');
+
+  /* Fade out */
+  page.classList.add('switching');
+
+  setTimeout(() => {
+    /* Page title */
+    document.title = t.pageTitle;
+    document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+
+    /* Toolbar */
+    document.getElementById('toolbar-hint').textContent = t.toolbarHint;
+    document.getElementById('langFlagBtn').textContent = t.langBtnFlag;
+    document.getElementById('langLabelBtn').textContent = t.langBtnLabel;
+    document.getElementById('printLabel').textContent = t.printLabel;
+
+    /* Lang badge */
+    document.getElementById('langBadge').textContent = t.langBadge;
+
+    /* Photo hint */
+    document.getElementById('photoHint').innerHTML = t.photoHint;
+
+    /* Header */
+    document.getElementById('cvName').textContent = t.cvName;
+    document.getElementById('cvNameSub').textContent = t.cvNameSub;
+
+    /* All ID-based elements */
+    const ids = [
+      'sec-summary-main','sec-summary-sub','summary-body',
+      'sec-skills-main','sec-skills-sub',
+      'sec-projects-main','sec-projects-sub',
+      'p1-name-main','p1-name-sub','p1-desc',
+      'p2-name-main','p2-name-sub','p2-desc',
+      'p3-name-main','p3-name-sub','p3-desc',
+      'sec-exp-main','sec-exp-sub',
+      'exp1-title-main','exp1-title-sub','exp1-period','exp1-desc',
+      'sec-lang-main','sec-lang-sub','lang1-name','lang1-level','lang2-name',
+      'sec-edu-main','sec-edu-sub',
+      'edu1-degree','edu1-school','edu1-detail',
+      'edu2-degree','edu2-school','edu2-detail',
+    ];
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && t[id] !== undefined) {
+        el.textContent = t[id];
+      }
+    });
+
+    /* Footer date */
+    const d = new Date();
+    document.getElementById('gen-date').textContent =
+      t.datePrefix + ' ' + d.toLocaleDateString(t.dateLocale, { year: 'numeric', month: 'long', day: 'numeric' });
+
+    /* Fade in */
+    page.classList.remove('switching');
+  }, 150);
+}
+
+/* ─────────────────────────────────────────
+   Toggle
+   ───────────────────────────────────────── */
+function toggleCVLang() {
+  cvLang = cvLang === 'th' ? 'en' : 'th';
+  localStorage.setItem('cvLang', cvLang);
+  applyCV(cvLang);
+}
+
+/* ─────────────────────────────────────────
+   Photo upload preview
+   ───────────────────────────────────────── */
+const input = document.getElementById('photo-input');
+const preview = document.getElementById('photo-preview');
+const wrap = preview.closest('.photo-wrap');
+
+input.addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    wrap.querySelector('.photo-icon').style.display = 'none';
+    wrap.querySelector('#photoHint').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+});
+
+/* ─────────────────────────────────────────
+   Init
+   ───────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  applyCV(cvLang);
+});
 </script>
 </body>
 </html>

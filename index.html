@@ -3,48 +3,811 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apichit Plueangklang — Frontend Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Apichit Plueangklang - Frontend Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/nickthaweerat/jspdf-thai-font/THSarabunNew.js"></script>
-<link rel="stylesheet" href="style.css">
-
 <style>
-/* ── Language Toggle Button ── */
-.lang-toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: 1px solid rgba(0, 212, 255, 0.4);
-  border-radius: 20px;
-  padding: 4px 12px;
-  cursor: pointer;
-  font-family: var(--mono, 'Share Tech Mono', monospace);
-  font-size: 0.75rem;
-  color: var(--accent, #00d4ff);
-  transition: all 0.25s ease;
-  white-space: nowrap;
-  letter-spacing: 0.05em;
-}
-.lang-toggle:hover {
-  background: rgba(0, 212, 255, 0.1);
-  border-color: var(--accent, #00d4ff);
-  box-shadow: 0 0 12px rgba(0, 212, 255, 0.25);
-}
-.lang-toggle .lang-flag { font-size: 1rem; }
-.lang-toggle .lang-label { font-weight: 600; }
+  *, *::before, *::after { box-sizing: border-box; }
 
-/* Transition สำหรับ element ที่เปลี่ยนภาษา */
-[data-th], [data-en] {
-  transition: opacity 0.15s ease;
-}
-.lang-switching [data-th],
-.lang-switching [data-en] {
-  opacity: 0;
-}
+  :root {
+    --color-bg: #0a0a0f;
+    --color-bg-2: #0f111a;
+    --color-surface: rgba(255, 255, 255, .065);
+    --color-surface-strong: rgba(255, 255, 255, .095);
+    --color-accent: #7c8cff;
+    --color-accent-2: #22d3ee;
+    --color-text: #f7f8ff;
+    --color-muted: #9ca3b5;
+    --color-line: rgba(255, 255, 255, .12);
+    --radius-card: 8px;
+    --transition: 220ms ease;
+    --shadow-card: 0 24px 80px rgba(0, 0, 0, .35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 18% 8%, rgba(124, 140, 255, .22), transparent 26rem),
+      radial-gradient(circle at 86% 22%, rgba(34, 211, 238, .16), transparent 24rem),
+      linear-gradient(180deg, #0a0a0f 0%, #0f111a 48%, #090a0f 100%);
+    color: var(--color-text);
+    font-family: "Inter", "Noto Sans Thai", "Tahoma", sans-serif;
+    font-weight: 400;
+    letter-spacing: 0;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .24;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+    z-index: -2;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; }
+
+  #canvas-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: .62;
+  }
+
+  .content { position: relative; z-index: 1; }
+
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 68px;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--color-line);
+    background: rgba(10, 10, 15, .72);
+    backdrop-filter: blur(18px);
+    transition: background var(--transition), box-shadow var(--transition);
+  }
+
+  .nav-logo {
+    font-size: .88rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    color: #fff;
+  }
+
+  .nav-logo span {
+    color: var(--color-accent-2);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-links a,
+  .lang-toggle,
+  .nav-cv-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0 12px;
+    color: var(--color-muted);
+    background: transparent;
+    font-size: .86rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition), border-color var(--transition), transform var(--transition);
+  }
+
+  .nav-links a:hover,
+  .nav-links a.active,
+  .lang-toggle:hover {
+    color: #fff;
+    background: rgba(255,255,255,.07);
+    border-color: var(--color-line);
+  }
+
+  .nav-cv-btn {
+    margin-left: 4px;
+    color: #061018;
+    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+    border: 0;
+    font-weight: 800;
+  }
+
+  .nav-cv-btn:hover,
+  .btn-primary:hover,
+  .btn-outline:hover,
+  .project-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .nav-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .lang-toggle { gap: 6px; }
+
+  section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+
+  section.in-view,
+  #hero {
+    opacity: 1;
+    transform: none;
+  }
+
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 112px 20px 64px;
+  }
+
+  .hero-inner {
+    width: min(1120px, 100%);
+    display: grid;
+    gap: 36px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .eyebrow,
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-accent-2);
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before,
+  .section-label::before {
+    content: "";
+    width: 26px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .hero-name {
+    margin: 16px 0 0;
+    max-width: 980px;
+    font-size: clamp(3.3rem, 10vw, 8.5rem);
+    line-height: .9;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .hero-name span {
+    display: block;
+    color: transparent;
+    background: linear-gradient(135deg, #fff 8%, #c7d2fe 48%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-typed {
+    min-height: 34px;
+    margin-top: 20px;
+    color: #d7dcff;
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    font-weight: 600;
+  }
+
+  .cursor {
+    color: var(--color-accent-2);
+    animation: blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-desc {
+    max-width: 720px;
+    margin: 18px auto 0;
+    color: var(--color-muted);
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    line-height: 1.75;
+  }
+
+  .hero-btns {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .btn-primary,
+  .btn-outline,
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: 0 18px;
+    font-size: .95rem;
+    font-weight: 800;
+    transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  }
+
+  .btn-primary {
+    color: #07111a;
+    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+  }
+
+  .btn-outline {
+    color: #fff;
+    border: 1px solid var(--color-line);
+    background: rgba(255,255,255,.055);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    color: rgba(255,255,255,.46);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+  }
+
+  .section-inner {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 86px 0;
+  }
+
+  .section-title {
+    margin: 12px 0 26px;
+    font-size: clamp(2rem, 5vw, 3.7rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .section-title span {
+    color: transparent;
+    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .about-grid,
+  .contact-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .about-text {
+    padding: 26px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: linear-gradient(180deg, var(--color-surface-strong), rgba(255,255,255,.035));
+    box-shadow: var(--shadow-card);
+  }
+
+  .about-text p {
+    margin: 0;
+    color: #c4cad8;
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
+  .about-text p + p { margin-top: 14px; }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-box,
+  .skill-group,
+  .project-card,
+  .timeline-item,
+  .contact-form,
+  .contact-info {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: linear-gradient(180deg, var(--color-surface), rgba(255,255,255,.035));
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-box {
+    min-height: 118px;
+    display: grid;
+    align-content: center;
+    gap: 8px;
+    padding: 20px;
+  }
+
+  .stat-num {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+  }
+
+  .stat-label {
+    color: var(--color-muted);
+    font-size: .9rem;
+    font-weight: 600;
+  }
+
+  .projects-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  .project-card {
+    overflow: hidden;
+  }
+
+  .project-header {
+    display: grid;
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .gallery-wrap {
+    border-bottom: 1px solid var(--color-line);
+    background: rgba(0,0,0,.22);
+  }
+
+  .gallery-main {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    cursor: zoom-in;
+    background: #05070b;
+  }
+
+  .gallery-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity .2s ease, transform .4s ease;
+  }
+
+  .gallery-caption {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 8px;
+    background: rgba(5, 7, 11, .72);
+    backdrop-filter: blur(12px);
+  }
+
+  .gallery-caption-title {
+    color: #fff;
+    font-size: .92rem;
+    font-weight: 800;
+  }
+
+  .gallery-caption-sub {
+    margin-top: 3px;
+    color: var(--color-muted);
+    font-size: .78rem;
+    line-height: 1.35;
+  }
+
+  .gallery-thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .thumb {
+    aspect-ratio: 16 / 10;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: .58;
+    transition: opacity var(--transition), border-color var(--transition), transform var(--transition);
+  }
+
+  .thumb:hover,
+  .thumb.active {
+    opacity: 1;
+    border-color: var(--color-accent-2);
+    transform: translateY(-1px);
+  }
+
+  .thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-info { display: grid; gap: 10px; }
+
+  .project-kicker {
+    color: var(--color-accent-2);
+    font-size: .76rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .project-title {
+    color: #fff;
+    font-size: clamp(1.3rem, 2.8vw, 2rem);
+    line-height: 1.12;
+    font-weight: 800;
+  }
+
+  .project-desc {
+    margin: 0;
+    color: #c4cad8;
+    line-height: 1.65;
+  }
+
+  .project-tech,
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    border: 1px solid rgba(124, 140, 255, .28);
+    border-radius: 999px;
+    padding: 0 10px;
+    color: #dce1ff;
+    background: rgba(124, 140, 255, .12);
+    font-size: .82rem;
+    font-weight: 700;
+  }
+
+  .project-link {
+    justify-self: start;
+    min-height: 40px;
+    border: 1px solid var(--color-line);
+    color: #fff;
+    background: rgba(255,255,255,.06);
+  }
+
+  .skills-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .skill-group {
+    padding: 20px;
+  }
+
+  .skill-heading {
+    margin: 0 0 14px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 800;
+  }
+
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 18px;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 24px;
+  }
+
+  .timeline-period {
+    color: var(--color-accent-2);
+    font-size: .82rem;
+    font-weight: 800;
+  }
+
+  .timeline-title {
+    margin-top: 8px;
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+
+  .timeline-place {
+    margin-top: 5px;
+    color: #c4cad8;
+    font-weight: 600;
+  }
+
+  .timeline-desc {
+    margin: 14px 0 0;
+    padding-left: 18px;
+    color: var(--color-muted);
+    line-height: 1.65;
+  }
+
+  .timeline-desc li { margin: 6px 0; }
+
+  .education-strip {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .education-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: rgba(255,255,255,.04);
+  }
+
+  .education-item strong { color: #fff; }
+  .education-item span { color: var(--color-muted); font-size: .9rem; }
+
+  .contact-grid { grid-template-columns: 1fr; }
+
+  .contact-form,
+  .contact-info {
+    padding: 22px;
+  }
+
+  .contact-lead {
+    margin: -8px 0 22px;
+    max-width: 640px;
+    color: var(--color-muted);
+    line-height: 1.7;
+  }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-label {
+    display: block;
+    margin-bottom: 7px;
+    color: #dce1ff;
+    font-size: .82rem;
+    font-weight: 800;
+  }
+
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    padding: 13px 14px;
+    color: #fff;
+    outline: none;
+    background: rgba(255,255,255,.055);
+    transition: border-color var(--transition), background var(--transition);
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    border-color: var(--color-accent-2);
+    background: rgba(255,255,255,.08);
+  }
+
+  .form-textarea { resize: vertical; min-height: 136px; }
+
+  .contact-links {
+    display: grid;
+    gap: 10px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: rgba(255,255,255,.045);
+  }
+
+  .contact-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    color: #061018;
+    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+    font-weight: 800;
+  }
+
+  .contact-detail { min-width: 0; }
+  .contact-detail-label {
+    display: block;
+    color: var(--color-muted);
+    font-size: .74rem;
+    font-weight: 800;
+  }
+  .contact-detail-val {
+    display: block;
+    color: #fff;
+    overflow-wrap: anywhere;
+    font-size: .92rem;
+    font-weight: 600;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .social-link {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: rgba(255,255,255,.055);
+    color: #fff;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .social-link:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-2);
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0,0,0,.82);
+    backdrop-filter: blur(14px);
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-inner {
+    position: relative;
+    width: min(1120px, 100%);
+  }
+
+  .lightbox-inner img {
+    width: 100%;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid var(--color-line);
+    background: #05070b;
+  }
+
+  .lightbox-close,
+  .lightbox-nav {
+    position: absolute;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(255,255,255,.08);
+    cursor: pointer;
+  }
+
+  .lightbox-close {
+    top: -52px;
+    right: 0;
+    min-height: 38px;
+    padding: 0 14px;
+    font-weight: 800;
+  }
+
+  .lightbox-nav {
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    font-size: 2rem;
+  }
+
+  .lightbox-prev { left: -54px; }
+  .lightbox-next { right: -54px; }
+
+  footer {
+    border-top: 1px solid var(--color-line);
+    padding: 28px 20px;
+    color: var(--color-muted);
+    text-align: center;
+    font-size: .88rem;
+  }
+
+  [data-th], [data-en] { transition: opacity .15s ease; }
+  .lang-switching [data-th],
+  .lang-switching [data-en] { opacity: 0; }
+
+  @media (min-width: 768px) {
+    nav { padding: 0 34px; }
+    .about-grid { grid-template-columns: 1.25fr .75fr; align-items: stretch; }
+    .about-stats { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+    .project-header { min-height: 380px; grid-template-rows: auto 1fr; }
+    .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .contact-grid { grid-template-columns: 1.15fr .85fr; align-items: start; }
+  }
+
+  @media (min-width: 1024px) {
+    .project-header { padding: 20px; }
+    .scroll-hint { display: block; }
+  }
+
+  @media (max-width: 767px) {
+    .nav-toggle { display: grid; place-items: center; }
+    .nav-links {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 16px;
+      right: 16px;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 14px;
+      border: 1px solid var(--color-line);
+      border-radius: 12px;
+      background: rgba(10,10,15,.94);
+      backdrop-filter: blur(18px);
+    }
+    .nav-links.active { display: flex; }
+    .nav-links a,
+    .lang-toggle,
+    .nav-cv-btn { justify-content: flex-start; width: 100%; min-height: 42px; }
+    .about-stats { grid-template-columns: 1fr; }
+    .education-item { flex-direction: column; }
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+  }
 </style>
 </head>
 <body>
@@ -53,515 +816,280 @@
 
 <div class="content">
 <nav aria-label="Main navigation">
-  <div class="nav-logo">Portfolio</div>
+  <div class="nav-logo">Apichit<span>.</span>dev</div>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle mobile menu">☰</button>
   <div class="nav-links" id="navLinks">
     <a href="#about" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
-    <a href="#skills" data-th="ทักษะ" data-en="Skills">ทักษะ</a>
     <a href="#projects" data-th="โปรเจกต์" data-en="Projects">โปรเจกต์</a>
-    <a href="#education" data-th="การศึกษา" data-en="Education">การศึกษา</a>
+    <a href="#skills" data-th="ทักษะ" data-en="Skills">ทักษะ</a>
     <a href="#experience" data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
     <a href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
-    <button class="nav-cv-btn" onclick="generateCV()">📄 <span data-th="ดาวน์โหลด CV" data-en="Download CV">ดาวน์โหลด CV</span></button>
-    <!-- Language Toggle -->
+    <button class="nav-cv-btn" onclick="generateCV()"><span data-th="Download CV" data-en="Download CV">Download CV</span></button>
     <button class="lang-toggle" id="langToggle" onclick="toggleLang()" aria-label="Switch language">
-      <span class="lang-flag" id="langFlag">🇬🇧</span>
+      <span class="lang-flag" id="langFlag">↔</span>
       <span class="lang-label" id="langLabel">EN</span>
     </button>
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-inner">
-    <div class="hero-left">
-      <div class="hero-tag">// FRONTEND DEVELOPER</div>
-      <h1 class="hero-name glitch" data-text="Apichit Plueangklang">
-        <span>Apichit</span> Plueangklang
-      </h1>
+    <div class="hero-copy">
+      <div class="eyebrow">Frontend Developer</div>
+      <h1 class="hero-name"><span>Apichit</span><span>Plueangklang</span></h1>
       <div class="hero-typed"><span id="typed-text"></span><span class="cursor">|</span></div>
       <p class="hero-desc"
-         data-th="ตั้งแต่ยังเด็ก มีความสนใจในด้านคอมพิวเตอร์อย่างลึกซึ้ง ทั้งภาษาคอมพิวเตอร์และระบบปฏิบัติการ เป้าหมายคือการเป็นโปรแกรมเมอร์ที่มีความเชี่ยวชาญ"
-         data-en="With a lifelong passion for technology — from programming languages to operating systems — I am driven to build impactful software as a professional developer.">
-        ตั้งแต่ยังเด็ก มีความสนใจในด้านคอมพิวเตอร์อย่างลึกซึ้ง ทั้งภาษาคอมพิวเตอร์และระบบปฏิบัติการ เป้าหมายคือการเป็นโปรแกรมเมอร์ที่มีความเชี่ยวชาญ
+         data-th="นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง"
+         data-en="Frontend Developer actively seeking opportunities with Thai tech companies and startups, focused on React applications, responsive UI, and practical API-connected product workflows.">
+        นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง
       </p>
       <div class="hero-btns">
         <a href="#projects" class="btn-primary" data-th="ดูโปรเจกต์" data-en="View Projects">ดูโปรเจกต์</a>
-        <a href="#contact" class="btn-outline" data-th="ติดต่อฉัน" data-en="Contact Me">ติดต่อฉัน</a>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="profile-wrap">
-        <div class="profile-glow"></div>
-        <div class="profile-ring"></div>
-        <div class="profile-ring2"></div>
-        <img class="profile-img" src="images/profile/1.jfif" alt="Apichit Plueangklang - Frontend Developer">
+        <button class="btn-outline" onclick="generateCV()" data-th="ดาวน์โหลด CV" data-en="Download CV">ดาวน์โหลด CV</button>
       </div>
     </div>
   </div>
-  <div class="scroll-hint">
-    <span>SCROLL</span>
-    <div class="scroll-line"></div>
-  </div>
+  <div class="scroll-hint">SCROLL</div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="section-inner">
-    <div class="section-label">// 01. ABOUT</div>
-    <h2 class="section-title">About <span>Me</span></h2>
+    <div class="section-label">01 About</div>
+    <h2 class="section-title">Developer <span>Profile</span></h2>
     <div class="about-grid">
       <div class="about-text">
-        <p data-th="สวัสดีครับ! ผมชื่อ อภิชิต เปลื้องกลาง นักพัฒนา Frontend ที่หลงใหลในการสร้างประสบการณ์ดิจิทัลที่สวยงามและใช้งานได้จริง"
-           data-en="Hello! My name is Apichit Plueangklang, a Frontend Developer dedicated to building intuitive, high-quality digital experiences.">
-          สวัสดีครับ! ผมชื่อ อภิชิต เปลื้องกลาง นักพัฒนา Frontend ที่หลงใหลในการสร้างประสบการณ์ดิจิทัลที่สวยงามและใช้งานได้จริง
+        <p data-th="ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL"
+           data-en="My name is Apichit Plueangklang, a Frontend Developer who enjoys building web applications that are clear, usable, and practical for real workflows using React, JavaScript, TailwindCSS, Supabase, and MySQL/PostgreSQL.">
+          ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL
         </p>
-        <p data-th="ผมจบการศึกษาจากมหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน สาขาระบบสารสนเทศฯ และมีประสบการณ์พัฒนาทั้ง Web และ Mobile Application ด้วย React ecosystem พร้อมทำงานกับ Database และระบบ Backend"
-           data-en="A graduate of Rajamangala University of Technology Isan in Information Systems and Digital Business Innovation, with practical experience in Web and Mobile Application development using the React ecosystem, including Database design and Backend integration.">
-          ผมจบการศึกษาจากมหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน สาขาระบบสารสนเทศฯ และมีประสบการณ์พัฒนาทั้ง Web และ Mobile Application ด้วย React ecosystem พร้อมทำงานกับ Database และระบบ Backend
+        <p data-th="ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ RESTful API"
+           data-en="I am currently a Junior Frontend Developer Intern at Acacia I.T. Services (Thailand) Co., Ltd., building a Payroll Management System with React + Node.js and collaborating with the backend team on RESTful API integration.">
+          ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ RESTful API
         </p>
+        <div class="education-strip">
+          <div class="education-item">
+            <div><strong>B.Sc. Information Systems & Digital Business Innovation</strong><br><span>RMUTI · 2019-2022</span></div>
+            <span>GPA 3.02</span>
+          </div>
+          <div class="education-item">
+            <div><strong>Vocational Certificate, Business Computer</strong><br><span>Nakhon Ratchasima Technical College · 2017-2019</span></div>
+            <span>GPA 3.83</span>
+          </div>
+        </div>
       </div>
       <div class="about-stats">
-        <div class="stat-box"><div class="stat-num">3.83</div><div class="stat-label" data-th="GPA ปวช." data-en="GPA (Vocational)">GPA ปวช.</div></div>
-        <div class="stat-box"><div class="stat-num">3.02</div><div class="stat-label" data-th="GPA ป.ตรี" data-en="GPA (Bachelor's)">GPA ป.ตรี</div></div>
-        <div class="stat-box"><div class="stat-num">2+</div><div class="stat-label" data-th="ปีที่เรียนรู้" data-en="Years of Study">ปีที่เรียนรู้</div></div>
-        <div class="stat-box"><div class="stat-num">2+</div><div class="stat-label">Projects</div></div>
+        <div class="stat-box"><div class="stat-num">3</div><div class="stat-label" data-th="โปรเจกต์หลัก" data-en="Featured Projects">โปรเจกต์หลัก</div></div>
+        <div class="stat-box"><div class="stat-num">1</div><div class="stat-label" data-th="ประสบการณ์ฝึกงาน" data-en="Internship">ประสบการณ์ฝึกงาน</div></div>
+        <div class="stat-box"><div class="stat-num">2+</div><div class="stat-label" data-th="ปีในการเขียนโค้ด" data-en="Years Coding">ปีในการเขียนโค้ด</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience">
-  <div class="section-inner">
-    <div class="section-label">// 03. EXPERIENCE</div>
-    <h2 class="section-title">Work <span>Experience</span></h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--accent3);box-shadow:0 0 12px var(--accent3)"></div>
-        <div class="timeline-period">2568 — Present</div>
-        <div class="timeline-title">Frontend Developer <span class="year-badge">2025</span></div>
-        <div class="timeline-place"
-             data-th="บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด"
-             data-en="Acacia I.T. Services (Thailand) Co., Ltd.">
-          บริษัท อะเคเชียไอ.ที. เซอร์วิสเซส (ประเทศไทย) จำกัด
-        </div>
-        <div class="timeline-desc"
-             data-th="• ออกแบบและพัฒนาระบบเงินเดือน (Payroll System) ด้วย React และ Node.js&lt;br&gt;• พัฒนา UI/UX ที่ตอบโจทย์ผู้ใช้งานด้วย Responsive Design&lt;br&gt;• ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ API และจัดการข้อมูล"
-             data-en="• Designed and developed a Payroll System using React and Node.js&lt;br&gt;• Built responsive UI/UX focused on user experience&lt;br&gt;• Collaborated with the Backend team to integrate APIs and manage data">
-          • ออกแบบและพัฒนาระบบเงินเดือน (Payroll System) ด้วย React และ Node.js<br>
-          • พัฒนา UI/UX ที่ตอบโจทย์ผู้ใช้งานด้วย Responsive Design<br>
-          • ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ API และจัดการข้อมูล
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--accent2)"></div>
-        <div class="timeline-period">2565 — 2567</div>
-        <div class="timeline-title"
-             data-th="พนักงานคัดแยกพัสดุ"
-             data-en="Postal Sorting Clerk">
-          พนักงานคัดแยกพัสดุ
-          <span class="year-badge">2022</span>
-        </div>
-        <div class="timeline-place"
-             data-th="ที่ทำการไปรษณีย์ สาขา นครราชสีมา"
-             data-en="Thailand Post Office, Nakhon Ratchasima Branch">
-          ที่ทำการไปรษณีย์ สาขา นครราชสีมา
-        </div>
-        <div class="timeline-desc"
-             data-th="• คัดแยกและจัดการพัสดุตามประเภทและปลายทาง&lt;br&gt;• คีย์ข้อมูลพัสดุลงระบบคลังด้วยความแม่นยำสูง&lt;br&gt;• ประสานงานกับทีมขนส่งเพื่อให้บริการลูกค้า"
-             data-en="• Sorted and classified parcels by category and destination in a high-volume environment&lt;br&gt;• Accurately recorded parcel data into the logistics system&lt;br&gt;• Coordinated with the delivery team to maintain service quality standards">
-          • คัดแยกและจัดการพัสดุตามประเภทและปลายทาง<br>
-          • คีย์ข้อมูลพัสดุลงระบบคลังด้วยความแม่นยำสูง<br>
-          • ประสานงานกับทีมขนส่งเพื่อให้บริการลูกค้า
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-inner">
-    <div class="section-label">// 04. SKILLS</div>
-    <h2 class="section-title">Tech <span>Stack</span></h2>
-    <div class="skills-grid">
-
-      <div class="skill-card">
-        <div class="skill-icon">⚡</div>
-        <div class="skill-name">JavaScript</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>JavaScript</span><span>85%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:85%;background:linear-gradient(90deg,#f7df1e,#e8a000)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">JavaScript</span><span class="tag">HTML5</span><span class="tag">CSS3</span></div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon">⚛️</div>
-        <div class="skill-name">React</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>React</span><span>80%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:80%;background:linear-gradient(90deg,#00ff88,#00d4ff)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">React Vite</span><span class="tag">React Native</span><span class="tag">React Router</span></div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon">🗄️</div>
-        <div class="skill-name">Database</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>MySQL</span><span>70%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:70%;background:linear-gradient(90deg,#f59e0b,#ef4444)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">MySQL</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span></div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon">🔧</div>
-        <div class="skill-name">Git & Version Control</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>Git</span><span>75%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:75%;background:linear-gradient(90deg,#f05033,#e84d31)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">VS Code</span></div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon">🚀</div>
-        <div class="skill-name">Hosting & Deploy</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>Deployment</span><span>70%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:70%;background:linear-gradient(90deg,#00d4ff,#7b2ff7)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">Vercel</span><span class="tag">Netlify</span></div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon">🎨</div>
-        <div class="skill-name">UI & Styling</div>
-        <div class="skill-bar-wrap">
-          <div class="skill-bar-label"><span>Tailwind CSS</span><span>75%</span></div>
-          <div class="skill-bar"><div class="skill-bar-fill" style="--w:75%;background:linear-gradient(90deg,#38bdf8,#818cf8)"></div></div>
-        </div>
-        <div class="skill-tags"><span class="tag">Tailwind CSS</span><span class="tag">CSS3</span></div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- PROJECTS -->
 <section id="projects">
   <div class="section-inner">
-    <div class="section-label">// 05. PROJECTS</div>
-    <h2 class="section-title">My <span>Projects</span></h2>
+    <div class="section-label">02 Projects</div>
+    <h2 class="section-title">Selected <span>Work</span></h2>
+    <div class="projects-grid">
+      <article class="project-card">
+        <div class="gallery-wrap">
+          <div class="gallery-main" id="galleryMain" onclick="openLightbox(currentSlide)">
+            <img class="gallery-main-img" id="mainImg" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy">
+            <div class="gallery-caption">
+              <div class="gallery-caption-title" id="captionTitle" data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
+              <div class="gallery-caption-sub" id="captionSub" data-th="// ภาพรวมระบบ · สถิติ · กราฟ realtime" data-en="// System overview · Statistics · Realtime charts">// ภาพรวมระบบ · สถิติ · กราฟ realtime</div>
+            </div>
+          </div>
+          <div class="gallery-thumbs">
+            <div class="thumb active" onclick="switchSlide(0)"><img class="thumb-img" src="images/stock/1.jpg" alt="Stock dashboard" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide(1)"><img class="thumb-img" src="images/stock/2.jpg" alt="Stock management" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide(2)"><img class="thumb-img" src="images/stock/3.jpg" alt="Stock report" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide(3)"><img class="thumb-img" src="images/stock/4.jpg" alt="Stock orders" loading="lazy"></div>
+          </div>
+        </div>
+        <div class="project-header">
+          <div class="project-info">
+            <div class="project-kicker">Inventory / API</div>
+            <div class="project-title" data-th="Electronic Parts Stock Management System" data-en="Electronic Parts Stock Management System">Electronic Parts Stock Management System</div>
+            <p class="project-desc" data-th="ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API สำหรับงานคลังและการขายออนไลน์" data-en="Electronic parts stock management system with QR Code workflows, LINE API, Supabase, and Lazada API for inventory and online selling workflows.">ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API สำหรับงานคลังและการขายออนไลน์</p>
+            <div class="project-tech"><span class="tag">React Vite</span><span class="tag">MySQL</span><span class="tag">Supabase</span><span class="tag">LINE API</span><span class="tag">QR Code</span><span class="tag">Lazada API</span></div>
+          </div>
+          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </article>
 
-    <!-- Project 1: Stock -->
-    <div class="project-header">
-      <div class="project-info">
-        <div class="project-title"
-             data-th="ระบบบริหารจัดการสต็อกอะไหล่อิเล็กทรอนิกส์"
-             data-en="Electronic Parts Stock Management System">
-          ระบบบริหารจัดการสต็อกอะไหล่อิเล็กทรอนิกส์
+      <article class="project-card">
+        <div class="gallery-wrap">
+          <div class="gallery-main" id="galleryMain2" onclick="openLightbox2(currentSlide2)">
+            <img class="gallery-main-img" id="mainImg2" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy">
+            <div class="gallery-caption">
+              <div class="gallery-caption-title" id="captionTitle2" data-th="Payroll Dashboard" data-en="Payroll Dashboard">Payroll Dashboard</div>
+              <div class="gallery-caption-sub" id="captionSub2" data-th="// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน" data-en="// Payroll · Payslips · Reports">// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน</div>
+            </div>
+          </div>
+          <div class="gallery-thumbs">
+            <div class="thumb active" onclick="switchSlide2(0)"><img class="thumb-img" src="images/payroll/1.png" alt="Payroll dashboard" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide2(1)"><img class="thumb-img" src="images/payroll/2.png" alt="Employee management" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide2(2)"><img class="thumb-img" src="images/payroll/3.png" alt="Payroll generation" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide2(3)"><img class="thumb-img" src="images/payroll/4.png" alt="Payroll reports" loading="lazy"></div>
+          </div>
         </div>
-        <p class="project-desc"
-           data-th="ระบบบริหารจัดการคลังสินค้าอะไหล่อิเล็กทรอนิกส์แบบครบวงจร ตั้งแต่การจัดหมวดหมู่ไปจนถึงการขายออนไลน์"
-           data-en="A comprehensive electronic parts warehouse management system — from categorization and inventory tracking to online sales integration.">
-          ระบบบริหารจัดการคลังสินค้าอะไหล่อิเล็กทรอนิกส์แบบครบวงจร ตั้งแต่การจัดหมวดหมู่ไปจนถึงการขายออนไลน์
-        </p>
-        <div class="project-features">
-          <div class="feature" data-th="จัดหมวดหมู่อะไหล่ ติดตาม QR Code รู้ว่าของอยู่กล่องไหน" data-en="Categorize parts and track with QR Code to locate items instantly">จัดหมวดหมู่อะไหล่ ติดตาม QR Code รู้ว่าของอยู่กล่องไหน</div>
-          <div class="feature" data-th="แจ้งเตือนของใกล้หมดทันที และออเดอร์ใหม่ผ่าน LINE" data-en="Instant low-stock alerts and new order notifications via LINE">แจ้งเตือนของใกล้หมดทันที และออเดอร์ใหม่ผ่าน LINE</div>
-          <div class="feature" data-th="ซิงค์สินค้าและสต็อกกับ Lazada อัตโนมัติ" data-en="Automatically sync products and stock with Lazada">ซิงค์สินค้าและสต็อกกับ Lazada อัตโนมัติ</div>
-          <div class="feature" data-th="รองรับ Import/Export Excel และ Backup อัตโนมัติ" data-en="Supports Excel Import/Export and automatic backup">รองรับ Import/Export Excel และ Backup อัตโนมัติ</div>
+        <div class="project-header">
+          <div class="project-info">
+            <div class="project-kicker">Business App</div>
+            <div class="project-title" data-th="Payroll Management System" data-en="Payroll Management System">Payroll Management System</div>
+            <p class="project-desc" data-th="ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน Supabase/PostgreSQL" data-en="Payroll management application built with React Vite and TailwindCSS, supporting XLSX workflows and Supabase/PostgreSQL data storage.">ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน Supabase/PostgreSQL</p>
+            <div class="project-tech"><span class="tag">React Vite</span><span class="tag">TailwindCSS</span><span class="tag">XLSX</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span></div>
+          </div>
+          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <div class="project-tech">
-          <span class="tag">React Vite</span><span class="tag">MySQL</span><span class="tag">Supabase</span>
-          <span class="tag">LINE API</span><span class="tag">QR Code</span><span class="tag">Lazada API</span>
-        </div>
-      </div>
-    </div>
+      </article>
 
-    <div class="gallery-wrap">
-      <div class="gallery-main" id="galleryMain" onclick="openLightbox(currentSlide)">
-        <div class="gallery-scan-line"></div>
-        <div class="gallery-corner tl"></div>
-        <div class="gallery-corner tr"></div>
-        <div class="gallery-corner bl"></div>
-        <div class="gallery-corner br"></div>
-        <img class="gallery-main-img" id="mainImg" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy">
-        <div class="gallery-caption">
-          <div class="gallery-caption-title" id="captionTitle"
-               data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
-          <div class="gallery-caption-sub" id="captionSub"
-               data-th="// ภาพรวมระบบ · สถิติ · กราฟ realtime" data-en="// System overview · Statistics · Realtime charts">// ภาพรวมระบบ · สถิติ · กราฟ realtime</div>
+      <article class="project-card">
+        <div class="gallery-wrap">
+          <div class="gallery-main" id="galleryMain3" onclick="openLightbox3(currentSlide3)">
+            <img class="gallery-main-img" id="mainImg3" src="images/elderly/1.jpg" alt="Elderly Health Dashboard" loading="lazy">
+            <div class="gallery-caption">
+              <div class="gallery-caption-title" id="captionTitle3" data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
+              <div class="gallery-caption-sub" id="captionSub3" data-th="// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ" data-en="// System overview · Statistics · Senior data">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ</div>
+            </div>
+          </div>
+          <div class="gallery-thumbs">
+            <div class="thumb active" onclick="switchSlide3(0)"><img class="thumb-img" src="images/elderly/1.jpg" alt="Elderly dashboard" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide3(1)"><img class="thumb-img" src="images/elderly/2.jpg" alt="Health records" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide3(2)"><img class="thumb-img" src="images/elderly/3.jpg" alt="Health reports" loading="lazy"></div>
+            <div class="thumb" onclick="switchSlide3(3)"><img class="thumb-img" src="images/elderly/4.jpg" alt="GPS tracking" loading="lazy"></div>
+          </div>
         </div>
-      </div>
-      <div class="gallery-thumbs">
-        <div class="thumb active" onclick="switchSlide(0)"><img class="thumb-img" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide(1)"><img class="thumb-img" src="images/stock/2.jpg" alt="Stock Management" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide(2)"><img class="thumb-img" src="images/stock/3.jpg" alt="Stock Reports" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide(3)"><img class="thumb-img" src="images/stock/4.jpg" alt="Stock Orders" loading="lazy"></div>
-      </div>
-    </div>
-    <p style="text-align:center;color:var(--text2);font-family:var(--mono);font-size:.8rem;margin-top:1.5rem;opacity:.5"
-       data-th="// คลิกที่รูปเพื่อดูขนาดเต็ม · more projects coming soon..."
-       data-en="// Click image to view fullscreen · more projects coming soon...">
-      // คลิกที่รูปเพื่อดูขนาดเต็ม · more projects coming soon...
-    </p>
-
-    <hr style="margin:4rem 0;border:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3">
-
-    <!-- Project 2: Payroll -->
-    <div class="project-header">
-      <div class="project-info">
-        <div class="project-title"
-             data-th="การออกแบบและพัฒนาระบบเงินเดือน (Payroll)"
-             data-en="Payroll Management System Design & Development">
-          การออกแบบและพัฒนาระบบเงินเดือน (Payroll)
+        <div class="project-header">
+          <div class="project-info">
+            <div class="project-kicker">Health / Tracking</div>
+            <div class="project-title" data-th="Elderly Health Monitoring System" data-en="Elderly Health Monitoring System">Elderly Health Monitoring System</div>
+            <p class="project-desc" data-th="ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking สำหรับบันทึกและติดตามข้อมูลสุขภาพ" data-en="Elderly health monitoring system using PHP, MySQL, Bootstrap 5, Chart.js, LINE API, and GPS Tracking for health records and monitoring.">ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking สำหรับบันทึกและติดตามข้อมูลสุขภาพ</p>
+            <div class="project-tech"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap 5</span><span class="tag">Chart.js</span><span class="tag">LINE API</span><span class="tag">GPS Tracking</span></div>
+          </div>
+          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
         </div>
-        <p class="project-desc"
-           data-th="Payroll Management System (Web Application)"
-           data-en="Payroll Management System (Web Application)">
-          Payroll Management System (Web Application)
-        </p>
-        <div class="project-features">
-          <div class="feature" data-th="Admin:" data-en="Admin:">Admin:</div>
-          <div class="feature" data-th="- สามารถล็อกอิน และจัดการข้อมูลพนักงาน" data-en="- Login and manage employee data">- สามารถล็อกอิน และจัดการข้อมูลพนักงาน</div>
-          <div class="feature" data-th="- อัปโหลดไฟล์ Excel เพื่อสร้างสลิปเงินเดือนประจำเดือน" data-en="- Upload Excel files to generate monthly payslips">- อัปโหลดไฟล์ Excel เพื่อสร้างสลิปเงินเดือนประจำเดือน</div>
-          <div class="feature" data-th="- ดูรายงานยอดจ่ายรวม" data-en="- View total payment summary reports">- ดูรายงานยอดจ่ายรวม</div>
-          <div class="feature" data-th="Employee:" data-en="Employee:">Employee:</div>
-          <div class="feature" data-th="- สามารถล็อกอิน และจัดการข้อมูลส่วนตัว" data-en="- Login and manage personal information">- สามารถล็อกอิน และจัดการข้อมูลส่วนตัว</div>
-          <div class="feature" data-th="- ดูและดาวน์โหลดสลิปเงินเดือนของตัวเองเป็น PDF" data-en="- View and download personal payslips as PDF">- ดูและดาวน์โหลดสลิปเงินเดือนของตัวเองเป็น PDF</div>
-        </div>
-        <div class="project-tech">
-          <span class="tag">React Vite</span><span class="tag">Tailwind CSS</span><span class="tag">React Router</span>
-          <span class="tag">XLSX</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span><span class="tag">Netlify</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-wrap">
-      <div class="gallery-main" id="galleryMain2" onclick="openLightbox2(currentSlide2)">
-        <div class="gallery-scan-line"></div>
-        <div class="gallery-corner tl"></div>
-        <div class="gallery-corner tr"></div>
-        <div class="gallery-corner bl"></div>
-        <div class="gallery-corner br"></div>
-        <img class="gallery-main-img" id="mainImg2" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy">
-        <div class="gallery-caption">
-          <div class="gallery-caption-title" id="captionTitle2">Payroll Dashboard</div>
-          <div class="gallery-caption-sub" id="captionSub2"
-               data-th="// ระบบจัดการเงินเดือน · สลิปเงินเดือน · รายงาน"
-               data-en="// Payroll management · Payslips · Reports">// ระบบจัดการเงินเดือน · สลิปเงินเดือน · รายงาน</div>
-        </div>
-      </div>
-      <div class="gallery-thumbs">
-        <div class="thumb active" onclick="switchSlide2(0)"><img class="thumb-img" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide2(1)"><img class="thumb-img" src="images/payroll/2.png" alt="Payroll Employee Management" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide2(2)"><img class="thumb-img" src="images/payroll/3.png" alt="Payroll Generation" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide2(3)"><img class="thumb-img" src="images/payroll/4.png" alt="Payroll Reports" loading="lazy"></div>
-      </div>
-    </div>
-
-    <hr style="margin:4rem 0;border:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3">
-
-    <!-- Project 3: Elderly Care -->
-    <div class="project-header">
-      <div class="project-info">
-        <div class="project-title"
-             data-th="ระบบดูแลผู้สูงอายุ"
-             data-en="Elderly Care Management System">
-          ระบบดูแลผู้สูงอายุ
-        </div>
-        <p class="project-desc"
-           data-th="Elderly Care Management System — โรงเรียนผู้สูงอายุด่านเกวียน"
-           data-en="Elderly Care Management System — Dan Kwian Senior School">
-          Elderly Care Management System — โรงเรียนผู้สูงอายุด่านเกวียน
-        </p>
-        <div class="project-features">
-          <div class="feature" data-th="ระบบจัดการดูแลผู้สูงอายุแบบครบวงจร รองรับ 2 พอร์ทัลหลัก คือ Admin และ Senior" data-en="Comprehensive elderly care management system supporting 2 main portals: Admin and Senior">ระบบจัดการดูแลผู้สูงอายุแบบครบวงจร รองรับ 2 พอร์ทัลหลัก คือ Admin และ Senior</div>
-          <div class="feature" data-th="บันทึกสุขภาพรายวัน — ความดัน, น้ำตาล, อุณหภูมิ, ออกซิเจน, น้ำหนัก, ชีพจร" data-en="Daily health records — blood pressure, blood sugar, temperature, oxygen, weight, pulse">บันทึกสุขภาพรายวัน — ความดัน, น้ำตาล, อุณหภูมิ, ออกซิเจน, น้ำหนัก, ชีพจร</div>
-          <div class="feature" data-th="กราฟแนวโน้มสุขภาพ Realtime ด้วย Chart.js" data-en="Realtime health trend charts with Chart.js">กราฟแนวโน้มสุขภาพ Realtime ด้วย Chart.js</div>
-          <div class="feature" data-th="ประเมิน ADL และ MMSE" data-en="ADL and MMSE health assessments">ประเมิน ADL และ MMSE</div>
-          <div class="feature" data-th="แผนที่ตำแหน่ง GPS ของผู้สูงอายุ" data-en="Real-time GPS location tracking for seniors">แผนที่ตำแหน่ง GPS ของผู้สูงอายุ</div>
-          <div class="feature" data-th="LINE Bot แจ้งเตือนอัตโนมัติเมื่อค่าสุขภาพผิดปกติ" data-en="LINE Bot automatic alerts when health values are abnormal">LINE Bot แจ้งเตือนอัตโนมัติเมื่อค่าสุขภาพผิดปกติ</div>
-          <div class="feature" data-th="Export CSV / PDF Report / พิมพ์บัตรประจำตัว" data-en="Export CSV / PDF Report / Print ID cards">Export CSV / PDF Report / พิมพ์บัตรประจำตัว</div>
-          <div class="feature" data-th="จัดการข่าวและบริการสำหรับผู้สูงอายุ" data-en="Manage news and services for the elderly">จัดการข่าวและบริการสำหรับผู้สูงอายุ</div>
-        </div>
-        <div class="project-tech">
-          <span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap 5</span>
-          <span class="tag">Chart.js</span><span class="tag">LINE API</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery-wrap">
-      <div class="gallery-main" id="galleryMain3" onclick="openLightbox3(currentSlide3)">
-        <div class="gallery-scan-line"></div>
-        <div class="gallery-corner tl"></div>
-        <div class="gallery-corner tr"></div>
-        <div class="gallery-corner bl"></div>
-        <div class="gallery-corner br"></div>
-        <img class="gallery-main-img" id="mainImg3" src="images/elderly/1.jpg" alt="Elderly Care Dashboard" loading="lazy">
-        <div class="gallery-caption">
-          <div class="gallery-caption-title" id="captionTitle3"
-               data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
-          <div class="gallery-caption-sub" id="captionSub3"
-               data-th="// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ"
-               data-en="// System overview · Statistics · Senior data">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ</div>
-        </div>
-      </div>
-      <div class="gallery-thumbs">
-        <div class="thumb active" onclick="switchSlide3(0)"><img class="thumb-img" src="images/elderly/1.jpg" alt="Elderly Care Dashboard" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide3(1)"><img class="thumb-img" src="images/elderly/2.jpg" alt="Elderly Care Health Management" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide3(2)"><img class="thumb-img" src="images/elderly/3.jpg" alt="Elderly Care Reports" loading="lazy"></div>
-        <div class="thumb" onclick="switchSlide3(3)"><img class="thumb-img" src="images/elderly/4.jpg" alt="Elderly Care GPS Map" loading="lazy"></div>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">Close</button>
     <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg" src="" alt="">
     <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
-
 <div class="lightbox" id="lightbox2" onclick="closeLightboxOutside2(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox2()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-close" onclick="closeLightbox2()" aria-label="Close">Close</button>
     <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg2" src="" alt="">
     <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
-
 <div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)" role="dialog" aria-modal="true">
   <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox3()" aria-label="Close">[ ESC ]</button>
+    <button class="lightbox-close" onclick="closeLightbox3()" aria-label="Close">Close</button>
     <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)" aria-label="Previous image">&#8249;</button>
     <img id="lightboxImg3" src="" alt="">
     <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)" aria-label="Next image">&#8250;</button>
   </div>
 </div>
 
-<!-- EDUCATION -->
-<section id="education">
+<section id="skills">
   <div class="section-inner">
-    <div class="section-label">// 06. EDUCATION</div>
-    <h2 class="section-title">My <span>Journey</span></h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-period">2565 — 2568</div>
-        <div class="timeline-title"
-             data-th="ปริญญาตรี (เด็กจบใหม่)"
-             data-en="Bachelor of Science">
-          ปริญญาตรี (เด็กจบใหม่)
-          <span class="gpa-badge">GPA 3.02</span>
-        </div>
-        <div class="timeline-place"
-             data-th="มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน"
-             data-en="Rajamangala University of Technology Isan">
-          มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน
-        </div>
-        <div class="timeline-desc"
-             data-th="สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล — เรียนรู้ทั้ง Software Development, Database Design และ Digital Business Innovation"
-             data-en="Information Systems and Digital Business Innovation — Coursework in Software Development, Database Design, and Digital Business Innovation">
-          สาขาระบบสารสนเทศและนวัตกรรมธุรกิจดิจิทัล — เรียนรู้ทั้ง Software Development, Database Design และ Digital Business Innovation
-        </div>
+    <div class="section-label">03 Skills</div>
+    <h2 class="section-title">Technical <span>Toolkit</span></h2>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3 class="skill-heading">Frontend</h3>
+        <div class="skill-tags"><span class="tag">JavaScript (ES6+)</span><span class="tag">React</span><span class="tag">React Vite</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">TailwindCSS</span></div>
       </div>
-      <div class="timeline-item">
-        <div class="timeline-dot" style="background:var(--accent2);box-shadow:0 0 12px var(--accent2)"></div>
-        <div class="timeline-period">2562 — 2564</div>
-        <div class="timeline-title"
-             data-th="ประกาศนียบัตรวิชาชีพ (ปวช.)"
-             data-en="Vocational Certificate (Technical)">
-          ประกาศนียบัตรวิชาชีพ (ปวช.)
-          <span class="gpa-badge">GPA 3.83</span>
-        </div>
-        <div class="timeline-place"
-             data-th="วิทยาลัยเทคนิคนครราชสีมา"
-             data-en="Nakhon Ratchasima Technical College">
-          วิทยาลัยเทคนิคนครราชสีมา
-        </div>
-        <div class="timeline-desc"
-             data-th="สาขาคอมพิวเตอร์ธุรกิจ — รากฐานด้าน IT, การเขียนโปรแกรม และระบบคอมพิวเตอร์"
-             data-en="Business Computer — Foundation studies in Information Technology, Programming, and Computer Systems">
-          สาขาคอมพิวเตอร์ธุรกิจ — รากฐานด้าน IT, การเขียนโปรแกรม และระบบคอมพิวเตอร์
-        </div>
+      <div class="skill-group">
+        <h3 class="skill-heading">Backend & Data</h3>
+        <div class="skill-tags"><span class="tag">Node.js (basic)</span><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">PostgreSQL</span><span class="tag">Supabase</span></div>
+      </div>
+      <div class="skill-group">
+        <h3 class="skill-heading">Integrations</h3>
+        <div class="skill-tags"><span class="tag">RESTful API</span><span class="tag">LINE API</span><span class="tag">Lazada API</span><span class="tag">QR Code</span><span class="tag">XLSX</span></div>
+      </div>
+      <div class="skill-group">
+        <h3 class="skill-heading">Workflow</h3>
+        <div class="skill-tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Vercel</span><span class="tag">Netlify</span><span class="tag">Responsive UI/UX</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">04 Experience</div>
+    <h2 class="section-title">Work <span>Timeline</span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-period">2025 - Present</div>
+        <div class="timeline-title">Junior Frontend Developer Intern</div>
+        <div class="timeline-place">Acacia I.T. Services (Thailand) Co., Ltd.</div>
+        <ul class="timeline-desc">
+          <li data-th="Built a Payroll Management System with React + Node.js." data-en="Built a Payroll Management System with React + Node.js.">Built a Payroll Management System with React + Node.js.</li>
+          <li data-th="Implemented responsive UI/UX for practical business workflows." data-en="Implemented responsive UI/UX for practical business workflows.">Implemented responsive UI/UX for practical business workflows.</li>
+          <li data-th="Collaborated with the backend team for RESTful API integration." data-en="Collaborated with the backend team for RESTful API integration.">Collaborated with the backend team for RESTful API integration.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact">
   <div class="section-inner">
-    <div class="section-label">// 07. CONTACT</div>
-    <h2 class="section-title">Get In <span>Touch</span></h2>
+    <div class="section-label">05 Contact</div>
+    <h2 class="section-title">Let’s <span>Connect</span></h2>
+    <p class="contact-lead" data-th="พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล" data-en="Open to Frontend Developer, React Developer, and early-career opportunities in digital product teams.">พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล</p>
     <div class="contact-grid">
       <div class="contact-form">
         <form id="contactForm" onsubmit="handleContactSubmit(event)">
           <div class="form-group">
-            <label for="name" class="form-label" data-th="ชื่อ" data-en="NAME">NAME</label>
+            <label for="name" class="form-label" data-th="Name" data-en="Name">Name</label>
             <input type="text" id="name" name="name" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="email" class="form-label">EMAIL</label>
+            <label for="email" class="form-label">Email</label>
             <input type="email" id="email" name="email" class="form-input" required>
           </div>
           <div class="form-group">
-            <label for="message" class="form-label" data-th="ข้อความ" data-en="MESSAGE">MESSAGE</label>
+            <label for="message" class="form-label" data-th="Message" data-en="Message">Message</label>
             <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
           </div>
-          <button type="submit" class="btn-primary"
-                  data-th="ส่งข้อความ ✉"
-                  data-en="Send Message ✉">
-            Send Message ✉
-          </button>
+          <button type="submit" class="btn-primary" data-th="Send Message" data-en="Send Message">Send Message</button>
         </form>
       </div>
       <div class="contact-info">
         <div class="contact-links">
-          <a href="mailto:golfgod9996@gmail.com" class="contact-link">
-            <div class="contact-icon email">✉</div>
-            <div class="contact-detail"><span class="contact-detail-label">EMAIL</span><span class="contact-detail-val">golfgod9996@gmail.com</span></div>
+          <a href="mailto:apichit.puang@gmail.com" class="contact-link">
+            <div class="contact-icon">✉</div>
+            <div class="contact-detail"><span class="contact-detail-label">Email</span><span class="contact-detail-val">apichit.puang@gmail.com</span></div>
           </a>
           <a href="tel:0963951661" class="contact-link">
-            <div class="contact-icon tel">📱</div>
-            <div class="contact-detail">
-              <span class="contact-detail-label" data-th="โทรศัพท์" data-en="TELEPHONE">TELEPHONE</span>
-              <span class="contact-detail-val">096-395-1661</span>
-            </div>
+            <div class="contact-icon">☎</div>
+            <div class="contact-detail"><span class="contact-detail-label" data-th="Phone" data-en="Phone">Phone</span><span class="contact-detail-val">096-395-1661</span></div>
           </a>
-          <a href="https://github.com/golfApichitGIT" class="contact-link">
-            <div class="contact-icon github">{ }</div>
-            <div class="contact-detail"><span class="contact-detail-label">GITHUB</span><span class="contact-detail-val">github.com/golfApichitGIT</span></div>
+          <a href="https://github.com/golfApichitGIT" class="contact-link" target="_blank" rel="noopener">
+            <div class="contact-icon">{ }</div>
+            <div class="contact-detail"><span class="contact-detail-label">GitHub</span><span class="contact-detail-val">github.com/golfApichitGIT</span></div>
+          </a>
+          <a href="https://linkedin.com/in/apichit-plueangklang" class="contact-link" target="_blank" rel="noopener">
+            <div class="contact-icon">in</div>
+            <div class="contact-detail"><span class="contact-detail-label">LinkedIn</span><span class="contact-detail-val">linkedin.com/in/apichit-plueangklang</span></div>
           </a>
         </div>
         <div class="social-links">
-          <a href="https://github.com/golfApichitGIT" class="social-link" title="GitHub">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-            </svg>
-          </a>
-          <a href="https://www.linkedin.com/in/apichit-pulangklang-5ba726401/" class="social-link" title="LinkedIn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
-          </a>
-          <a href="mailto:golfgod9996@gmail.com" class="social-link" title="Email">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M0 3v18h24v-18h-24zm6.623 7.929l-4.623 5.712v-9.458l4.623 3.746zm-4.141-5.929h19.035l-9.517 7.713-9.518-7.713zm5.694 7.188l3.824 3.099 3.83-3.104 5.612 6.817h-18.779l5.513-6.812zm9.208-1.264l4.616-3.741v9.348l-4.616-5.607z"/>
-            </svg>
-          </a>
+          <a href="https://github.com/golfApichitGIT" class="social-link" title="GitHub" target="_blank" rel="noopener">GH</a>
+          <a href="https://linkedin.com/in/apichit-plueangklang" class="social-link" title="LinkedIn" target="_blank" rel="noopener">in</a>
+          <a href="mailto:apichit.puang@gmail.com" class="social-link" title="Email">✉</a>
         </div>
       </div>
     </div>
@@ -569,35 +1097,19 @@
 </section>
 
 <footer>
-  <p>&lt; Built with ❤ by Apichit Plueangklang · 2025 /&gt;</p>
+  <p>Built by Apichit Plueangklang · Frontend Developer · apichit.dev</p>
 </footer>
 </div>
 
-<!-- ══════════════════════════════════════════
-     LANGUAGE SWITCHER — i18n Engine
-     ══════════════════════════════════════════ -->
 <script>
-  /* ── State ── */
   let currentLang = localStorage.getItem('portfolioLang') || 'th';
 
-  /* ── Typed text translations ── */
-  const typedTexts = {
-    th: ['Frontend Developer', 'React Enthusiast', 'UI/UX Lover', 'นักพัฒนา Web & Mobile'],
-    en: ['Frontend Developer', 'React Enthusiast', 'UI/UX Lover', 'Web & Mobile Developer']
-  };
-
-  /* ── Apply language to all elements ── */
   function applyLang(lang) {
-    const body = document.body;
-    body.classList.add('lang-switching');
-
+    document.body.classList.add('lang-switching');
     setTimeout(() => {
-      // อัปเดต element ทุกอันที่มี data-th / data-en
       document.querySelectorAll('[data-th], [data-en]').forEach(el => {
         const text = lang === 'th' ? el.dataset.th : el.dataset.en;
         if (!text) return;
-
-        // ถ้า text มี <br> ให้ใช้ innerHTML
         if (text.includes('&lt;br&gt;') || text.includes('<br>')) {
           el.innerHTML = text.replace(/&lt;br&gt;/g, '<br>');
         } else {
@@ -605,35 +1117,30 @@
         }
       });
 
-      // อัปเดตปุ่ม toggle
       const flag = document.getElementById('langFlag');
       const label = document.getElementById('langLabel');
       if (lang === 'th') {
-        flag.textContent = '🇬🇧';
+        flag.textContent = '↔';
         label.textContent = 'EN';
       } else {
-        flag.textContent = '🇹🇭';
+        flag.textContent = '↔';
         label.textContent = 'TH';
       }
 
-      // อัปเดต html lang attribute
       document.documentElement.lang = lang === 'th' ? 'th' : 'en';
-
-      body.classList.remove('lang-switching');
-    }, 150);
+      document.body.classList.remove('lang-switching');
+    }, 120);
   }
 
-  /* ── Toggle function (เรียกจากปุ่ม) ── */
   function toggleLang() {
     currentLang = currentLang === 'th' ? 'en' : 'th';
     localStorage.setItem('portfolioLang', currentLang);
     applyLang(currentLang);
   }
 
-  /* ── Init on load ── */
-  document.addEventListener('DOMContentLoaded', () => {
-    applyLang(currentLang);
-  });
+  window.toggleLang = toggleLang;
+
+  document.addEventListener('DOMContentLoaded', () => applyLang(currentLang));
 </script>
 
 <script type="module" src="js/main.js"></script>

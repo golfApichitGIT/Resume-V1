@@ -187,6 +187,22 @@
     text-align: center;
   }
 
+  .hero-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .hero-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center top;
+    border: 2px solid rgba(124, 140, 255, 0.4);
+    box-shadow: 0 0 0 4px rgba(124, 140, 255, 0.12), 0 0 32px rgba(124, 140, 255, 0.2);
+  }
+
   .eyebrow,
   .section-label {
     display: inline-flex;
@@ -210,7 +226,7 @@
   .hero-name {
     margin: 16px 0 0;
     max-width: 980px;
-    font-size: clamp(3.3rem, 10vw, 8.5rem);
+    font-size: clamp(32px, 5vw, 52px);
     line-height: .9;
     font-weight: 800;
     letter-spacing: 0;
@@ -769,6 +785,18 @@
   .lang-switching [data-en] { opacity: 0; }
 
   @media (min-width: 768px) {
+    .hero-name {
+      white-space: nowrap;
+    }
+
+    .hero-name span {
+      display: inline;
+    }
+
+    .hero-name span + span::before {
+      content: " ";
+    }
+
     nav { padding: 0 34px; }
     .about-grid { grid-template-columns: 1.25fr .75fr; align-items: stretch; }
     .about-stats { grid-template-columns: 1fr; }
@@ -835,6 +863,9 @@
 <section id="hero">
   <div class="hero-inner">
     <div class="hero-copy">
+      <div class="hero-avatar">
+        <img src="images/profile.jpg" alt="Apichit Plueangklang">
+      </div>
       <div class="eyebrow">Frontend Developer</div>
       <h1 class="hero-name"><span>Apichit</span><span>Plueangklang</span></h1>
       <div class="hero-typed"><span id="typed-text"></span><span class="cursor">|</span></div>

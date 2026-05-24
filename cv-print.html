@@ -379,6 +379,46 @@
     font-weight: 800;
   }
 
+.cert-list { display: grid; gap: 4px; }
+
+.cert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 7px;
+  border-left: 2px solid var(--accent);
+  background: #fbfdff;
+}
+
+.cert-left { flex: 1; min-width: 0; }
+
+.cert-name {
+  color: #111827;
+  font-size: 9.2px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.cert-name.award {
+  color: var(--accent);
+}
+
+.cert-issuer {
+  color: var(--muted);
+  font-size: 8.2px;
+  margin-top: 1px;
+  line-height: 1.3;
+}
+
+.cert-year {
+  color: var(--accent);
+  font-size: 8.2px;
+  font-weight: 800;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
   .cv-footer {
     position: absolute;
     left: 14mm;
@@ -408,6 +448,22 @@
     .photo-icon, .photo-placeholder-text { display: none; }
     * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   }
+
+/* A4 fit overrides */
+.section { margin-top: 8px; }
+.summary-text { font-size: 8.8px; line-height: 1.5; }
+.bullet-list { font-size: 8.5px; line-height: 1.45; }
+.project-desc { font-size: 8.5px; line-height: 1.45; }
+.edu-degree-main { font-size: 9.5px; }
+.edu-degree-sub, .edu-detail { font-size: 8.2px; }
+.projects-grid { gap: 4px; }
+.edu-list { gap: 4px; }
+.cert-list { gap: 3px; }
+.cert-item { padding: 4px 7px; }
+.cert-name { font-size: 8.8px; }
+.cert-issuer { font-size: 7.8px; }
+.skills-grid { gap: 5px 9px; }
+.skill-group { padding: 5px 7px; }
 </style>
 </head>
 <body>
@@ -459,7 +515,7 @@
       <div class="section-line"></div>
     </div>
     <div class="summary-text" id="summary-body">
-      Frontend Developer ที่มุ่งสร้างเว็บแอปพลิเคชันด้วย React, JavaScript และ UI ที่ใช้งานง่ายสำหรับผู้ใช้จริง มีประสบการณ์พัฒนาระบบ Stock Management, Payroll Management และ Elderly Health Monitoring ที่เชื่อมต่อข้อมูลและรองรับงานธุรกิจหลายรูปแบบ เคยทำงานกับ RESTful API, Supabase, ฐานข้อมูล, Lazada API, LINE Bot และ GPS Tracking ตามขอบเขตของโปรเจกต์ที่พัฒนา ในการฝึกงานที่ Acacia I.T. Services (Thailand) Co., Ltd. ได้ร่วมงานกับทีม Backend เพื่อเชื่อมต่อข้อมูลระหว่างหน้าบ้านและระบบหลังบ้านให้ใช้งานได้ต่อเนื่อง สนใจพัฒนา UI ที่อ่านง่าย รองรับหลายอุปกรณ์ และช่วยให้ผู้ใช้ทำงานได้เร็วขึ้น เป้าหมายคือเติบโตในสาย Frontend Developer กับทีมเทคโนโลยีหรือสตาร์ทอัพในไทย
+      Frontend Developer / Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. มีประสบการณ์พัฒนาเว็บแอปสำหรับงานธุรกิจด้วย React, TailwindCSS และ Supabase. สนใจสร้าง UI ที่อ่านง่าย รองรับหลายอุปกรณ์ และเชื่อมต่อข้อมูลกับ backend ได้ชัดเจน. เป้าหมายคือเติบโตในสาย Frontend Developer กับทีมเทคโนโลยีหรือสตาร์ทอัพในไทย
     </div>
   </section>
 
@@ -509,10 +565,8 @@
       </div>
       <ul class="bullet-list" id="exp1-desc">
         <li>Designed and developed a Payroll Management System using React and Node.js for employee and administrator workflows.</li>
-        <li>Built frontend screens for employee data management, salary calculation flow, payslip generation, and Excel-based import/export.</li>
         <li>Implemented responsive UI/UX across desktop and mobile layouts with reusable component-based interface patterns.</li>
         <li>Collaborated with the backend team to connect frontend data flow with RESTful API endpoints and application data.</li>
-        <li>Tested and debugged API integration issues to keep payroll forms, tables, and generated outputs consistent with backend responses.</li>
         <li>Used Git and GitHub to manage frontend changes during development.</li>
       </ul>
     </div>
@@ -531,7 +585,7 @@
           <span class="project-name-main" id="p1-name-main">Electronic Parts Stock Management System</span>
           <span class="project-name-sub" id="p1-name-sub">Inventory platform</span>
         </div>
-        <div class="project-desc" id="p1-desc">Built a stock management system for electronic parts to help organize inventory data and reduce manual tracking work. The system uses React Vite for the frontend, MySQL/Supabase for data handling, and QR Code flows for item identification. LINE API supports notification use cases, while Lazada API integration adds a practical e-commerce connection for product and stock workflows.</div>
+        <div class="project-desc" id="p1-desc">Built an electronic parts stock management system to organize inventory data and reduce manual tracking. React Vite powers the frontend, while Supabase handles core data storage.</div>
         <div class="tech-stack"><span class="tech-tag">React Vite</span><span class="tech-tag">MySQL</span><span class="tech-tag">Supabase</span><span class="tech-tag">LINE API</span><span class="tech-tag">QR Code</span><span class="tech-tag">Lazada API</span></div>
       </div>
 
@@ -541,7 +595,7 @@
           <span class="project-name-main" id="p2-name-main">Payroll Management System</span>
           <span class="project-name-sub" id="p2-name-sub">Business web app</span>
         </div>
-        <div class="project-desc" id="p2-desc">Developed payroll workflows for managing employee payroll data through a responsive React Vite interface styled with TailwindCSS. The system supports XLSX-based data processing for payroll preparation and structured storage with Supabase/PostgreSQL. Its strongest technical focus is turning spreadsheet-based payroll inputs into cleaner web-based workflows and report-ready outputs.</div>
+        <div class="project-desc" id="p2-desc">Developed payroll workflows for managing employee and salary data in a responsive business web app. React Vite and TailwindCSS support a clean interface for payroll preparation and reporting.</div>
         <div class="tech-stack"><span class="tech-tag">React Vite</span><span class="tech-tag">TailwindCSS</span><span class="tech-tag">XLSX</span><span class="tech-tag">Supabase</span><span class="tech-tag">PostgreSQL</span></div>
       </div>
 
@@ -551,7 +605,7 @@
           <span class="project-name-main" id="p3-name-main">Elderly Health Monitoring System</span>
           <span class="project-name-sub" id="p3-name-sub">Health monitoring platform</span>
         </div>
-        <div class="project-desc" id="p3-desc">Created an elderly health monitoring system to record and review health information for senior care use cases. The platform uses PHP, MySQL, and Bootstrap 5 for the application structure, with Chart.js for visual health summaries. LINE API supports alert communication, while GPS Tracking provides a location-focused feature for monitoring and care coordination.</div>
+        <div class="project-desc" id="p3-desc">Created an elderly health monitoring system to record and review senior care information. PHP and MySQL provide the core application and database structure.</div>
         <div class="tech-stack"><span class="tech-tag">PHP</span><span class="tech-tag">MySQL</span><span class="tech-tag">Bootstrap 5</span><span class="tech-tag">Chart.js</span><span class="tech-tag">LINE API</span><span class="tech-tag">GPS Tracking</span></div>
       </div>
     </div>
@@ -605,6 +659,49 @@
     </div>
   </section>
 
+<section class="section">
+  <div class="section-header">
+    <span class="section-title-main" id="sec-cert-main">รางวัล & ใบรับรอง</span>
+    <span class="section-title-sub" id="sec-cert-sub">Certifications & Awards</span>
+    <div class="section-line"></div>
+  </div>
+  <div class="cert-list">
+
+    <div class="cert-item">
+      <div class="cert-left">
+        <div class="cert-name award" id="cert1-name">🏆 Best Paper Presentation – "Very Good" Award</div>
+        <div class="cert-issuer" id="cert1-issuer">Asia Undergraduate Conference on Computing (AUCC2026), 14th Edition · Paper: "Payroll Management System (Web Application)"</div>
+      </div>
+      <div class="cert-year" id="cert1-year">Feb 2026</div>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-left">
+        <div class="cert-name" id="cert2-name">Introduction to Data Analytics using MS Excel (12 hrs)</div>
+        <div class="cert-issuer" id="cert2-issuer">Thai MOOC · King Mongkut's University of Technology Thonburi (KMUTT)</div>
+      </div>
+      <div class="cert-year" id="cert2-year">Jan 2025</div>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-left">
+        <div class="cert-name" id="cert3-name">Data Visualization: Business Opportunities with Data & Creative</div>
+        <div class="cert-issuer" id="cert3-issuer">Creative Economy Agency (CEA) / TCDC</div>
+      </div>
+      <div class="cert-year" id="cert3-year">2021</div>
+    </div>
+
+    <div class="cert-item">
+      <div class="cert-left">
+        <div class="cert-name" id="cert4-name">Business Model Canvas (e-Learning)</div>
+        <div class="cert-issuer" id="cert4-issuer">The Stock Exchange of Thailand (SET)</div>
+      </div>
+      <div class="cert-year" id="cert4-year">Jan 2025</div>
+    </div>
+
+  </div>
+</section>
+
   <footer class="cv-footer">
     <div class="footer-date" id="gen-date"></div>
     <div class="footer-brand">Portfolio: apichit.dev</div>
@@ -625,7 +722,7 @@ const cvTranslations = {
     cvNameSub: 'Apichit Plueangklang',
     'sec-summary-main': 'สรุปโปรไฟล์',
     'sec-summary-sub': 'Professional Summary',
-    'summary-body': 'Frontend Developer ที่มุ่งสร้างเว็บแอปพลิเคชันด้วย React, JavaScript และ UI ที่ใช้งานง่ายสำหรับผู้ใช้จริง มีประสบการณ์พัฒนาระบบ Stock Management, Payroll Management และ Elderly Health Monitoring ที่เชื่อมต่อข้อมูลและรองรับงานธุรกิจหลายรูปแบบ เคยทำงานกับ RESTful API, Supabase, ฐานข้อมูล, Lazada API, LINE Bot และ GPS Tracking ตามขอบเขตของโปรเจกต์ที่พัฒนา ในการฝึกงานที่ Acacia I.T. Services (Thailand) Co., Ltd. ได้ร่วมงานกับทีม Backend เพื่อเชื่อมต่อข้อมูลระหว่างหน้าบ้านและระบบหลังบ้านให้ใช้งานได้ต่อเนื่อง สนใจพัฒนา UI ที่อ่านง่าย รองรับหลายอุปกรณ์ และช่วยให้ผู้ใช้ทำงานได้เร็วขึ้น เป้าหมายคือเติบโตในสาย Frontend Developer กับทีมเทคโนโลยีหรือสตาร์ทอัพในไทย',
+    'summary-body': 'Frontend Developer / Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. มีประสบการณ์พัฒนาเว็บแอปสำหรับงานธุรกิจด้วย React, TailwindCSS และ Supabase. สนใจสร้าง UI ที่อ่านง่าย รองรับหลายอุปกรณ์ และเชื่อมต่อข้อมูลกับ backend ได้ชัดเจน. เป้าหมายคือเติบโตในสาย Frontend Developer กับทีมเทคโนโลยีหรือสตาร์ทอัพในไทย',
     'sec-skills-main': 'ทักษะเทคนิค',
     'sec-skills-sub': 'Technical Skills',
     'skill-cat-1': 'Languages & Frameworks',
@@ -638,18 +735,18 @@ const cvTranslations = {
     'exp1-title-main': 'Acacia I.T. Services (Thailand) Co., Ltd. - Junior Frontend Developer Intern',
     'exp1-title-sub': 'Frontend development internship focused on business web applications',
     'exp1-period': '2025 - Present',
-    'exp1-desc': '<li>ออกแบบและพัฒนา Payroll Management System ด้วย React และ Node.js สำหรับขั้นตอนการทำงานของพนักงานและผู้ดูแลระบบ</li><li>พัฒนาหน้าจอสำหรับจัดการข้อมูลพนักงาน ขั้นตอนคำนวณเงินเดือน การสร้างสลิปเงินเดือน และการนำเข้า/ส่งออกข้อมูลผ่าน Excel</li><li>ออกแบบ UI/UX แบบ responsive ให้รองรับการใช้งานบน desktop และ mobile พร้อมจัดโครงสร้างหน้าจอแบบ component-based</li><li>ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ data flow ระหว่าง frontend, RESTful API endpoints และข้อมูลในระบบ</li><li>ทดสอบและ debug ปัญหาการเชื่อมต่อ API เพื่อให้ฟอร์ม ตารางข้อมูล และผลลัพธ์ที่สร้างขึ้นสอดคล้องกับข้อมูลจาก backend</li><li>ใช้ Git และ GitHub เพื่อจัดการการเปลี่ยนแปลงของ frontend ระหว่างการพัฒนา</li>',
+    'exp1-desc': '<li>ออกแบบและพัฒนา Payroll Management System ด้วย React และ Node.js สำหรับขั้นตอนการทำงานของพนักงานและผู้ดูแลระบบ</li><li>ออกแบบ UI/UX แบบ responsive ให้รองรับการใช้งานบน desktop และ mobile พร้อมจัดโครงสร้างหน้าจอแบบ component-based</li><li>ทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ data flow ระหว่าง frontend, RESTful API endpoints และข้อมูลในระบบ</li><li>ใช้ Git และ GitHub เพื่อจัดการการเปลี่ยนแปลงของ frontend ระหว่างการพัฒนา</li>',
     'sec-projects-main': 'โปรเจกต์',
     'sec-projects-sub': 'Selected Projects',
     'p1-name-main': 'Electronic Parts Stock Management System',
     'p1-name-sub': 'Inventory platform',
-    'p1-desc': 'พัฒนาระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์เพื่อช่วยจัดระเบียบข้อมูลสินค้าและลดการติดตามงานแบบ manual ระบบใช้ React Vite สำหรับ frontend และใช้ MySQL/Supabase ในการจัดการข้อมูล รองรับ QR Code สำหรับระบุรายการสินค้าและช่วยให้การค้นหาข้อมูลทำได้เร็วขึ้น จุดเด่นทางเทคนิคคือการเชื่อมต่อ LINE API สำหรับการแจ้งเตือน และ Lazada API เพื่อรองรับ workflow ที่เกี่ยวข้องกับสินค้าและสต็อกออนไลน์',
+    'p1-desc': 'พัฒนาระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์เพื่อจัดระเบียบข้อมูลสินค้าและลดการติดตามงานแบบ manual. ใช้ React Vite สำหรับ frontend และ Supabase สำหรับจัดเก็บข้อมูลหลัก',
     'p2-name-main': 'Payroll Management System',
     'p2-name-sub': 'Business web app',
-    'p2-desc': 'พัฒนา workflow ระบบเงินเดือนสำหรับจัดการข้อมูลพนักงานและข้อมูลเงินเดือนผ่านหน้าจอ React Vite ที่ออกแบบให้ responsive ด้วย TailwindCSS ระบบรองรับการประมวลผลข้อมูลจากไฟล์ XLSX เพื่อช่วยเตรียมข้อมูลเงินเดือนและจัดเก็บข้อมูลอย่างเป็นระบบด้วย Supabase/PostgreSQL จุดเด่นคือการเปลี่ยนงานเงินเดือนที่อิงไฟล์ spreadsheet ให้เป็นขั้นตอนบนเว็บที่ใช้งานง่ายและพร้อมสร้างผลลัพธ์สำหรับรายงาน',
+    'p2-desc': 'พัฒนา workflow ระบบเงินเดือนสำหรับจัดการข้อมูลพนักงานและข้อมูลเงินเดือนในเว็บแอปธุรกิจที่ responsive. ใช้ React Vite และ TailwindCSS เพื่อสร้างหน้าจอที่อ่านง่ายสำหรับการเตรียมเงินเดือนและรายงาน',
     'p3-name-main': 'Elderly Health Monitoring System',
     'p3-name-sub': 'Health monitoring platform',
-    'p3-desc': 'สร้างระบบติดตามสุขภาพผู้สูงอายุเพื่อบันทึกและตรวจดูข้อมูลสุขภาพสำหรับงานดูแลผู้สูงอายุ ระบบใช้ PHP, MySQL และ Bootstrap 5 เป็นโครงสร้างหลักของแอปพลิเคชัน พร้อมใช้ Chart.js เพื่อแสดงสรุปข้อมูลสุขภาพในรูปแบบกราฟ LINE API ช่วยรองรับการสื่อสารแจ้งเตือน และ GPS Tracking เป็นฟีเจอร์ด้านตำแหน่งสำหรับการติดตามและประสานงานดูแล',
+    'p3-desc': 'สร้างระบบติดตามสุขภาพผู้สูงอายุเพื่อบันทึกและตรวจดูข้อมูลสำหรับงานดูแลผู้สูงอายุ. ใช้ PHP และ MySQL เป็นโครงสร้างหลักของแอปพลิเคชันและฐานข้อมูล',
     'sec-edu-main': 'การศึกษา',
     'sec-edu-sub': 'Education',
     'edu1-degree': 'B.Sc. Information Systems & Digital Business Innovation',
@@ -663,6 +760,20 @@ const cvTranslations = {
     'lang1-name': 'Thai',
     'lang1-level': 'Native',
     'lang2-name': 'English',
+    'sec-cert-main': 'รางวัล & ใบรับรอง',
+    'sec-cert-sub': 'Certifications & Awards',
+    'cert1-name': '🏆 รางวัลการนำเสนอบทความดีเด่น – ระดับ "ดีมาก"',
+    'cert1-issuer': 'Asia Undergraduate Conference on Computing (AUCC2026) ครั้งที่ 14 · บทความ: "Payroll Management System (Web Application)"',
+    'cert1-year': 'ก.พ. 2568',
+    'cert2-name': 'การวิเคราะห์ข้อมูลเบื้องต้น ด้วยโปรแกรม MS Excel (12 ชั่วโมง)',
+    'cert2-issuer': 'Thai MOOC · มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี (มจธ.)',
+    'cert2-year': 'ม.ค. 2568',
+    'cert3-name': 'Data Visualization: โอกาสทางธุรกิจด้วยข้อมูลและความคิดสร้างสรรค์',
+    'cert3-issuer': 'สำนักงานส่งเสริมเศรษฐกิจสร้างสรรค์ (CEA) / TCDC',
+    'cert3-year': '2564',
+    'cert4-name': 'Business Model Canvas (e-Learning)',
+    'cert4-issuer': 'ตลาดหลักทรัพย์แห่งประเทศไทย (SET)',
+    'cert4-year': 'ม.ค. 2568',
     datePrefix: 'สร้างเมื่อ',
     dateLocale: 'th-TH'
   },
@@ -678,7 +789,7 @@ const cvTranslations = {
     cvNameSub: 'อภิชิต เปลื้องกลาง',
     'sec-summary-main': 'Professional Summary',
     'sec-summary-sub': 'Recruiter Focus',
-    'summary-body': 'Frontend Developer with hands-on experience building React applications, responsive UI/UX, and practical business workflows for real users. Developed systems across stock management, payroll management, and elderly health monitoring, giving me exposure to inventory data, payroll processes, and health record interfaces. Worked with RESTful API collaboration, Supabase/database workflows, Lazada API, LINE Bot notifications, QR Code flows, and GPS Tracking within existing project scopes. As a Junior Frontend Developer Intern at Acacia I.T. Services (Thailand), I collaborated with the backend team to connect frontend interfaces with application data and API responses. I focus on clear screens, responsive layouts, and frontend work that helps users complete tasks efficiently. My career goal is to continue growing as a Frontend Developer in a Thai tech company or startup environment.',
+    'summary-body': 'Frontend Developer / Junior Frontend Developer Intern at Acacia I.T. Services (Thailand), building business web applications with React, TailwindCSS, and Supabase. I focus on clear, responsive UI and practical frontend data flows with backend teams. My career goal is to grow as a Frontend Developer in a Thai tech company or startup environment.',
     'sec-skills-main': 'Technical Skills',
     'sec-skills-sub': 'Core Stack',
     'skill-cat-1': 'Languages & Frameworks',
@@ -691,18 +802,18 @@ const cvTranslations = {
     'exp1-title-main': 'Acacia I.T. Services (Thailand) Co., Ltd. - Junior Frontend Developer Intern',
     'exp1-title-sub': 'Frontend development internship focused on business web applications',
     'exp1-period': '2025 - Present',
-    'exp1-desc': '<li>Designed and developed a Payroll Management System using React and Node.js for employee and administrator workflows.</li><li>Built frontend screens for employee data management, salary calculation flow, payslip generation, and Excel-based import/export.</li><li>Implemented responsive UI/UX across desktop and mobile layouts with reusable component-based interface patterns.</li><li>Collaborated with the backend team to connect frontend data flow with RESTful API endpoints and application data.</li><li>Tested and debugged API integration issues to keep payroll forms, tables, and generated outputs consistent with backend responses.</li><li>Used Git and GitHub to manage frontend changes during development.</li>',
+    'exp1-desc': '<li>Designed and developed a Payroll Management System using React and Node.js for employee and administrator workflows.</li><li>Implemented responsive UI/UX across desktop and mobile layouts with reusable component-based interface patterns.</li><li>Collaborated with the backend team to connect frontend data flow with RESTful API endpoints and application data.</li><li>Used Git and GitHub to manage frontend changes during development.</li>',
     'sec-projects-main': 'Projects',
     'sec-projects-sub': 'Selected Work',
     'p1-name-main': 'Electronic Parts Stock Management System',
     'p1-name-sub': 'Inventory platform',
-    'p1-desc': 'Built a stock management system for electronic parts to help organize inventory data and reduce manual tracking work. The system uses React Vite for the frontend, MySQL/Supabase for data handling, and QR Code flows for item identification. LINE API supports notification use cases, while Lazada API integration adds a practical e-commerce connection for product and stock workflows.',
+    'p1-desc': 'Built an electronic parts stock management system to organize inventory data and reduce manual tracking. React Vite powers the frontend, while Supabase handles core data storage.',
     'p2-name-main': 'Payroll Management System',
     'p2-name-sub': 'Business web app',
-    'p2-desc': 'Developed payroll workflows for managing employee payroll data through a responsive React Vite interface styled with TailwindCSS. The system supports XLSX-based data processing for payroll preparation and structured storage with Supabase/PostgreSQL. Its strongest technical focus is turning spreadsheet-based payroll inputs into cleaner web-based workflows and report-ready outputs.',
+    'p2-desc': 'Developed payroll workflows for managing employee and salary data in a responsive business web app. React Vite and TailwindCSS support a clean interface for payroll preparation and reporting.',
     'p3-name-main': 'Elderly Health Monitoring System',
     'p3-name-sub': 'Health monitoring platform',
-    'p3-desc': 'Created an elderly health monitoring system to record and review health information for senior care use cases. The platform uses PHP, MySQL, and Bootstrap 5 for the application structure, with Chart.js for visual health summaries. LINE API supports alert communication, while GPS Tracking provides a location-focused feature for monitoring and care coordination.',
+    'p3-desc': 'Created an elderly health monitoring system to record and review senior care information. PHP and MySQL provide the core application and database structure.',
     'sec-edu-main': 'Education',
     'sec-edu-sub': 'Academic Background',
     'edu1-degree': 'B.Sc. Information Systems & Digital Business Innovation',
@@ -716,6 +827,20 @@ const cvTranslations = {
     'lang1-name': 'Thai',
     'lang1-level': 'Native',
     'lang2-name': 'English',
+    'sec-cert-main': 'Certifications & Awards',
+    'sec-cert-sub': 'Recognition & Training',
+    'cert1-name': '🏆 Best Paper Presentation – "Very Good" Award',
+    'cert1-issuer': 'Asia Undergraduate Conference on Computing (AUCC2026), 14th Edition · Paper: "Payroll Management System (Web Application)"',
+    'cert1-year': 'Feb 2026',
+    'cert2-name': 'Introduction to Data Analytics using MS Excel (12 hrs)',
+    'cert2-issuer': "Thai MOOC · King Mongkut's University of Technology Thonburi (KMUTT)",
+    'cert2-year': 'Jan 2025',
+    'cert3-name': 'Data Visualization: Business Opportunities with Data & Creative',
+    'cert3-issuer': 'Creative Economy Agency (CEA) / TCDC',
+    'cert3-year': '2021',
+    'cert4-name': 'Business Model Canvas (e-Learning)',
+    'cert4-issuer': 'The Stock Exchange of Thailand (SET)',
+    'cert4-year': 'Jan 2025',
     datePrefix: 'Generated on',
     dateLocale: 'en-GB'
   }

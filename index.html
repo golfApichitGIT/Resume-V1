@@ -1,1179 +1,1594 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apichit Plueangklang - Frontend Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/nickthaweerat/jspdf-thai-font/THSarabunNew.js"></script>
-<style>
-  *, *::before, *::after { box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apichit Plueangklang - Frontend Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/nickthaweerat/jspdf-thai-font/THSarabunNew.js"></script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-bg: #0a0a0f;
+      --color-bg-2: #0f111a;
+      --color-surface: rgba(255, 255, 255, .065);
+      --color-surface-strong: rgba(255, 255, 255, .095);
+      --color-accent: #7c8cff;
+      --color-accent-2: #22d3ee;
+      --color-text: #f7f8ff;
+      --color-muted: #9ca3b5;
+      --color-line: rgba(255, 255, 255, .12);
+      --radius-card: 8px;
+      --transition: 220ms ease;
+      --shadow-card: 0 24px 80px rgba(0, 0, 0, .35);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(124, 140, 255, .22), transparent 26rem),
+        radial-gradient(circle at 86% 22%, rgba(34, 211, 238, .16), transparent 24rem),
+        linear-gradient(180deg, #0a0a0f 0%, #0f111a 48%, #090a0f 100%);
+      color: var(--color-text);
+      font-family: "Inter", "Noto Sans Thai", "Tahoma", sans-serif;
+      font-weight: 400;
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .24;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .045) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
+      z-index: -2;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    #canvas-bg {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: .62;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 68px;
+      padding: 0 20px;
+      border-bottom: 1px solid var(--color-line);
+      background: rgba(10, 10, 15, .72);
+      backdrop-filter: blur(18px);
+      transition: background var(--transition), box-shadow var(--transition);
+    }
+
+    .nav-logo {
+      font-size: .88rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: #fff;
+    }
+
+    .nav-logo span {
+      color: var(--color-accent-2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a,
+    .lang-toggle,
+    .nav-cv-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 36px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 0 12px;
+      color: var(--color-muted);
+      background: transparent;
+      font-size: .86rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color var(--transition), background var(--transition), border-color var(--transition), transform var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active,
+    .lang-toggle:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, .07);
+      border-color: var(--color-line);
+    }
+
+    .nav-cv-btn {
+      margin-left: 4px;
+      color: #061018;
+      background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+      border: 0;
+      font-weight: 800;
+    }
+
+    .nav-cv-btn:hover,
+    .btn-primary:hover,
+    .btn-outline:hover,
+    .project-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--color-line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .06);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .lang-toggle {
+      gap: 6px;
+    }
+
+    section {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    section.in-view,
+    #hero {
+      opacity: 1;
+      transform: none;
+    }
+
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 112px 20px 64px;
+    }
+
+    .hero-inner {
+      width: min(1120px, 100%);
+      display: grid;
+      gap: 36px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .hero-avatar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .hero-avatar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center top;
+      border: 2px solid rgba(124, 140, 255, 0.4);
+      box-shadow: 0 0 0 4px rgba(124, 140, 255, 0.12), 0 0 32px rgba(124, 140, 255, 0.2);
+    }
+
+    .eyebrow,
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--color-accent-2);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before,
+    .section-label::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: currentColor;
+    }
 
-  :root {
-    --color-bg: #0a0a0f;
-    --color-bg-2: #0f111a;
-    --color-surface: rgba(255, 255, 255, .065);
-    --color-surface-strong: rgba(255, 255, 255, .095);
-    --color-accent: #7c8cff;
-    --color-accent-2: #22d3ee;
-    --color-text: #f7f8ff;
-    --color-muted: #9ca3b5;
-    --color-line: rgba(255, 255, 255, .12);
-    --radius-card: 8px;
-    --transition: 220ms ease;
-    --shadow-card: 0 24px 80px rgba(0, 0, 0, .35);
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-      radial-gradient(circle at 18% 8%, rgba(124, 140, 255, .22), transparent 26rem),
-      radial-gradient(circle at 86% 22%, rgba(34, 211, 238, .16), transparent 24rem),
-      linear-gradient(180deg, #0a0a0f 0%, #0f111a 48%, #090a0f 100%);
-    color: var(--color-text);
-    font-family: "Inter", "Noto Sans Thai", "Tahoma", sans-serif;
-    font-weight: 400;
-    letter-spacing: 0;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: .24;
-    background-image:
-      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: linear-gradient(to bottom, #000 0%, transparent 70%);
-    z-index: -2;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  button, input, textarea { font: inherit; }
-
-  #canvas-bg {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: .62;
-  }
-
-  .content { position: relative; z-index: 1; }
-
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 68px;
-    padding: 0 20px;
-    border-bottom: 1px solid var(--color-line);
-    background: rgba(10, 10, 15, .72);
-    backdrop-filter: blur(18px);
-    transition: background var(--transition), box-shadow var(--transition);
-  }
-
-  .nav-logo {
-    font-size: .88rem;
-    font-weight: 800;
-    letter-spacing: 0;
-    color: #fff;
-  }
-
-  .nav-logo span {
-    color: var(--color-accent-2);
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .nav-links a,
-  .lang-toggle,
-  .nav-cv-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 0 12px;
-    color: var(--color-muted);
-    background: transparent;
-    font-size: .86rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color var(--transition), background var(--transition), border-color var(--transition), transform var(--transition);
-  }
-
-  .nav-links a:hover,
-  .nav-links a.active,
-  .lang-toggle:hover {
-    color: #fff;
-    background: rgba(255,255,255,.07);
-    border-color: var(--color-line);
-  }
-
-  .nav-cv-btn {
-    margin-left: 4px;
-    color: #061018;
-    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
-    border: 0;
-    font-weight: 800;
-  }
-
-  .nav-cv-btn:hover,
-  .btn-primary:hover,
-  .btn-outline:hover,
-  .project-link:hover {
-    transform: translateY(-2px);
-  }
-
-  .nav-toggle {
-    display: none;
-    width: 42px;
-    height: 42px;
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    background: rgba(255,255,255,.06);
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .lang-toggle { gap: 6px; }
-
-  section {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity .7s ease, transform .7s ease;
-  }
-
-  section.in-view,
-  #hero {
-    opacity: 1;
-    transform: none;
-  }
-
-  #hero {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    padding: 112px 20px 64px;
-  }
-
-  .hero-inner {
-    width: min(1120px, 100%);
-    display: grid;
-    gap: 36px;
-    justify-items: center;
-    text-align: center;
-  }
-
-  .hero-avatar {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-  }
-
-  .hero-avatar img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center top;
-    border: 2px solid rgba(124, 140, 255, 0.4);
-    box-shadow: 0 0 0 4px rgba(124, 140, 255, 0.12), 0 0 32px rgba(124, 140, 255, 0.2);
-  }
-
-  .eyebrow,
-  .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--color-accent-2);
-    font-size: .78rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .eyebrow::before,
-  .section-label::before {
-    content: "";
-    width: 26px;
-    height: 1px;
-    background: currentColor;
-  }
-
-  .hero-name {
-    margin: 16px 0 0;
-    max-width: 980px;
-    font-size: clamp(32px, 5vw, 52px);
-    line-height: .9;
-    font-weight: 800;
-    letter-spacing: 0;
-  }
-
-  .hero-name span {
-    display: block;
-    color: transparent;
-    background: linear-gradient(135deg, #fff 8%, #c7d2fe 48%, #67e8f9 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
-  .hero-typed {
-    min-height: 34px;
-    margin-top: 20px;
-    color: #d7dcff;
-    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
-    font-weight: 600;
-  }
-
-  .cursor {
-    color: var(--color-accent-2);
-    animation: blink 1s steps(2, start) infinite;
-  }
-
-  @keyframes blink { 50% { opacity: 0; } }
-
-  .hero-desc {
-    max-width: 720px;
-    margin: 18px auto 0;
-    color: var(--color-muted);
-    font-size: clamp(1rem, 2vw, 1.15rem);
-    line-height: 1.75;
-  }
-
-  .hero-btns {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 28px;
-  }
-
-  .btn-primary,
-  .btn-outline,
-  .project-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 46px;
-    border-radius: 999px;
-    padding: 0 18px;
-    font-size: .95rem;
-    font-weight: 800;
-    transition: transform var(--transition), border-color var(--transition), background var(--transition);
-  }
-
-  .btn-primary {
-    color: #07111a;
-    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
-  }
-
-  .btn-outline {
-    color: #fff;
-    border: 1px solid var(--color-line);
-    background: rgba(255,255,255,.055);
-  }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    color: rgba(255,255,255,.46);
-    font-size: .72rem;
-    font-weight: 700;
-    letter-spacing: .14em;
-  }
-
-  .section-inner {
-    width: min(1120px, calc(100% - 40px));
-    margin: 0 auto;
-    padding: 86px 0;
-  }
-
-  .section-title {
-    margin: 12px 0 26px;
-    font-size: clamp(2rem, 5vw, 3.7rem);
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: 0;
-  }
-
-  .section-title span {
-    color: transparent;
-    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
-  .about-grid,
-  .contact-grid {
-    display: grid;
-    gap: 18px;
-  }
-
-  .about-text {
-    padding: 26px;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-    background: linear-gradient(180deg, var(--color-surface-strong), rgba(255,255,255,.035));
-    box-shadow: var(--shadow-card);
-  }
-
-  .about-text p {
-    margin: 0;
-    color: #c4cad8;
-    font-size: 1rem;
-    line-height: 1.75;
-  }
-
-  .about-text p + p { margin-top: 14px; }
-
-  .about-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-
-  .stat-box,
-  .skill-group,
-  .project-card,
-  .timeline-item,
-  .contact-form,
-  .contact-info {
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-    background: linear-gradient(180deg, var(--color-surface), rgba(255,255,255,.035));
-    box-shadow: var(--shadow-card);
-  }
-
-  .stat-box {
-    min-height: 118px;
-    display: grid;
-    align-content: center;
-    gap: 8px;
-    padding: 20px;
-  }
-
-  .stat-num {
-    color: #fff;
-    font-size: 2rem;
-    font-weight: 800;
-  }
-
-  .stat-label {
-    color: var(--color-muted);
-    font-size: .9rem;
-    font-weight: 600;
-  }
-
-  .projects-grid {
-    display: grid;
-    gap: 18px;
-  }
-
-  .project-card {
-    overflow: hidden;
-  }
-
-  .project-header {
-    display: grid;
-    gap: 18px;
-    padding: 18px;
-  }
-
-  .gallery-wrap {
-    border-bottom: 1px solid var(--color-line);
-    background: rgba(0,0,0,.22);
-  }
-
-  .gallery-main {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    cursor: zoom-in;
-    background: #05070b;
-  }
-
-  .gallery-main-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: opacity .2s ease, transform .4s ease;
-  }
-
-  .gallery-caption {
-    position: absolute;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    padding: 10px 12px;
-    border: 1px solid rgba(255,255,255,.18);
-    border-radius: 8px;
-    background: rgba(5, 7, 11, .72);
-    backdrop-filter: blur(12px);
-  }
-
-  .gallery-caption-title {
-    color: #fff;
-    font-size: .92rem;
-    font-weight: 800;
-  }
-
-  .gallery-caption-sub {
-    margin-top: 3px;
-    color: var(--color-muted);
-    font-size: .78rem;
-    line-height: 1.35;
-  }
-
-  .gallery-thumbs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    padding: 10px;
-  }
-
-  .thumb {
-    aspect-ratio: 16 / 10;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    overflow: hidden;
-    cursor: pointer;
-    opacity: .58;
-    transition: opacity var(--transition), border-color var(--transition), transform var(--transition);
-  }
-
-  .thumb:hover,
-  .thumb.active {
-    opacity: 1;
-    border-color: var(--color-accent-2);
-    transform: translateY(-1px);
-  }
-
-  .thumb-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .project-info { display: grid; gap: 10px; }
-
-  .project-kicker {
-    color: var(--color-accent-2);
-    font-size: .76rem;
-    font-weight: 800;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .project-title {
-    color: #fff;
-    font-size: clamp(1.3rem, 2.8vw, 2rem);
-    line-height: 1.12;
-    font-weight: 800;
-  }
-
-  .project-desc {
-    margin: 0;
-    color: #c4cad8;
-    line-height: 1.65;
-  }
-
-  .project-tech,
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .tag {
-    display: inline-flex;
-    align-items: center;
-    min-height: 30px;
-    border: 1px solid rgba(124, 140, 255, .28);
-    border-radius: 999px;
-    padding: 0 10px;
-    color: #dce1ff;
-    background: rgba(124, 140, 255, .12);
-    font-size: .82rem;
-    font-weight: 700;
-  }
-
-  .project-link {
-    justify-self: start;
-    min-height: 40px;
-    border: 1px solid var(--color-line);
-    color: #fff;
-    background: rgba(255,255,255,.06);
-  }
-
-  .skills-grid {
-    display: grid;
-    gap: 14px;
-  }
-
-  .skill-group {
-    padding: 20px;
-  }
-
-  .skill-heading {
-    margin: 0 0 14px;
-    color: #fff;
-    font-size: 1rem;
-    font-weight: 800;
-  }
-
-  .timeline {
-    position: relative;
-    display: grid;
-    gap: 18px;
-  }
-
-  .timeline-item {
-    position: relative;
-    padding: 24px;
-  }
-
-  .timeline-period {
-    color: var(--color-accent-2);
-    font-size: .82rem;
-    font-weight: 800;
-  }
-
-  .timeline-title {
-    margin-top: 8px;
-    color: #fff;
-    font-size: 1.3rem;
-    font-weight: 800;
-  }
-
-  .timeline-place {
-    margin-top: 5px;
-    color: #c4cad8;
-    font-weight: 600;
-  }
-
-  .timeline-desc {
-    margin: 14px 0 0;
-    padding-left: 18px;
-    color: var(--color-muted);
-    line-height: 1.65;
-  }
-
-  .timeline-desc li { margin: 6px 0; }
-
-  .education-strip {
-    display: grid;
-    gap: 10px;
-    margin-top: 18px;
-  }
-
-  .education-item {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px;
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-card);
-    background: rgba(255,255,255,.04);
-  }
-
-  .education-item strong { color: #fff; }
-  .education-item span { color: var(--color-muted); font-size: .9rem; }
-
-  .contact-grid { grid-template-columns: 1fr; }
-
-  .contact-form,
-  .contact-info {
-    padding: 22px;
-  }
-
-  .contact-lead {
-    margin: -8px 0 22px;
-    max-width: 640px;
-    color: var(--color-muted);
-    line-height: 1.7;
-  }
-
-  .form-group { margin-bottom: 14px; }
-
-  .form-label {
-    display: block;
-    margin-bottom: 7px;
-    color: #dce1ff;
-    font-size: .82rem;
-    font-weight: 800;
-  }
-
-  .form-input,
-  .form-textarea {
-    width: 100%;
-    border: 1px solid var(--color-line);
-    border-radius: 8px;
-    padding: 13px 14px;
-    color: #fff;
-    outline: none;
-    background: rgba(255,255,255,.055);
-    transition: border-color var(--transition), background var(--transition);
-  }
-
-  .form-input:focus,
-  .form-textarea:focus {
-    border-color: var(--color-accent-2);
-    background: rgba(255,255,255,.08);
-  }
-
-  .form-textarea { resize: vertical; min-height: 136px; }
-
-  .contact-links {
-    display: grid;
-    gap: 10px;
-  }
-
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid var(--color-line);
-    border-radius: 8px;
-    background: rgba(255,255,255,.045);
-  }
-
-  .contact-icon {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    color: #061018;
-    background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
-    font-weight: 800;
-  }
-
-  .contact-detail { min-width: 0; }
-  .contact-detail-label {
-    display: block;
-    color: var(--color-muted);
-    font-size: .74rem;
-    font-weight: 800;
-  }
-  .contact-detail-val {
-    display: block;
-    color: #fff;
-    overflow-wrap: anywhere;
-    font-size: .92rem;
-    font-weight: 600;
-  }
-
-  .social-links {
-    display: flex;
-    gap: 10px;
-    margin-top: 14px;
-  }
-
-  .social-link {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    background: rgba(255,255,255,.055);
-    color: #fff;
-    transition: transform var(--transition), border-color var(--transition);
-  }
-
-  .social-link:hover {
-    transform: translateY(-2px);
-    border-color: var(--color-accent-2);
-  }
-
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: rgba(0,0,0,.82);
-    backdrop-filter: blur(14px);
-  }
-
-  .lightbox.open { display: flex; }
-
-  .lightbox-inner {
-    position: relative;
-    width: min(1120px, 100%);
-  }
-
-  .lightbox-inner img {
-    width: 100%;
-    max-height: 82vh;
-    object-fit: contain;
-    border-radius: 8px;
-    border: 1px solid var(--color-line);
-    background: #05070b;
-  }
-
-  .lightbox-close,
-  .lightbox-nav {
-    position: absolute;
-    border: 1px solid var(--color-line);
-    border-radius: 999px;
-    color: #fff;
-    background: rgba(255,255,255,.08);
-    cursor: pointer;
-  }
-
-  .lightbox-close {
-    top: -52px;
-    right: 0;
-    min-height: 38px;
-    padding: 0 14px;
-    font-weight: 800;
-  }
-
-  .lightbox-nav {
-    top: 50%;
-    transform: translateY(-50%);
-    width: 42px;
-    height: 42px;
-    font-size: 2rem;
-  }
-
-  .lightbox-prev { left: -54px; }
-  .lightbox-next { right: -54px; }
-
-  footer {
-    border-top: 1px solid var(--color-line);
-    padding: 28px 20px;
-    color: var(--color-muted);
-    text-align: center;
-    font-size: .88rem;
-  }
-
-  [data-th], [data-en] { transition: opacity .15s ease; }
-  .lang-switching [data-th],
-  .lang-switching [data-en] { opacity: 0; }
-
-  @media (min-width: 768px) {
     .hero-name {
-      white-space: nowrap;
+      margin: 16px 0 0;
+      max-width: 980px;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: .9;
+      font-weight: 800;
+      letter-spacing: 0;
     }
 
     .hero-name span {
-      display: inline;
+      display: block;
+      color: transparent;
+      background: linear-gradient(135deg, #fff 8%, #c7d2fe 48%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
     }
 
-    .hero-name span + span::before {
-      content: " ";
+    .hero-typed {
+      min-height: 34px;
+      margin-top: 20px;
+      color: #d7dcff;
+      font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+      font-weight: 600;
     }
 
-    nav { padding: 0 34px; }
-    .about-grid { grid-template-columns: 1.25fr .75fr; align-items: stretch; }
-    .about-stats { grid-template-columns: 1fr; }
-    .projects-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
-    .project-header { min-height: 380px; grid-template-rows: auto 1fr; }
-    .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .contact-grid { grid-template-columns: 1.15fr .85fr; align-items: start; }
-  }
+    .cursor {
+      color: var(--color-accent-2);
+      animation: blink 1s steps(2, start) infinite;
+    }
 
-  @media (min-width: 1024px) {
-    .project-header { padding: 20px; }
-    .scroll-hint { display: block; }
-  }
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
 
-  @media (max-width: 767px) {
-    .nav-toggle { display: grid; place-items: center; }
-    .nav-links {
+    .hero-desc {
+      max-width: 720px;
+      margin: 18px auto 0;
+      color: var(--color-muted);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.75;
+    }
+
+    .hero-btns {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn-primary,
+    .btn-outline,
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      border-radius: 999px;
+      padding: 0 18px;
+      font-size: .95rem;
+      font-weight: 800;
+      transition: transform var(--transition), border-color var(--transition), background var(--transition);
+    }
+
+    .btn-primary {
+      color: #07111a;
+      background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+    }
+
+    .btn-outline {
+      color: #fff;
+      border: 1px solid var(--color-line);
+      background: rgba(255, 255, 255, .055);
+    }
+
+    .scroll-hint {
       position: absolute;
-      top: calc(100% + 8px);
-      left: 16px;
-      right: 16px;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
       display: none;
-      flex-direction: column;
-      align-items: stretch;
+      color: rgba(255, 255, 255, .46);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+    }
+
+    .section-inner {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 86px 0;
+    }
+
+    .section-title {
+      margin: 12px 0 26px;
+      font-size: clamp(2rem, 5vw, 3.7rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .section-title span {
+      color: transparent;
+      background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .about-grid,
+    .contact-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .about-text {
+      padding: 26px;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      background: linear-gradient(180deg, var(--color-surface-strong), rgba(255, 255, 255, .035));
+      box-shadow: var(--shadow-card);
+    }
+
+    .about-text p {
+      margin: 0;
+      color: #c4cad8;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .about-text p+p {
+      margin-top: 14px;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat-box,
+    .skill-group,
+    .project-card,
+    .timeline-item,
+    .contact-form,
+    .contact-info {
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      background: linear-gradient(180deg, var(--color-surface), rgba(255, 255, 255, .035));
+      box-shadow: var(--shadow-card);
+    }
+
+    .stat-box {
+      min-height: 118px;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 20px;
+    }
+
+    .stat-num {
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: var(--color-muted);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .project-card {
+      overflow: hidden;
+    }
+
+    .project-header {
+      display: grid;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .gallery-wrap {
+      border-bottom: 1px solid var(--color-line);
+      background: rgba(0, 0, 0, .22);
+    }
+
+    .gallery-main {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      cursor: zoom-in;
+      background: #05070b;
+    }
+
+    .gallery-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: opacity .2s ease, transform .4s ease;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 8px;
+      background: rgba(5, 7, 11, .72);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-caption-title {
+      color: #fff;
+      font-size: .92rem;
+      font-weight: 800;
+    }
+
+    .gallery-caption-sub {
+      margin-top: 3px;
+      color: var(--color-muted);
+      font-size: .78rem;
+      line-height: 1.35;
+    }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .thumb {
+      aspect-ratio: 16 / 10;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: .58;
+      transition: opacity var(--transition), border-color var(--transition), transform var(--transition);
+    }
+
+    .thumb:hover,
+    .thumb.active {
+      opacity: 1;
+      border-color: var(--color-accent-2);
+      transform: translateY(-1px);
+    }
+
+    .thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .project-info {
+      display: grid;
+      gap: 10px;
+    }
+
+    .project-kicker {
+      color: var(--color-accent-2);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .project-title {
+      color: #fff;
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
+      line-height: 1.12;
+      font-weight: 800;
+    }
+
+    .project-desc {
+      margin: 0;
+      color: #c4cad8;
+      line-height: 1.65;
+    }
+
+    .project-tech,
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      border: 1px solid rgba(124, 140, 255, .28);
+      border-radius: 999px;
+      padding: 0 10px;
+      color: #dce1ff;
+      background: rgba(124, 140, 255, .12);
+      font-size: .82rem;
+      font-weight: 700;
+    }
+
+    .project-link {
+      justify-self: start;
+      min-height: 40px;
+      border: 1px solid var(--color-line);
+      color: #fff;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .skills-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .skill-group {
+      padding: 20px;
+    }
+
+    .skill-heading {
+      margin: 0 0 14px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 24px;
+    }
+
+    .timeline-period {
+      color: var(--color-accent-2);
+      font-size: .82rem;
+      font-weight: 800;
+    }
+
+    .timeline-title {
+      margin-top: 8px;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 800;
+    }
+
+    .timeline-place {
+      margin-top: 5px;
+      color: #c4cad8;
+      font-weight: 600;
+    }
+
+    .timeline-desc {
+      margin: 14px 0 0;
+      padding-left: 18px;
+      color: var(--color-muted);
+      line-height: 1.65;
+    }
+
+    .timeline-desc li {
+      margin: 6px 0;
+    }
+
+    .education-strip {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .education-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
       padding: 14px;
       border: 1px solid var(--color-line);
-      border-radius: 12px;
-      background: rgba(10,10,15,.94);
-      backdrop-filter: blur(18px);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, .04);
     }
-    .nav-links.active { display: flex; }
-    .nav-links a,
-    .lang-toggle,
-    .nav-cv-btn { justify-content: flex-start; width: 100%; min-height: 42px; }
-    .about-stats { grid-template-columns: 1fr; }
-    .education-item { flex-direction: column; }
-    .lightbox-prev { left: 8px; }
-    .lightbox-next { right: 8px; }
-  }
-</style>
-</head>
-<body>
 
-<canvas id="canvas-bg"></canvas>
+    .education-item strong {
+      color: #fff;
+    }
 
-<div class="content">
-<nav aria-label="Main navigation">
-  <div class="nav-logo">Apichit<span>.</span>dev</div>
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle mobile menu">☰</button>
-  <div class="nav-links" id="navLinks">
-    <a href="#about" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
-    <a href="#projects" data-th="โปรเจกต์" data-en="Projects">โปรเจกต์</a>
-    <a href="#skills" data-th="ทักษะ" data-en="Skills">ทักษะ</a>
-    <a href="#experience" data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
-    <a href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
-    <button class="nav-cv-btn" onclick="generateCV()"><span data-th="Download CV" data-en="Download CV">Download CV</span></button>
-    <button class="lang-toggle" id="langToggle" onclick="toggleLang()" aria-label="Switch language">
-      <span class="lang-flag" id="langFlag">↔</span>
-      <span class="lang-label" id="langLabel">EN</span>
-    </button>
-  </div>
-</nav>
+    .education-item span {
+      color: var(--color-muted);
+      font-size: .9rem;
+    }
 
-<section id="hero">
-  <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-avatar">
-        <img src="images/profile.jpg" alt="Apichit Plueangklang">
-      </div>
-      <div class="eyebrow">Frontend Developer</div>
-      <h1 class="hero-name"><span>Apichit</span><span>Plueangklang</span></h1>
-      <div class="hero-typed"><span id="typed-text"></span><span class="cursor">|</span></div>
-      <p class="hero-desc"
-         data-th="นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง"
-         data-en="Frontend Developer actively seeking opportunities with Thai tech companies and startups, focused on React applications, responsive UI, and practical API-connected product workflows.">
-        นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง
-      </p>
-      <div class="hero-btns">
-        <a href="#projects" class="btn-primary" data-th="ดูโปรเจกต์" data-en="View Projects">ดูโปรเจกต์</a>
-        <button class="btn-outline" onclick="generateCV()" data-th="ดาวน์โหลด CV" data-en="Download CV">ดาวน์โหลด CV</button>
-      </div>
-    </div>
-  </div>
-  <div class="scroll-hint">SCROLL</div>
-</section>
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
 
-<section id="about">
-  <div class="section-inner">
-    <div class="section-label">01 About</div>
-    <h2 class="section-title">Developer <span>Profile</span></h2>
-    <div class="about-grid">
-      <div class="about-text">
-        <p data-th="ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL"
-           data-en="My name is Apichit Plueangklang, a Frontend Developer who enjoys building web applications that are clear, usable, and practical for real workflows using React, JavaScript, TailwindCSS, Supabase, and MySQL/PostgreSQL.">
-          ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL
-        </p>
-        <p data-th="ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ RESTful API"
-           data-en="I am currently a Junior Frontend Developer Intern at Acacia I.T. Services (Thailand) Co., Ltd., building a Payroll Management System with React + Node.js and collaborating with the backend team on RESTful API integration.">
-          ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ RESTful API
-        </p>
-        <div class="education-strip">
-          <div class="education-item">
-            <div><strong>B.Sc. Information Systems & Digital Business Innovation</strong><br><span>RMUTI · 2019-2022</span></div>
-            <span>GPA 3.02</span>
-          </div>
-          <div class="education-item">
-            <div><strong>Vocational Certificate, Business Computer</strong><br><span>Nakhon Ratchasima Technical College · 2017-2019</span></div>
-            <span>GPA 3.83</span>
-          </div>
-        </div>
-      </div>
-      <div class="about-stats">
-        <div class="stat-box"><div class="stat-num">3</div><div class="stat-label" data-th="โปรเจกต์หลัก" data-en="Featured Projects">โปรเจกต์หลัก</div></div>
-        <div class="stat-box"><div class="stat-num">1</div><div class="stat-label" data-th="ประสบการณ์ฝึกงาน" data-en="Internship">ประสบการณ์ฝึกงาน</div></div>
-        <div class="stat-box"><div class="stat-num">2+</div><div class="stat-label" data-th="ปีในการเขียนโค้ด" data-en="Years Coding">ปีในการเขียนโค้ด</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+    .contact-form,
+    .contact-info {
+      padding: 22px;
+    }
 
-<section id="projects">
-  <div class="section-inner">
-    <div class="section-label">02 Projects</div>
-    <h2 class="section-title">Selected <span>Work</span></h2>
-    <div class="projects-grid">
-      <article class="project-card">
-        <div class="gallery-wrap">
-          <div class="gallery-main" id="galleryMain" onclick="openLightbox(currentSlide)">
-            <img class="gallery-main-img" id="mainImg" src="images/stock/1.jpg" alt="Stock Management Dashboard" loading="lazy">
-            <div class="gallery-caption">
-              <div class="gallery-caption-title" id="captionTitle" data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
-              <div class="gallery-caption-sub" id="captionSub" data-th="// ภาพรวมระบบ · สถิติ · กราฟ realtime" data-en="// System overview · Statistics · Realtime charts">// ภาพรวมระบบ · สถิติ · กราฟ realtime</div>
-            </div>
-          </div>
-          <div class="gallery-thumbs">
-            <div class="thumb active" onclick="switchSlide(0)"><img class="thumb-img" src="images/stock/1.jpg" alt="Stock dashboard" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide(1)"><img class="thumb-img" src="images/stock/2.jpg" alt="Stock management" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide(2)"><img class="thumb-img" src="images/stock/3.jpg" alt="Stock report" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide(3)"><img class="thumb-img" src="images/stock/4.jpg" alt="Stock orders" loading="lazy"></div>
-          </div>
-        </div>
-        <div class="project-header">
-          <div class="project-info">
-            <div class="project-kicker">Inventory / API</div>
-            <div class="project-title" data-th="Electronic Parts Stock Management System" data-en="Electronic Parts Stock Management System">Electronic Parts Stock Management System</div>
-            <p class="project-desc" data-th="ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API สำหรับงานคลังและการขายออนไลน์" data-en="Electronic parts stock management system with QR Code workflows, LINE API, Supabase, and Lazada API for inventory and online selling workflows.">ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API สำหรับงานคลังและการขายออนไลน์</p>
-            <div class="project-tech"><span class="tag">React Vite</span><span class="tag">MySQL</span><span class="tag">Supabase</span><span class="tag">LINE API</span><span class="tag">QR Code</span><span class="tag">Lazada API</span></div>
-          </div>
-          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </article>
+    .contact-lead {
+      margin: -8px 0 22px;
+      max-width: 640px;
+      color: var(--color-muted);
+      line-height: 1.7;
+    }
 
-      <article class="project-card">
-        <div class="gallery-wrap">
-          <div class="gallery-main" id="galleryMain2" onclick="openLightbox2(currentSlide2)">
-            <img class="gallery-main-img" id="mainImg2" src="images/payroll/1.png" alt="Payroll Dashboard" loading="lazy">
-            <div class="gallery-caption">
-              <div class="gallery-caption-title" id="captionTitle2" data-th="Payroll Dashboard" data-en="Payroll Dashboard">Payroll Dashboard</div>
-              <div class="gallery-caption-sub" id="captionSub2" data-th="// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน" data-en="// Payroll · Payslips · Reports">// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน</div>
-            </div>
-          </div>
-          <div class="gallery-thumbs">
-            <div class="thumb active" onclick="switchSlide2(0)"><img class="thumb-img" src="images/payroll/1.png" alt="Payroll dashboard" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide2(1)"><img class="thumb-img" src="images/payroll/2.png" alt="Employee management" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide2(2)"><img class="thumb-img" src="images/payroll/3.png" alt="Payroll generation" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide2(3)"><img class="thumb-img" src="images/payroll/4.png" alt="Payroll reports" loading="lazy"></div>
-          </div>
-        </div>
-        <div class="project-header">
-          <div class="project-info">
-            <div class="project-kicker">Business App</div>
-            <div class="project-title" data-th="Payroll Management System" data-en="Payroll Management System">Payroll Management System</div>
-            <p class="project-desc" data-th="ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน Supabase/PostgreSQL" data-en="Payroll management application built with React Vite and TailwindCSS, supporting XLSX workflows and Supabase/PostgreSQL data storage.">ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน Supabase/PostgreSQL</p>
-            <div class="project-tech"><span class="tag">React Vite</span><span class="tag">TailwindCSS</span><span class="tag">XLSX</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span></div>
-          </div>
-          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </article>
+    .form-group {
+      margin-bottom: 14px;
+    }
 
-      <article class="project-card">
-        <div class="gallery-wrap">
-          <div class="gallery-main" id="galleryMain3" onclick="openLightbox3(currentSlide3)">
-            <img class="gallery-main-img" id="mainImg3" src="images/elderly/1.jpg" alt="Elderly Health Dashboard" loading="lazy">
-            <div class="gallery-caption">
-              <div class="gallery-caption-title" id="captionTitle3" data-th="หน้า Dashboard" data-en="Dashboard">หน้า Dashboard</div>
-              <div class="gallery-caption-sub" id="captionSub3" data-th="// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ" data-en="// System overview · Statistics · Senior data">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ</div>
-            </div>
-          </div>
-          <div class="gallery-thumbs">
-            <div class="thumb active" onclick="switchSlide3(0)"><img class="thumb-img" src="images/elderly/1.jpg" alt="Elderly dashboard" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide3(1)"><img class="thumb-img" src="images/elderly/2.jpg" alt="Health records" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide3(2)"><img class="thumb-img" src="images/elderly/3.jpg" alt="Health reports" loading="lazy"></div>
-            <div class="thumb" onclick="switchSlide3(3)"><img class="thumb-img" src="images/elderly/4.jpg" alt="GPS tracking" loading="lazy"></div>
-          </div>
-        </div>
-        <div class="project-header">
-          <div class="project-info">
-            <div class="project-kicker">Health / Tracking</div>
-            <div class="project-title" data-th="Elderly Health Monitoring System" data-en="Elderly Health Monitoring System">Elderly Health Monitoring System</div>
-            <p class="project-desc" data-th="ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking สำหรับบันทึกและติดตามข้อมูลสุขภาพ" data-en="Elderly health monitoring system using PHP, MySQL, Bootstrap 5, Chart.js, LINE API, and GPS Tracking for health records and monitoring.">ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking สำหรับบันทึกและติดตามข้อมูลสุขภาพ</p>
-            <div class="project-tech"><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">Bootstrap 5</span><span class="tag">Chart.js</span><span class="tag">LINE API</span><span class="tag">GPS Tracking</span></div>
-          </div>
-          <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
+    .form-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #dce1ff;
+      font-size: .82rem;
+      font-weight: 800;
+    }
 
-<div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)" role="dialog" aria-modal="true">
-  <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">Close</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous image">&#8249;</button>
-    <img id="lightboxImg" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image">&#8250;</button>
-  </div>
-</div>
-<div class="lightbox" id="lightbox2" onclick="closeLightboxOutside2(event)" role="dialog" aria-modal="true">
-  <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox2()" aria-label="Close">Close</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)" aria-label="Previous image">&#8249;</button>
-    <img id="lightboxImg2" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)" aria-label="Next image">&#8250;</button>
-  </div>
-</div>
-<div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)" role="dialog" aria-modal="true">
-  <div class="lightbox-inner">
-    <button class="lightbox-close" onclick="closeLightbox3()" aria-label="Close">Close</button>
-    <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)" aria-label="Previous image">&#8249;</button>
-    <img id="lightboxImg3" src="" alt="">
-    <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)" aria-label="Next image">&#8250;</button>
-  </div>
-</div>
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid var(--color-line);
+      border-radius: 8px;
+      padding: 13px 14px;
+      color: #fff;
+      outline: none;
+      background: rgba(255, 255, 255, .055);
+      transition: border-color var(--transition), background var(--transition);
+    }
 
-<section id="skills">
-  <div class="section-inner">
-    <div class="section-label">03 Skills</div>
-    <h2 class="section-title">Technical <span>Toolkit</span></h2>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <h3 class="skill-heading">Frontend</h3>
-        <div class="skill-tags"><span class="tag">JavaScript (ES6+)</span><span class="tag">React</span><span class="tag">React Vite</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">TailwindCSS</span></div>
-      </div>
-      <div class="skill-group">
-        <h3 class="skill-heading">Backend & Data</h3>
-        <div class="skill-tags"><span class="tag">Node.js (basic)</span><span class="tag">PHP</span><span class="tag">MySQL</span><span class="tag">PostgreSQL</span><span class="tag">Supabase</span></div>
-      </div>
-      <div class="skill-group">
-        <h3 class="skill-heading">Integrations</h3>
-        <div class="skill-tags"><span class="tag">RESTful API</span><span class="tag">LINE API</span><span class="tag">Lazada API</span><span class="tag">QR Code</span><span class="tag">XLSX</span></div>
-      </div>
-      <div class="skill-group">
-        <h3 class="skill-heading">Workflow</h3>
-        <div class="skill-tags"><span class="tag">Git</span><span class="tag">GitHub</span><span class="tag">Vercel</span><span class="tag">Netlify</span><span class="tag">Responsive UI/UX</span></div>
-      </div>
-    </div>
-  </div>
-</section>
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--color-accent-2);
+      background: rgba(255, 255, 255, .08);
+    }
 
-<section id="experience">
-  <div class="section-inner">
-    <div class="section-label">04 Experience</div>
-    <h2 class="section-title">Work <span>Timeline</span></h2>
-    <div class="timeline">
-      <div class="timeline-item">
-        <div class="timeline-period">2025 - Present</div>
-        <div class="timeline-title">Junior Frontend Developer Intern</div>
-        <div class="timeline-place">Acacia I.T. Services (Thailand) Co., Ltd.</div>
-        <ul class="timeline-desc">
-          <li data-th="Built a Payroll Management System with React + Node.js." data-en="Built a Payroll Management System with React + Node.js.">Built a Payroll Management System with React + Node.js.</li>
-          <li data-th="Implemented responsive UI/UX for practical business workflows." data-en="Implemented responsive UI/UX for practical business workflows.">Implemented responsive UI/UX for practical business workflows.</li>
-          <li data-th="Collaborated with the backend team for RESTful API integration." data-en="Collaborated with the backend team for RESTful API integration.">Collaborated with the backend team for RESTful API integration.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+    .form-textarea {
+      resize: vertical;
+      min-height: 136px;
+    }
 
-<section id="contact">
-  <div class="section-inner">
-    <div class="section-label">05 Contact</div>
-    <h2 class="section-title">Let’s <span>Connect</span></h2>
-    <p class="contact-lead" data-th="พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล" data-en="Open to Frontend Developer, React Developer, and early-career opportunities in digital product teams.">พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล</p>
-    <div class="contact-grid">
-      <div class="contact-form">
-        <form id="contactForm" onsubmit="handleContactSubmit(event)">
-          <div class="form-group">
-            <label for="name" class="form-label" data-th="Name" data-en="Name">Name</label>
-            <input type="text" id="name" name="name" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label for="message" class="form-label" data-th="Message" data-en="Message">Message</label>
-            <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="btn-primary" data-th="Send Message" data-en="Send Message">Send Message</button>
-        </form>
-      </div>
-      <div class="contact-info">
-        <div class="contact-links">
-          <a href="mailto:apichit.puang@gmail.com" class="contact-link">
-            <div class="contact-icon">✉</div>
-            <div class="contact-detail"><span class="contact-detail-label">Email</span><span class="contact-detail-val">apichit.puang@gmail.com</span></div>
-          </a>
-          <a href="tel:0963951661" class="contact-link">
-            <div class="contact-icon">☎</div>
-            <div class="contact-detail"><span class="contact-detail-label" data-th="Phone" data-en="Phone">Phone</span><span class="contact-detail-val">096-395-1661</span></div>
-          </a>
-          <a href="https://github.com/golfApichitGIT" class="contact-link" target="_blank" rel="noopener">
-            <div class="contact-icon">{ }</div>
-            <div class="contact-detail"><span class="contact-detail-label">GitHub</span><span class="contact-detail-val">github.com/golfApichitGIT</span></div>
-          </a>
-          <a href="https://linkedin.com/in/apichit-plueangklang" class="contact-link" target="_blank" rel="noopener">
-            <div class="contact-icon">in</div>
-            <div class="contact-detail"><span class="contact-detail-label">LinkedIn</span><span class="contact-detail-val">linkedin.com/in/apichit-plueangklang</span></div>
-          </a>
-        </div>
-        <div class="social-links">
-          <a href="https://github.com/golfApichitGIT" class="social-link" title="GitHub" target="_blank" rel="noopener">GH</a>
-          <a href="https://linkedin.com/in/apichit-plueangklang" class="social-link" title="LinkedIn" target="_blank" rel="noopener">in</a>
-          <a href="mailto:apichit.puang@gmail.com" class="social-link" title="Email">✉</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    .contact-links {
+      display: grid;
+      gap: 10px;
+    }
 
-<footer>
-  <p>Built by Apichit Plueangklang · Frontend Developer · apichit.dev</p>
-</footer>
-</div>
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--color-line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .045);
+    }
 
-<script>
-  let currentLang = localStorage.getItem('portfolioLang') || 'th';
+    .contact-icon {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      color: #061018;
+      background: linear-gradient(135deg, var(--color-accent-2), var(--color-accent));
+      font-weight: 800;
+    }
 
-  function applyLang(lang) {
-    document.body.classList.add('lang-switching');
-    setTimeout(() => {
-      document.querySelectorAll('[data-th], [data-en]').forEach(el => {
-        const text = lang === 'th' ? el.dataset.th : el.dataset.en;
-        if (!text) return;
-        if (text.includes('&lt;br&gt;') || text.includes('<br>')) {
-          el.innerHTML = text.replace(/&lt;br&gt;/g, '<br>');
-        } else {
-          el.textContent = text;
-        }
-      });
+    .contact-detail {
+      min-width: 0;
+    }
 
-      const flag = document.getElementById('langFlag');
-      const label = document.getElementById('langLabel');
-      if (lang === 'th') {
-        flag.textContent = '↔';
-        label.textContent = 'EN';
-      } else {
-        flag.textContent = '↔';
-        label.textContent = 'TH';
+    .contact-detail-label {
+      display: block;
+      color: var(--color-muted);
+      font-size: .74rem;
+      font-weight: 800;
+    }
+
+    .contact-detail-val {
+      display: block;
+      color: #fff;
+      overflow-wrap: anywhere;
+      font-size: .92rem;
+      font-weight: 600;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .social-link {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--color-line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .055);
+      color: #fff;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-accent-2);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, .82);
+      backdrop-filter: blur(14px);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      width: min(1120px, 100%);
+    }
+
+    .lightbox-inner img {
+      width: 100%;
+      max-height: 82vh;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid var(--color-line);
+      background: #05070b;
+    }
+
+    .lightbox-close,
+    .lightbox-nav {
+      position: absolute;
+      border: 1px solid var(--color-line);
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255, 255, 255, .08);
+      cursor: pointer;
+    }
+
+    .lightbox-close {
+      top: -52px;
+      right: 0;
+      min-height: 38px;
+      padding: 0 14px;
+      font-weight: 800;
+    }
+
+    .lightbox-nav {
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      font-size: 2rem;
+    }
+
+    .lightbox-prev {
+      left: -54px;
+    }
+
+    .lightbox-next {
+      right: -54px;
+    }
+
+    footer {
+      border-top: 1px solid var(--color-line);
+      padding: 28px 20px;
+      color: var(--color-muted);
+      text-align: center;
+      font-size: .88rem;
+    }
+
+    [data-th],
+    [data-en] {
+      transition: opacity .15s ease;
+    }
+
+    .lang-switching [data-th],
+    .lang-switching [data-en] {
+      opacity: 0;
+    }
+
+    @media (min-width: 768px) {
+      .hero-name {
+        white-space: nowrap;
       }
 
-      document.documentElement.lang = lang === 'th' ? 'th' : 'en';
-      document.body.classList.remove('lang-switching');
-    }, 120);
-  }
+      .hero-name span {
+        display: inline;
+      }
 
-  function toggleLang() {
-    currentLang = currentLang === 'th' ? 'en' : 'th';
-    localStorage.setItem('portfolioLang', currentLang);
-    applyLang(currentLang);
-  }
+      .hero-name span+span::before {
+        content: " ";
+      }
 
-  window.toggleLang = toggleLang;
+      nav {
+        padding: 0 34px;
+      }
 
-  document.addEventListener('DOMContentLoaded', () => applyLang(currentLang));
-</script>
+      .about-grid {
+        grid-template-columns: 1.25fr .75fr;
+        align-items: stretch;
+      }
 
-<script type="module" src="js/main.js"></script>
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: start;
+      }
+
+      .project-header {
+        min-height: 380px;
+        grid-template-rows: auto 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contact-grid {
+        grid-template-columns: 1.15fr .85fr;
+        align-items: start;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .project-header {
+        padding: 20px;
+      }
+
+      .scroll-hint {
+        display: block;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .nav-toggle {
+        display: grid;
+        place-items: center;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 16px;
+        right: 16px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        border: 1px solid var(--color-line);
+        border-radius: 12px;
+        background: rgba(10, 10, 15, .94);
+        backdrop-filter: blur(18px);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a,
+      .lang-toggle,
+      .nav-cv-btn {
+        justify-content: flex-start;
+        width: 100%;
+        min-height: 42px;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .education-item {
+        flex-direction: column;
+      }
+
+      .lightbox-prev {
+        left: 8px;
+      }
+
+      .lightbox-next {
+        right: 8px;
+      }
+    }
+
+    .cert-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .cert-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      border: 1px solid var(--color-line);
+      border-radius: var(--radius-card);
+      background: var(--color-surface);
+      backdrop-filter: blur(10px);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+
+    .cert-card:hover {
+      border-color: rgba(124, 140, 255, .45);
+      background: var(--color-surface-strong);
+      transform: translateY(-2px);
+    }
+
+    .cert-card--award {
+      border-color: rgba(34, 211, 238, .35);
+      background: linear-gradient(135deg, rgba(34, 211, 238, .06), rgba(124, 140, 255, .06));
+    }
+
+    .cert-card--award:hover {
+      border-color: rgba(34, 211, 238, .65);
+    }
+
+    .cert-card-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cert-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .cert-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cert-name {
+      color: var(--color-text);
+      font-size: .93rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .cert-card--award .cert-name {
+      color: var(--color-accent-2);
+    }
+
+    .cert-issuer {
+      margin-top: 4px;
+      color: var(--color-muted);
+      font-size: .8rem;
+      line-height: 1.5;
+    }
+
+    .cert-year {
+      flex-shrink: 0;
+      color: var(--color-accent);
+      font-size: .78rem;
+      font-weight: 800;
+      white-space: nowrap;
+      padding-top: 3px;
+    }
+
+    .cert-thumb {
+      width: 72px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid var(--color-line);
+      flex-shrink: 0;
+      opacity: .85;
+      transition: opacity var(--transition);
+    }
+
+    .cert-thumb:hover {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .cert-card {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .cert-year {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="canvas-bg"></canvas>
+
+  <div class="content">
+    <nav aria-label="Main navigation">
+      <div class="nav-logo">Apichit<span>.</span>dev</div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle mobile menu">☰</button>
+      <div class="nav-links" id="navLinks">
+        <a href="#about" data-th="เกี่ยวกับ" data-en="About">เกี่ยวกับ</a>
+        <a href="#projects" data-th="โปรเจกต์" data-en="Projects">โปรเจกต์</a>
+        <a href="#skills" data-th="ทักษะ" data-en="Skills">ทักษะ</a>
+        <a href="#experience" data-th="ประสบการณ์" data-en="Experience">ประสบการณ์</a>
+        <a href="#certifications" data-th="ใบรับรอง" data-en="Certifications">ใบรับรอง</a>
+        <a href="#contact" data-th="ติดต่อ" data-en="Contact">ติดต่อ</a>
+        <button class="nav-cv-btn" onclick="generateCV()"><span data-th="Download CV" data-en="Download CV">Download
+            CV</span></button>
+        <button class="lang-toggle" id="langToggle" onclick="toggleLang()" aria-label="Switch language">
+          <span class="lang-flag" id="langFlag">↔</span>
+          <span class="lang-label" id="langLabel">EN</span>
+        </button>
+      </div>
+    </nav>
+
+    <section id="hero">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <div class="hero-avatar">
+            <img src="images/profile.jpg" alt="Apichit Plueangklang">
+          </div>
+          <div class="eyebrow">Frontend Developer</div>
+          <h1 class="hero-name"><span>Apichit</span><span>Plueangklang</span></h1>
+          <div class="hero-typed"><span id="typed-text"></span><span class="cursor">|</span></div>
+          <p class="hero-desc"
+            data-th="นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง"
+            data-en="Frontend Developer actively seeking opportunities with Thai tech companies and startups, focused on React applications, responsive UI, and practical API-connected product workflows.">
+            นักพัฒนา Frontend ที่กำลังมองหาโอกาสร่วมงานกับบริษัทเทคโนโลยีและสตาร์ทอัพในไทย สนใจการสร้าง React
+            application, responsive UI และการเชื่อมต่อ API ที่ใช้งานได้จริง
+          </p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn-primary" data-th="ดูโปรเจกต์" data-en="View Projects">ดูโปรเจกต์</a>
+            <button class="btn-outline" onclick="generateCV()" data-th="ดาวน์โหลด CV" data-en="Download CV">ดาวน์โหลด
+              CV</button>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-hint">SCROLL</div>
+    </section>
+
+    <section id="about">
+      <div class="section-inner">
+        <div class="section-label">01 About</div>
+        <h2 class="section-title">Developer <span>Profile</span></h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p data-th="ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL"
+              data-en="My name is Apichit Plueangklang, a Frontend Developer who enjoys building web applications that are clear, usable, and practical for real workflows using React, JavaScript, TailwindCSS, Supabase, and MySQL/PostgreSQL.">
+              ผมชื่อ อภิชิต เปลื้องกลาง Frontend Developer ที่ชอบสร้างเว็บแอปพลิเคชันให้ใช้งานง่าย อ่านข้อมูลชัด
+              และตอบโจทย์การทำงานจริง โดยใช้ React, JavaScript, TailwindCSS, Supabase และฐานข้อมูลอย่าง MySQL/PostgreSQL
+            </p>
+            <p data-th="ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd. โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ RESTful API"
+              data-en="I am currently a Junior Frontend Developer Intern at Acacia I.T. Services (Thailand) Co., Ltd., building a Payroll Management System with React + Node.js and collaborating with the backend team on RESTful API integration.">
+              ปัจจุบันฝึกงานตำแหน่ง Junior Frontend Developer Intern ที่ Acacia I.T. Services (Thailand) Co., Ltd.
+              โดยพัฒนาระบบ Payroll Management System ด้วย React + Node.js และทำงานร่วมกับทีม Backend เพื่อเชื่อมต่อ
+              RESTful API
+            </p>
+            <div class="education-strip">
+              <div class="education-item">
+                <div><strong>B.Sc. Information Systems & Digital Business Innovation</strong><br><span>RMUTI ·
+                    2019-2022</span></div>
+                <span>GPA 3.02</span>
+              </div>
+              <div class="education-item">
+                <div><strong>Vocational Certificate, Business Computer</strong><br><span>Nakhon Ratchasima Technical
+                    College · 2017-2019</span></div>
+                <span>GPA 3.83</span>
+              </div>
+            </div>
+          </div>
+          <div class="about-stats">
+            <div class="stat-box">
+              <div class="stat-num">3</div>
+              <div class="stat-label" data-th="โปรเจกต์หลัก" data-en="Featured Projects">โปรเจกต์หลัก</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">1</div>
+              <div class="stat-label" data-th="ประสบการณ์ฝึกงาน" data-en="Internship">ประสบการณ์ฝึกงาน</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">2+</div>
+              <div class="stat-label" data-th="ปีในการเขียนโค้ด" data-en="Years Coding">ปีในการเขียนโค้ด</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-inner">
+        <div class="section-label">02 Projects</div>
+        <h2 class="section-title">Selected <span>Work</span></h2>
+        <div class="projects-grid">
+          <article class="project-card">
+            <div class="gallery-wrap">
+              <div class="gallery-main" id="galleryMain" onclick="openLightbox(currentSlide)">
+                <img class="gallery-main-img" id="mainImg" src="images/stock/1.jpg" alt="Stock Management Dashboard"
+                  loading="lazy">
+                <div class="gallery-caption">
+                  <div class="gallery-caption-title" id="captionTitle" data-th="หน้า Dashboard" data-en="Dashboard">หน้า
+                    Dashboard</div>
+                  <div class="gallery-caption-sub" id="captionSub" data-th="// ภาพรวมระบบ · สถิติ · กราฟ realtime"
+                    data-en="// System overview · Statistics · Realtime charts">// ภาพรวมระบบ · สถิติ · กราฟ realtime
+                  </div>
+                </div>
+              </div>
+              <div class="gallery-thumbs">
+                <div class="thumb active" onclick="switchSlide(0)"><img class="thumb-img" src="images/stock/1.jpg"
+                    alt="Stock dashboard" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide(1)"><img class="thumb-img" src="images/stock/2.jpg"
+                    alt="Stock management" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide(2)"><img class="thumb-img" src="images/stock/3.jpg"
+                    alt="Stock report" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide(3)"><img class="thumb-img" src="images/stock/4.jpg"
+                    alt="Stock orders" loading="lazy"></div>
+              </div>
+            </div>
+            <div class="project-header">
+              <div class="project-info">
+                <div class="project-kicker">Inventory / API</div>
+                <div class="project-title" data-th="Electronic Parts Stock Management System"
+                  data-en="Electronic Parts Stock Management System">Electronic Parts Stock Management System</div>
+                <p class="project-desc"
+                  data-th="ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API สำหรับงานคลังและการขายออนไลน์"
+                  data-en="Electronic parts stock management system with QR Code workflows, LINE API, Supabase, and Lazada API for inventory and online selling workflows.">
+                  ระบบจัดการสต็อกอะไหล่อิเล็กทรอนิกส์ พร้อม QR Code, LINE API, Supabase และ Lazada API
+                  สำหรับงานคลังและการขายออนไลน์</p>
+                <div class="project-tech"><span class="tag">React Vite</span><span class="tag">MySQL</span><span
+                    class="tag">Supabase</span><span class="tag">LINE API</span><span class="tag">QR Code</span><span
+                    class="tag">Lazada API</span></div>
+              </div>
+              <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="gallery-wrap">
+              <div class="gallery-main" id="galleryMain2" onclick="openLightbox2(currentSlide2)">
+                <img class="gallery-main-img" id="mainImg2" src="images/payroll/1.png" alt="Payroll Dashboard"
+                  loading="lazy">
+                <div class="gallery-caption">
+                  <div class="gallery-caption-title" id="captionTitle2" data-th="Payroll Dashboard"
+                    data-en="Payroll Dashboard">Payroll Dashboard</div>
+                  <div class="gallery-caption-sub" id="captionSub2" data-th="// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน"
+                    data-en="// Payroll · Payslips · Reports">// ระบบเงินเดือน · สลิปเงินเดือน · รายงาน</div>
+                </div>
+              </div>
+              <div class="gallery-thumbs">
+                <div class="thumb active" onclick="switchSlide2(0)"><img class="thumb-img" src="images/payroll/1.png"
+                    alt="Payroll dashboard" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide2(1)"><img class="thumb-img" src="images/payroll/2.png"
+                    alt="Employee management" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide2(2)"><img class="thumb-img" src="images/payroll/3.png"
+                    alt="Payroll generation" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide2(3)"><img class="thumb-img" src="images/payroll/4.png"
+                    alt="Payroll reports" loading="lazy"></div>
+              </div>
+            </div>
+            <div class="project-header">
+              <div class="project-info">
+                <div class="project-kicker">Business App</div>
+                <div class="project-title" data-th="Payroll Management System" data-en="Payroll Management System">
+                  Payroll Management System</div>
+                <p class="project-desc"
+                  data-th="ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน Supabase/PostgreSQL"
+                  data-en="Payroll management application built with React Vite and TailwindCSS, supporting XLSX workflows and Supabase/PostgreSQL data storage.">
+                  ระบบบริหารเงินเดือนด้วย React Vite และ TailwindCSS รองรับการประมวลผลไฟล์ XLSX และจัดเก็บข้อมูลผ่าน
+                  Supabase/PostgreSQL</p>
+                <div class="project-tech"><span class="tag">React Vite</span><span class="tag">TailwindCSS</span><span
+                    class="tag">XLSX</span><span class="tag">Supabase</span><span class="tag">PostgreSQL</span></div>
+              </div>
+              <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="gallery-wrap">
+              <div class="gallery-main" id="galleryMain3" onclick="openLightbox3(currentSlide3)">
+                <img class="gallery-main-img" id="mainImg3" src="images/elderly/1.jpg" alt="Elderly Health Dashboard"
+                  loading="lazy">
+                <div class="gallery-caption">
+                  <div class="gallery-caption-title" id="captionTitle3" data-th="หน้า Dashboard" data-en="Dashboard">
+                    หน้า Dashboard</div>
+                  <div class="gallery-caption-sub" id="captionSub3" data-th="// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ"
+                    data-en="// System overview · Statistics · Senior data">// ภาพรวมระบบ · สถิติ · ข้อมูลผู้สูงอายุ
+                  </div>
+                </div>
+              </div>
+              <div class="gallery-thumbs">
+                <div class="thumb active" onclick="switchSlide3(0)"><img class="thumb-img" src="images/elderly/1.jpg"
+                    alt="Elderly dashboard" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide3(1)"><img class="thumb-img" src="images/elderly/2.jpg"
+                    alt="Health records" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide3(2)"><img class="thumb-img" src="images/elderly/3.jpg"
+                    alt="Health reports" loading="lazy"></div>
+                <div class="thumb" onclick="switchSlide3(3)"><img class="thumb-img" src="images/elderly/4.jpg"
+                    alt="GPS tracking" loading="lazy"></div>
+              </div>
+            </div>
+            <div class="project-header">
+              <div class="project-info">
+                <div class="project-kicker">Health / Tracking</div>
+                <div class="project-title" data-th="Elderly Health Monitoring System"
+                  data-en="Elderly Health Monitoring System">Elderly Health Monitoring System</div>
+                <p class="project-desc"
+                  data-th="ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking สำหรับบันทึกและติดตามข้อมูลสุขภาพ"
+                  data-en="Elderly health monitoring system using PHP, MySQL, Bootstrap 5, Chart.js, LINE API, and GPS Tracking for health records and monitoring.">
+                  ระบบติดตามสุขภาพผู้สูงอายุด้วย PHP, MySQL, Bootstrap 5, Chart.js, LINE API และ GPS Tracking
+                  สำหรับบันทึกและติดตามข้อมูลสุขภาพ</p>
+                <div class="project-tech"><span class="tag">PHP</span><span class="tag">MySQL</span><span
+                    class="tag">Bootstrap 5</span><span class="tag">Chart.js</span><span class="tag">LINE
+                    API</span><span class="tag">GPS Tracking</span></div>
+              </div>
+              <a class="project-link" href="https://github.com/golfApichitGIT" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)" role="dialog" aria-modal="true">
+      <div class="lightbox-inner">
+        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">Close</button>
+        <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"
+          aria-label="Previous image">&#8249;</button>
+        <img id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image">&#8250;</button>
+      </div>
+    </div>
+    <div class="lightbox" id="lightbox2" onclick="closeLightboxOutside2(event)" role="dialog" aria-modal="true">
+      <div class="lightbox-inner">
+        <button class="lightbox-close" onclick="closeLightbox2()" aria-label="Close">Close</button>
+        <button class="lightbox-nav lightbox-prev" onclick="lightboxNav2(-1)"
+          aria-label="Previous image">&#8249;</button>
+        <img id="lightboxImg2" src="" alt="">
+        <button class="lightbox-nav lightbox-next" onclick="lightboxNav2(1)" aria-label="Next image">&#8250;</button>
+      </div>
+    </div>
+    <div class="lightbox" id="lightbox3" onclick="closeLightboxOutside3(event)" role="dialog" aria-modal="true">
+      <div class="lightbox-inner">
+        <button class="lightbox-close" onclick="closeLightbox3()" aria-label="Close">Close</button>
+        <button class="lightbox-nav lightbox-prev" onclick="lightboxNav3(-1)"
+          aria-label="Previous image">&#8249;</button>
+        <img id="lightboxImg3" src="" alt="">
+        <button class="lightbox-nav lightbox-next" onclick="lightboxNav3(1)" aria-label="Next image">&#8250;</button>
+      </div>
+    </div>
+
+    <section id="skills">
+      <div class="section-inner">
+        <div class="section-label">03 Skills</div>
+        <h2 class="section-title">Technical <span>Toolkit</span></h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3 class="skill-heading">Frontend</h3>
+            <div class="skill-tags"><span class="tag">JavaScript (ES6+)</span><span class="tag">React</span><span
+                class="tag">React Vite</span><span class="tag">HTML5</span><span class="tag">CSS3</span><span
+                class="tag">TailwindCSS</span></div>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-heading">Backend & Data</h3>
+            <div class="skill-tags"><span class="tag">Node.js (basic)</span><span class="tag">PHP</span><span
+                class="tag">MySQL</span><span class="tag">PostgreSQL</span><span class="tag">Supabase</span></div>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-heading">Integrations</h3>
+            <div class="skill-tags"><span class="tag">RESTful API</span><span class="tag">LINE API</span><span
+                class="tag">Lazada API</span><span class="tag">QR Code</span><span class="tag">XLSX</span></div>
+          </div>
+          <div class="skill-group">
+            <h3 class="skill-heading">Workflow</h3>
+            <div class="skill-tags"><span class="tag">Git</span><span class="tag">GitHub</span><span
+                class="tag">Vercel</span><span class="tag">Netlify</span><span class="tag">Responsive UI/UX</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="section-inner">
+        <div class="section-label">04 Experience</div>
+        <h2 class="section-title">Work <span>Timeline</span></h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-period">2025 - Present</div>
+            <div class="timeline-title">Junior Frontend Developer Intern</div>
+            <div class="timeline-place">Acacia I.T. Services (Thailand) Co., Ltd.</div>
+            <ul class="timeline-desc">
+              <li data-th="Built a Payroll Management System with React + Node.js."
+                data-en="Built a Payroll Management System with React + Node.js.">Built a Payroll Management System with
+                React + Node.js.</li>
+              <li data-th="Implemented responsive UI/UX for practical business workflows."
+                data-en="Implemented responsive UI/UX for practical business workflows.">Implemented responsive UI/UX
+                for practical business workflows.</li>
+              <li data-th="Collaborated with the backend team for RESTful API integration."
+                data-en="Collaborated with the backend team for RESTful API integration.">Collaborated with the backend
+                team for RESTful API integration.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certifications">
+      <div class="section-inner">
+        <div class="section-label">05 Certifications</div>
+        <h2 class="section-title" data-th="รางวัล & <span>ใบรับรอง</span>"
+          data-en="Awards & <span>Certifications</span>">
+          รางวัล & <span>ใบรับรอง</span>
+        </h2>
+
+        <div class="cert-cards">
+
+          <!-- AWARD — highlighted card -->
+          <div class="cert-card cert-card--award">
+            <div class="cert-card-left">
+              <div class="cert-icon">🏆</div>
+              <div class="cert-body">
+                <div class="cert-name" data-th="รางวัลการนำเสนอบทความดีเด่น – ระดับ &quot;ดีมาก&quot;"
+                  data-en="Best Paper Presentation – &quot;Very Good&quot; Award">
+                  Best Paper Presentation – "Very Good" Award
+                </div>
+                <div class="cert-issuer"
+                  data-th="Asia Undergraduate Conference on Computing (AUCC2026) ครั้งที่ 14 · บทความ: Payroll Management System (Web Application)"
+                  data-en="Asia Undergraduate Conference on Computing (AUCC2026), 14th Edition · Paper: Payroll Management System (Web Application)">
+                  Asia Undergraduate Conference on Computing (AUCC2026), 14th Edition · Paper: Payroll Management System
+                  (Web Application)
+                </div>
+              </div>
+            </div>
+            <!-- CERT IMAGE: replace src below with the path to the AUCC2026 award image -->
+            Example: <img class="cert-thumb" src="images/certs/aucc2026.jpg" alt="AUCC2026 Award">
+            <div class="cert-year" data-th="ก.พ. 2568" data-en="Feb 2026">
+              Feb 2026
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 1 -->
+          <div class="cert-card">
+            <div class="cert-card-left">
+              <div class="cert-icon">📊</div>
+              <div class="cert-body">
+                <div class="cert-name" data-th="การวิเคราะห์ข้อมูลเบื้องต้น ด้วยโปรแกรม MS Excel (12 ชั่วโมง)"
+                  data-en="Introduction to Data Analytics using MS Excel (12 hrs)">
+                  Introduction to Data Analytics using MS Excel (12 hrs)
+                </div>
+                <div class="cert-issuer" data-th="Thai MOOC · มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี (มจธ.)"
+                  data-en="Thai MOOC · King Mongkut's University of Technology Thonburi (KMUTT)">
+                  Thai MOOC · King Mongkut's University of Technology Thonburi (KMUTT)
+                </div>
+              </div>
+            </div>
+            <!-- CERT IMAGE: replace src below with the path to the Thai MOOC MS Excel certificate image -->
+            Example: <img class="cert-thumb" src="images/certs/thaimooc-excel.jpg" alt="Thai MOOC Certificate">
+            <div class="cert-year" data-th="ม.ค. 2568" data-en="Jan 2025">
+              Jan 2025
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 2 -->
+          <div class="cert-card">
+            <div class="cert-card-left">
+              <div class="cert-icon">🎨</div>
+              <div class="cert-body">
+                <div class="cert-name" data-th="Data Visualization: โอกาสทางธุรกิจด้วยข้อมูลและความคิดสร้างสรรค์"
+                  data-en="Data Visualization: Business Opportunities with Data & Creative">
+                  Data Visualization: Business Opportunities with Data & Creative
+                </div>
+                <div class="cert-issuer" data-th="สำนักงานส่งเสริมเศรษฐกิจสร้างสรรค์ (CEA) / TCDC"
+                  data-en="Creative Economy Agency (CEA) / TCDC">
+                  Creative Economy Agency (CEA) / TCDC
+                </div>
+              </div>
+            </div>
+            <!-- CERT IMAGE: replace src below with the path to the CEA/TCDC Data Visualization certificate image -->
+            Example: <img class="cert-thumb" src="images/certs/cea-dataviz.jpg"
+              alt="CEA Data Visualization Certificate">
+            <div class="cert-year" data-th="2564" data-en="2021">
+              2021
+            </div>
+          </div>
+
+          <!-- CERTIFICATE 3 -->
+          <div class="cert-card">
+            <div class="cert-card-left">
+              <div class="cert-icon">📈</div>
+              <div class="cert-body">
+                <div class="cert-name" data-th="Business Model Canvas (e-Learning)"
+                  data-en="Business Model Canvas (e-Learning)">
+                  Business Model Canvas (e-Learning)
+                </div>
+                <div class="cert-issuer" data-th="ตลาดหลักทรัพย์แห่งประเทศไทย (SET)"
+                  data-en="The Stock Exchange of Thailand (SET)">
+                  The Stock Exchange of Thailand (SET)
+                </div>
+              </div>
+            </div>
+            <!-- CERT IMAGE: replace src below with the path to the SET Business Model Canvas certificate image -->
+            Example: <img class="cert-thumb" src="images/certs/set-bmc.jpg" alt="SET Business Model Canvas Certificate">
+            <div class="cert-year" data-th="ม.ค. 2568" data-en="Jan 2025">
+              Jan 2025
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-inner">
+        <div class="section-label">06 Contact</div>
+        <h2 class="section-title">Let’s <span>Connect</span></h2>
+        <p class="contact-lead"
+          data-th="พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล"
+          data-en="Open to Frontend Developer, React Developer, and early-career opportunities in digital product teams.">
+          พร้อมพูดคุยเรื่องตำแหน่ง Frontend Developer, React Developer หรือโอกาสฝึกงาน/เริ่มงานในทีมผลิตภัณฑ์ดิจิทัล</p>
+        <div class="contact-grid">
+          <div class="contact-form">
+            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+              <div class="form-group">
+                <label for="name" class="form-label" data-th="Name" data-en="Name">Name</label>
+                <input type="text" id="name" name="name" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="message" class="form-label" data-th="Message" data-en="Message">Message</label>
+                <textarea id="message" name="message" class="form-textarea" rows="5" required></textarea>
+              </div>
+              <button type="submit" class="btn-primary" data-th="Send Message" data-en="Send Message">Send
+                Message</button>
+            </form>
+          </div>
+          <div class="contact-info">
+            <div class="contact-links">
+              <a href="mailto:apichit.puang@gmail.com" class="contact-link">
+                <div class="contact-icon">✉</div>
+                <div class="contact-detail"><span class="contact-detail-label">Email</span><span
+                    class="contact-detail-val">apichit.puang@gmail.com</span></div>
+              </a>
+              <a href="tel:0963951661" class="contact-link">
+                <div class="contact-icon">☎</div>
+                <div class="contact-detail"><span class="contact-detail-label" data-th="Phone"
+                    data-en="Phone">Phone</span><span class="contact-detail-val">096-395-1661</span></div>
+              </a>
+              <a href="https://github.com/golfApichitGIT" class="contact-link" target="_blank" rel="noopener">
+                <div class="contact-icon">{ }</div>
+                <div class="contact-detail"><span class="contact-detail-label">GitHub</span><span
+                    class="contact-detail-val">github.com/golfApichitGIT</span></div>
+              </a>
+              <a href="https://linkedin.com/in/apichit-plueangklang" class="contact-link" target="_blank"
+                rel="noopener">
+                <div class="contact-icon">in</div>
+                <div class="contact-detail"><span class="contact-detail-label">LinkedIn</span><span
+                    class="contact-detail-val">linkedin.com/in/apichit-plueangklang</span></div>
+              </a>
+            </div>
+            <div class="social-links">
+              <a href="https://github.com/golfApichitGIT" class="social-link" title="GitHub" target="_blank"
+                rel="noopener">GH</a>
+              <a href="https://linkedin.com/in/apichit-plueangklang" class="social-link" title="LinkedIn"
+                target="_blank" rel="noopener">in</a>
+              <a href="mailto:apichit.puang@gmail.com" class="social-link" title="Email">✉</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Built by Apichit Plueangklang · Frontend Developer · apichit.dev</p>
+    </footer>
+  </div>
+
+  <script>
+    let currentLang = localStorage.getItem('portfolioLang') || 'th';
+
+    function applyLang(lang) {
+      document.body.classList.add('lang-switching');
+      setTimeout(() => {
+        document.querySelectorAll('[data-th], [data-en]').forEach(el => {
+          const text = lang === 'th' ? el.dataset.th : el.dataset.en;
+          if (!text) return;
+          if (text.includes('<')) {
+            el.innerHTML = text;
+          } else {
+            el.textContent = text;
+          }
+        });
+
+        const flag = document.getElementById('langFlag');
+        const label = document.getElementById('langLabel');
+        if (lang === 'th') {
+          flag.textContent = '↔';
+          label.textContent = 'EN';
+        } else {
+          flag.textContent = '↔';
+          label.textContent = 'TH';
+        }
+
+        document.documentElement.lang = lang === 'th' ? 'th' : 'en';
+        document.body.classList.remove('lang-switching');
+      }, 120);
+    }
+
+    function toggleLang() {
+      currentLang = currentLang === 'th' ? 'en' : 'th';
+      localStorage.setItem('portfolioLang', currentLang);
+      applyLang(currentLang);
+    }
+
+    window.toggleLang = toggleLang;
+
+    document.addEventListener('DOMContentLoaded', () => applyLang(currentLang));
+  </script>
+
+  <script type="module" src="js/main.js"></script>
 </body>
+
 </html>

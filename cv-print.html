@@ -482,7 +482,6 @@
 </div>
 
 <main class="page" id="cvPage">
-  <div class="lang-badge" id="langBadge">TH</div>
 
   <header class="header">
     <label class="photo-wrap" title="Click to upload photo">
@@ -716,7 +715,6 @@ const cvTranslations = {
     langBtnFlag: '🇬🇧',
     langBtnLabel: 'Switch to English',
     printLabel: 'พิมพ์ / บันทึก PDF',
-    langBadge: 'TH',
     photoHint: 'คลิกเพื่อ<br>ใส่รูป',
     cvName: 'อภิชิต เปลื้องกลาง',
     cvNameSub: 'Apichit Plueangklang',
@@ -783,7 +781,6 @@ const cvTranslations = {
     langBtnFlag: '🇹🇭',
     langBtnLabel: 'Switch to Thai',
     printLabel: 'Print / Save PDF',
-    langBadge: 'EN',
     photoHint: 'Click to<br>upload photo',
     cvName: 'Apichit Plueangklang',
     cvNameSub: 'อภิชิต เปลื้องกลาง',
@@ -864,7 +861,7 @@ function applyCV(lang) {
     document.title = t.pageTitle;
     document.documentElement.lang = lang === 'th' ? 'th' : 'en';
 
-    ['toolbarHint','langBadge','photoHint','cvName','cvNameSub'].forEach(key => {
+    ['toolbarHint','photoHint','cvName','cvNameSub'].forEach(key => {
       const id = key === 'toolbarHint' ? 'toolbar-hint' : key;
       setElementContent(id, t[key]);
     });

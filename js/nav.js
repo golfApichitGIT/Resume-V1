@@ -45,7 +45,6 @@ export function initNav() {
   });
   
   // Navigation scroll behavior (add shadow/background on scroll)
-  let lastScroll = 0;
   const nav = document.querySelector('nav');
   
   if (nav) {
@@ -60,8 +59,6 @@ export function initNav() {
         nav.style.background = 'rgba(5, 10, 15, 0.85)';
         nav.style.boxShadow = 'none';
       }
-      
-      lastScroll = currentScroll;
     });
   }
   

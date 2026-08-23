@@ -4,6 +4,7 @@ export function initTypewriter() {
   
   function typed() {
     const el = document.getElementById('typed-text');
+    if (!el) return;
     if (!del) {
       if (ci < phrases[pi].length) {
         el.textContent = phrases[pi].slice(0, ++ci);
@@ -37,15 +38,4 @@ export function initScrollReveal() {
   }, { threshold: 0.15 });
   
   document.querySelectorAll('section').forEach(s => obs.observe(s));
-  
-  // Smooth scrolling for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      const t = document.querySelector(a.getAttribute('href'));
-      if (t) {
-        t.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
 }

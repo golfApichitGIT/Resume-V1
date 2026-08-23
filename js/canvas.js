@@ -1,23 +1,32 @@
 export function initCanvas() {
   const canvas = document.getElementById('canvas-bg');
+  if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, particles = [];
   let animationId = null;
   let isRunning = true;
-  
+
+  // Respect prefers-reduced-motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (prefersReducedMotion.matches) {
+    // Draw a single static frame and stop
+    canvas.style.display = 'none';
+    return;
+  }
+
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
   }
-  
+
   resize();
   window.addEventListener('resize', resize);
-  
+
   class Particle {
     constructor() {
       this.reset();
     }
-    
+
     reset() {
       this.x = Math.random() * W;
       this.y = Math.random() * H;
@@ -28,7 +37,7 @@ export function initCanvas() {
       this.maxLife = Math.random() * 0.8 + 0.2;
       this.color = Math.random() > 0.7 ? 'rgba(0,212,255,' : 'rgba(0,255,136,';
     }
-    
+
     update() {
       this.x += this.vx;
       this.y += this.vy;
@@ -37,7 +46,7 @@ export function initCanvas() {
         this.reset();
       }
     }
-    
+
     draw() {
       const a = Math.sin(this.life / this.maxLife * Math.PI) * 0.6;
       ctx.beginPath();
@@ -46,18 +55,18 @@ export function initCanvas() {
       ctx.fill();
     }
   }
-  
-  // Reduced particle count from 120 to 80 for better performance
+
+  // Reduced particle count for performance (80 is reasonable for mobile)
   for (let i = 0; i < 80; i++) {
     particles.push(new Particle());
   }
-  
+
   let mx = W / 2, my = H / 2;
   document.addEventListener('mousemove', e => {
     mx = e.clientX;
     my = e.clientY;
   });
-  
+
   function drawGrid() {
     ctx.strokeStyle = 'rgba(0,212,255,0.025)';
     ctx.lineWidth = 1;
@@ -75,7 +84,7 @@ export function initCanvas() {
       ctx.stroke();
     }
   }
-  
+
   function connectParticles() {
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
@@ -91,10 +100,10 @@ export function initCanvas() {
       }
     }
   }
-  
+
   function loop() {
     if (!isRunning) return;
-    
+
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = 'rgba(5,10,15,.04)';
     ctx.fillRect(0, 0, W, H);
@@ -111,19 +120,20 @@ export function initCanvas() {
     ctx.fillRect(0, 0, W, H);
     animationId = requestAnimationFrame(loop);
   }
-  
-  // Page Visibility API - pause animation when tab is hidden
+
+  // Page Visibility API — pause animation when tab is hidden
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       isRunning = false;
       if (animationId) {
         cancelAnimationFrame(animationId);
+        animationId = null;
       }
     } else {
       isRunning = true;
       loop();
     }
   });
-  
+
   loop();
 }

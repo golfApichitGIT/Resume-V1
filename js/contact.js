@@ -4,23 +4,64 @@ export function initContact() {
 
 function handleContactSubmit(e) {
   e.preventDefault();
-  
-  const btn = e.target.querySelector('button[type="submit"]');
+
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+
+  // Honeypot check — bots fill hidden fields, humans don't
+  const honeypot = form.querySelector('input[name="website"]');
+  if (honeypot && honeypot.value) {
+    // Silently reject spam submissions
+    btn.textContent = '✅ Sent!';
+    btn.style.background = 'linear-gradient(135deg,#00ff88,#00d4ff)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message';
+      btn.style.background = '';
+    }, 3000);
+    return;
+  }
+
+  const nameEl = document.getElementById('name');
+  const emailEl = document.getElementById('email');
+  const messageEl = document.getElementById('message');
+
+  const name = nameEl.value.trim();
+  const email = emailEl.value.trim();
+  const message = messageEl.value.trim();
+
+  // Validate fields
+  if (!name || !email || !message) {
+    return;
+  }
+
+  // Email format check
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return;
+  }
+
+  // Length limits to prevent abuse
+  if (name.length > 100 || email.length > 100 || message.length > 2000) {
+    return;
+  }
+
+  // Prevent double-submit
+  if (btn.disabled) return;
+
   const originalText = btn.textContent;
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
   const params = {
-    from_name: document.getElementById('name').value,
-    from_email: document.getElementById('email').value,
-    message: document.getElementById('message').value,
+    from_name: name,
+    from_email: email,
+    message: message,
   };
 
   emailjs.send('service_of8a87v', 'template_bm0z6yn', params)
     .then(() => {
       btn.textContent = '✅ Sent!';
       btn.style.background = 'linear-gradient(135deg,#00ff88,#00d4ff)';
-      document.getElementById('contactForm').reset();
+      form.reset();
       setTimeout(() => {
         btn.textContent = originalText;
         btn.style.background = '';
@@ -39,6 +80,5 @@ function handleContactSubmit(e) {
     });
 }
 
-// Make function globally accessible for onsubmit handler in HTML
-// This is intentional - the function needs to be called from HTML onsubmit attribute
+// Global handler for inline onsubmit
 window.handleContactSubmit = handleContactSubmit;
